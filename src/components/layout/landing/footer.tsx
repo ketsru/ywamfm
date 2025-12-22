@@ -33,7 +33,7 @@ export default function Footer() {
           <div className="lg:w-3/12 w-full space-y-4 p-4">
             <Link href="/" className="flex items-center space-x-2">
               <Image
-                src="/assets/logo/logo.png"
+                src="/assets/logo/ywam.png"
                 alt="Logo JEM Mission Pionnière"
                 width={50}
                 height={50}
