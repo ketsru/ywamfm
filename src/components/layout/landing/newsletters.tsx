@@ -1,7 +1,8 @@
+
 export default function NewsletterSection () {
-    return (
-        <>
-            <div className="relative z-10 bg-teal-800 py-16 md:py-20">
+  return (
+    <>
+      <div className="relative z-10 bg-teal-800 py-8 md:py-16">
         <div className="bg-white rounded-3xl mx-4 md:mx-8 lg:mx-12 overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2">
             {/* Left Content */}
@@ -9,17 +10,17 @@ export default function NewsletterSection () {
               {/* Subscribe Badge */}
               <div className="mb-6">
                 <div className="bg-gray-200 px-4 py-2 rounded-full inline-block">
-                  <span className="text-gray-600 text-sm font-medium">Subscribe</span>
+                  <span className="text-gray-600 text-sm font-medium">Abonnement</span>
                 </div>
               </div>
 
               {/* Title */}
               <h2 className="text-teal-700 text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6">
-                Stay{' '}
+                Restez{' '}
                 <span className="text-green-400 italic font-script" style={{fontFamily: 'cursive'}}>
-                  up to date
+                  informé
                 </span>{' '}
-                with Renew
+                Avec JEM FM
               </h2>
 
               {/* Description */}
@@ -35,11 +36,11 @@ export default function NewsletterSection () {
               <div className="flex flex-col sm:flex-row gap-4">
                 <input
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="Entrer votre email..."
                   className="flex-1 px-6 py-4 bg-gray-100 rounded-full border-none focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-700 placeholder-gray-500"
                 />
-                <button className="bg-teal-700 text-white px-8 py-4 rounded-full font-semibold hover:bg-teal-800 transition-colors whitespace-nowrap">
-                  Subscribe
+                <button type="submit" className="bg-teal-700 text-white px-8 py-4 rounded-full font-semibold hover:bg-teal-800 transition-colors whitespace-nowrap cursor-pointer">
+                  S'abonner
                 </button>
               </div>
             </div>
@@ -55,6 +56,6 @@ export default function NewsletterSection () {
           </div>
         </div>
       </div>
-        </>
-    )
+    </>
+  )
 }

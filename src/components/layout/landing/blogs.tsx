@@ -1,13 +1,13 @@
 export default function BlogSection () {
-    return (
-        <>
-            <div className="relative z-10 bg-teal-800 py-16 md:py-20">
+  return (
+    <>
+      <div className="relative z-10 bg-teal-800 py-16 md:py-20">
         <div className="bg-teal-900 bg-opacity-60 rounded-3xl mx-4 md:mx-8 lg:mx-12 py-12 md:py-16 backdrop-blur-sm">
           <div className="container mx-auto px-4 md:px-8 lg:px-12">
             {/* Podcast & Stories Badge */}
             <div className="flex justify-center mb-8">
               <div className="bg-teal-700 px-6 py-2 rounded-full">
-                <span className="text-white text-sm font-medium">Podcast & Stories</span>
+                <span className="text-white text-sm font-medium">Nos nouvelles</span>
               </div>
             </div>
 
@@ -31,7 +31,7 @@ export default function BlogSection () {
               <div className="group cursor-pointer">
                 <div className="relative rounded-2xl overflow-hidden mb-4 aspect-video">
                   <img 
-                    src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                    src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                     alt="A Nation Transformed"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
@@ -122,6 +122,6 @@ export default function BlogSection () {
           </div>
         </div>
       </div>
-        </>
-    )
+    </>
+  )
 }

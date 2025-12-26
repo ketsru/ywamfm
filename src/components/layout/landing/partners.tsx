@@ -1,7 +1,9 @@
+import { ArrowUpRight } from "lucide-react";
+
 export default function PartnersSection () {
-    return (
-        <>
-            <div className="relative z-10 bg-teal-800 py-16">
+  return (
+    <>
+      <div className="relative z-10 bg-teal-800 py-10">
         <div className="container mx-auto px-4 md:px-8 lg:px-12">
           {/* Partners Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-8">
@@ -67,13 +69,14 @@ export default function PartnersSection () {
           </div>
 
           {/* Show More Button */}
-          <div className="text-center">
-            <button className="bg-teal-900 bg-opacity-80 text-white px-6 py-3 rounded-full font-medium hover:bg-opacity-100 transition-all">
-              Show more
+          <div className="relative flex justify-center">
+            <button className="flex gap-2 bg-teal-900 bg-opacity-80 text-white px-6 py-3 rounded-full font-medium hover:bg-opacity-100 transition-all cursor-pointer">
+              Voir plus 
+              <ArrowUpRight />
             </button>
           </div>
         </div>
       </div>
-        </>
-    )
+    </>
+  )
 }

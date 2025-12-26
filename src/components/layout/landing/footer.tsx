@@ -9,10 +9,10 @@ const contactInfo = [
   {
     href: "#",
     icon: <MapPin className="w-4 h-4" />,
-    label: "Nukafu, Lomé - Togo",
+    label: "Lomé - Togo",
   },
   {
-    href: "mailto:nature.marche@gmail.com",
+    href: "mailto:jemfmtogo@gmail.com",
     icon: <Mail className="w-4 h-4" />,
     label: "nature.marche@gmail.com",
   },
@@ -22,24 +22,23 @@ const contactInfo = [
     label: "+228 97 12 62 87",
   },
 ];
-
 export default function Footer() {
   return (
-    <footer className="w-full bg-teal-900 mt-5 p-4 lg:px-0 lg:py-10 z-50">
-      <div className="max-w-11/12 mx-auto rounded-4xl bg-black/20 lg:p-8 md:p-4 p-5">
+    <footer className="w-full bg-teal-900 p-2 lg:px-0 lg:py-10">
+      <div className="max-w-11/12 mx-auto rounded-4xl bg-black/20 lg:p-8 md:p-4 p-2">
         {/* Top Section */}
         <div className="lg:flex items-start justify-between gap-6">
           {/* Brand & Contact */}
-          <div className="lg:w-3/12 w-full space-y-4 p-4">
+          <div className="lg:w-4/12 w-full space-y-4 p-4">
             <Link href="/" className="flex items-center space-x-2">
               <Image
                 src="/assets/logo/ywam.png"
                 alt="Logo JEM Mission Pionnière"
                 width={50}
                 height={50}
-                className="rounded-full object-cover border"
+                className="rounded-full object-cover"
               />
-              <span className="tracking-tighter text-3xl font-extrabold text-white">
+              <span className="tracking-tighter text-2xl font-extrabold text-white">
                 JEM Mission Pionnière
               </span>
             </Link>
@@ -57,10 +56,10 @@ export default function Footer() {
           </div>
 
           {/* Useful Links */}
-          <div className="lg:flex items-start justify-between lg:w-6/12 w-full p-4 gap-6">
+          <div className="lg:flex items-start justify-between lg:w-8/12 w-full p-4 gap-6">
             {usefullLinkItems.map(({ title, menuItems }, index) => (
               <div key={index}>
-                <h4 className="text-white text-base uppercase font-bold mb-4">
+                <h4 className="text-white text-base uppercase font-bold lg:mb-4 mb-1 lg:mt-0 mt-5">
                   {title}
                 </h4>
                 <ul className="space-y-2">
@@ -78,33 +77,16 @@ export default function Footer() {
               </div>
             ))}
           </div>
-
-          {/* Newsletter */}
-          <div className="lg:w-3/12 w-full p-4 text-gray-50">
-            <h2 className="text-base font-bold uppercase mb-1">Mise à jour</h2>
-            <p className="text-sm">
-              Restez informé de nos nouveautés, conseils santé et produits.
-            </p>
-
-            <div className="mt-4 space-y-4">
-              <Input
-                placeholder="Votre email..."
-                type="email"
-                className="rounded-full"
-              />
-              <Button className="w-full rounded-full">Soumettre</Button>
-            </div>
-          </div>
         </div>
 
-        <hr className="w-full my-5 border-gray-700" />
+        <hr className="w-full my-5 border-gray-500" />
 
         {/* Bottom Section */}
-        <div className="flex flex-col md:flex-row justify-between items-center text-gray-200 text-sm gap-4">
-          <Link href="#" aria-label="Facebook Nature Marché">
+        <div className="flex flex-col md:flex-row justify-between items-center text-gray-200 text-sm mb-3 lg:mb-0">
+          <Link href="#" aria-label="JEM FM Togo">
             <Facebook className="hover:text-green-500 transition-colors" />
           </Link>
-          <p>© 2025 Nature Marché. Tous droits réservés.</p>
+          <p className="lg:mt-0 mt-4">© 2026 jem fm Togo. Tous droits réservés.</p>
         </div>
       </div>
     </footer>

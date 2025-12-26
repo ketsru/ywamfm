@@ -55,7 +55,9 @@ const LandingPage = () => {
       <NewsletterSection />
 
       {/* Section du footer */}
-      <Footer />
+      <div className="relative">
+        <Footer />
+      </div>
     </div>
   );
 };

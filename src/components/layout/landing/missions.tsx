@@ -24,7 +24,7 @@ const missionCards = [
 
 export default function Mission() {
     return (
-        <section className="relative z-10 bg-teal-800 py-10 md:py-20 px-4">
+        <section className="relative z-10 bg-teal-800 py-10 md:py-12 px-4">
             <div className="max-w-7xl mx-auto">
                 {/* Badge */}
                 <div className="flex justify-center mb-8">
@@ -34,13 +34,13 @@ export default function Mission() {
                 </div>
 
                 {/* Title */}
-                <div className="text-center mb-16">
+                <div className="text-center mb-6">
                     <h2 className="text-white text-3xl md:text-4xl lg:text-5xl font-light leading-relaxed max-w-6xl mx-auto">
-                        Renew empowers others to spread God's Word to{" "}
+                        YWAM FM aide les autres à {" "}
                         <span className="text-green-400 italic font-script">
-                        every corner
+                        diffuser la Parole de Dieu
                         </span>{" "}
-                        of the globe through...
+                        aux quatre coins du globe
                     </h2>
                 </div>
 

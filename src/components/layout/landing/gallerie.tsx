@@ -1,4 +1,5 @@
 
+import { departmentsData } from "@/components/data/admin/department"
 import {
   Carousel,
   CarouselContent,
@@ -8,48 +9,10 @@ import {
 } from "@/components/ui/carousel"
 import Image from "next/image"
 
-const equipments = [
-    {
-        id: "vista-500",
-        name: "Vista 500",
-        category: "Video Projectors",
-        image:
-        "/assets/images/0af7741991985e2b530c8f62135c3eea.jpg",
-    },
-    {
-        id: "vista-1000",
-        name: "Vista 1000",
-        category: "Video Projectors",
-        image:
-        "/assets/images/6fa36aa2c367da06b2a4c8ae1cf9ee02.jpg",
-    },
-    {
-        id: "vista-5000",
-        name: "LightStream",
-        category: "LightStreams",
-        image:
-        "/assets/books/cover/8d2bea04d7ee666ab74e47084cf707ad.jpg",
-    },
-    {
-        id: "vista-50O0",
-        name: "Vista 1000",
-        category: "Video Projectors",
-        image:
-        "/assets/images/0af7741991985e2b530c8f62135c3eea.jpg",
-    },
-    {
-        id: "vista-A500",
-        name: "LightStream",
-        category: "LightStreams",
-        image:
-        "/assets/images/6fa36aa2c367da06b2a4c8ae1cf9ee02.jpg",
-    },
-]
-
 export default function LandingPageGallerie () {
     return (
         <>
-            <div className="relative z-10 bg-teal-900 py-8 md:py-16 rounded-b-4xl">
+            <div className="relative z-10 bg-teal-900 py-8 md:py-16">
                 <div className="bg-white rounded-3xl mx-4 md:mx-8 lg:mx-12 py-12 md:py-16">
                     <div className="container mx-auto px-4 md:px-8 lg:px-12">
                         {/* Equipment Badge */}
@@ -81,29 +44,30 @@ export default function LandingPageGallerie () {
                         </div>
 
                         {/* Equipment Carousel */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 border">
+                        <div className="gap-8">
                             <Carousel opts={{ align: "start" }} className="w-full mx-auto">
                                 <CarouselContent className="-ml-4">
-                                    {equipments.map((item, index) => (
+                                    {departmentsData.map((item, index) => (
                                     <CarouselItem
-                                        key={`${item.name}-${index}`}
-                                        className="pl-4 md:basis-1/2 lg:basis-1/3"
+                                        key={`${item.nom}-${index}`}
+                                        className="pl-4 w-full lg:basis-1/3"
                                     >
                                         {/* Carte IDENTIQUE à ton design */}
-                                        <div className="cursor-pointer rounded-2xl mb-4 flex items-center justify-center overflow-hidden transition-colors">
-                                            <Image
-                                                src={item.image}
-                                                alt={item.name}
-                                                width={400}
-                                                height={400}
-                                                className="w-full h-full transition-transform duration-300 group-hover:scale-105"
-                                            />
-
+                                         <div className="group cursor-pointer">
+                                            <div className="bg-gray-100 rounded-2xl p-8 mb-4 aspect-square flex items-center justify-center overflow-hidden hover:bg-gray-50 transition-colors">
+                                                <div className="relative w-full h-full flex items-center justify-center">
+                                                <Image
+                                                    src={item.image}
+                                                    alt={item.nom}
+                                                    width={300}
+                                                    height={300}
+                                                    className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                                                />
+                                                </div>
+                                            </div>
                                             <div className="text-center">
-                                                <h3 className="text-xl font-bold text-gray-800 mb-1">
-                                                    {item.name}
-                                                </h3>
-                                                <p className="text-gray-600 text-sm">{item.category}</p>
+                                                <h3 className="text-xl font-bold text-gray-800 mb-1">{item.nom}</h3>
+                                                <p className="text-gray-600 text-sm">{item.description}</p>
                                             </div>
                                         </div>
                                     </CarouselItem>

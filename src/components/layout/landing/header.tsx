@@ -12,7 +12,17 @@ export default function LandingPageHeader () {
 
     return (
         <>
-            <nav className=" fixed top-4 md:top-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] lg:w-[calc(100%-6rem)] z-50  bg-white rounded-full shadow-lg">
+            <nav className="
+                sticky top-4 md:top-6
+                mx-auto
+                w-[calc(100%-2rem)]
+                md:w-[calc(100%-4rem)]
+                lg:w-[calc(100%-6rem)]
+                z-50
+                bg-white
+                rounded-full
+                shadow-lg
+            ">
                 <div className="flex items-center justify-between px-4 md:px-6 py-3 md:py-4">
                     {/* Logo */}
                     <div className="flex items-center space-x-2">
@@ -27,8 +37,8 @@ export default function LandingPageHeader () {
 
                     {/* Desktop Navigation */}
                     <div className="hidden lg:flex items-center space-x-8">
-                        <Link href="#" className="text-gray-700 hover:text-teal-600 hover:bg-gray-100 text-sm py-1.5 px-2.5 rounded-md transition-colors">A propos</Link>
-                        <Link href="#" className="text-gray-700 hover:text-teal-600 hover:bg-gray-100 text-sm py-1.5 px-2.5 rounded-md transition-colors">Projects</Link>
+                        <Link href="/about" className="text-gray-700 hover:text-teal-600 hover:bg-gray-100 text-sm py-1.5 px-2.5 rounded-md transition-colors">A propos</Link>
+                        <Link href="/projects" className="text-gray-700 hover:text-teal-600 hover:bg-gray-100 text-sm py-1.5 px-2.5 rounded-md transition-colors">Nos projets</Link>
                         
                         {/* Equipment Dropdown */}
                         <div className="relative">
@@ -65,14 +75,14 @@ export default function LandingPageHeader () {
                                     <Button  variant="ghost"
                                         className="flex items-center gap-1 text-gray-700 hover:text-green-600"
                                     >
-                                        <span>Resources</span>
+                                        <span>Ressources</span>
                                         <ChevronDown className="w-4 h-4" />
                                     </Button>
                                 </DropdownMenuTrigger>
 
                                 <DropdownMenuContent align="start" className="w-48">
                                     <DropdownMenuItem asChild>
-                                        <Link href="#">Training Materials</Link>
+                                        <Link href="#">Nos formations</Link>
                                     </DropdownMenuItem>
 
                                     <DropdownMenuItem asChild>
@@ -86,7 +96,7 @@ export default function LandingPageHeader () {
                             </DropdownMenu>
                         </div>
 
-                        <Link href="#" className="text-gray-700 hover:text-teal-600 hover:bg-gray-100 text-sm py-1.5 px-2.5 rounded-md transition-colors">Podcast & Stories</Link>
+                        <Link href="/blog" className="text-gray-700 hover:text-teal-600 hover:bg-gray-100 text-sm py-1.5 px-2.5 rounded-md transition-colors">Nos nouvelles</Link>
                     </div>
 
                     {/* Right Side Navigation */}
@@ -112,11 +122,11 @@ export default function LandingPageHeader () {
                             </DropdownMenuItem>
 
                             <DropdownMenuItem asChild>
-                                <a href="#">Partner With Us</a>
+                                <a href="/become-our-partner">Devenir partenaire</a>
                             </DropdownMenuItem>
 
                             <DropdownMenuItem asChild>
-                                <a href="#">Join Team</a>
+                                <a href="/become-staff">Rejoindre le personel</a>
                             </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
