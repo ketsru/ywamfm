@@ -1,13 +1,8 @@
 
 import { departmentsData } from "@/components/data/admin/department"
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel"
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import Image from "next/image"
+import Link from "next/link"
 
 export default function LandingPageGallerie () {
     return (
@@ -18,29 +13,19 @@ export default function LandingPageGallerie () {
                         {/* Equipment Badge */}
                         <div className="flex justify-center mb-4">
                             <div className="bg-gray-200 px-6 py-2 rounded-full">
-                                <span className="text-gray-600 text-xs font-medium">Equipment</span>
+                                <span className="text-gray-600 text-xs font-medium">Départements</span>
                             </div>
                         </div>
 
                         {/* Section Title */}
                         <div className="text-center mb-6">
-                            <h2 className="text-teal-700 text-3xl md:text-4xl lg:text-5xl font-light max-w-5xl mx-auto">
+                            <h2 className="text-teal-700 text-2xl md:text-4xl lg:text-4xl font-light max-w-4xl mx-auto leading-tight">
                                 Tools to help you share the Gospel{' '}
                                 <span className="text-green-400 italic font-script" style={{fontFamily: 'cursive'}}>
                                 anywhere
                                 </span>{' '}
                                 in the world.
                             </h2>
-                        </div>
-
-                        {/* Action Buttons */}
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4">
-                            <button className="bg-teal-700 text-white px-8 py-3 rounded-full font-semibold hover:bg-teal-800 transition-colors min-w-[180px]">
-                                View All Equipment
-                            </button>
-                            <button className="bg-transparent border-2 border-teal-700 text-teal-700 px-8 py-3 rounded-full font-semibold hover:bg-teal-700 hover:text-white transition-colors min-w-[150px]">
-                                Get Equipment
-                            </button>
                         </div>
 
                         {/* Equipment Carousel */}
@@ -53,7 +38,7 @@ export default function LandingPageGallerie () {
                                         className="pl-4 w-full lg:basis-1/3"
                                     >
                                         {/* Carte IDENTIQUE à ton design */}
-                                         <div className="group cursor-pointer">
+                                        <Link href="" className="group">
                                             <div className="bg-gray-100 rounded-2xl p-8 mb-4 aspect-square flex items-center justify-center overflow-hidden hover:bg-gray-50 transition-colors">
                                                 <div className="relative w-full h-full flex items-center justify-center">
                                                 <Image
@@ -69,21 +54,14 @@ export default function LandingPageGallerie () {
                                                 <h3 className="text-xl font-bold text-gray-800 mb-1">{item.nom}</h3>
                                                 <p className="text-gray-600 text-sm">{item.description}</p>
                                             </div>
-                                        </div>
+                                        </Link>
                                     </CarouselItem>
                                     ))}
                                 </CarouselContent>
 
                                 {/* Navigation */}
-                                <div className="flex justify-between items-center mt-8">
-                                    {/* Dots Indicator */}
-                                    <div className="flex space-x-2">
-                                        <div className="w-2 h-2 bg-gray-800 rounded-full"></div>
-                                        <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
-                                        <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
-                                    </div>
-
-                                    {/* Navigation Arrows */}
+                                <div className="flex justify-between items-center mt-2">
+                                    <div className="flex space-x-2"></div>
                                     <div className="flex space-x-2">
                                         <CarouselPrevious className="static translate-y-0" />
                                         <CarouselNext className="static translate-y-0" />

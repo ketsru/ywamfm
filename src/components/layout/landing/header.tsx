@@ -25,7 +25,7 @@ export default function LandingPageHeader () {
             ">
                 <div className="flex items-center justify-between px-4 md:px-6 py-3 md:py-4">
                     {/* Logo */}
-                    <div className="flex items-center space-x-2">
+                    <Link href="/" className="flex items-center space-x-2">
                         <Image 
                             src="/assets/logo/ywam.png"
                             alt="Logo JEM Mission Pionnière"
@@ -33,40 +33,12 @@ export default function LandingPageHeader () {
                             height={32}
                         />
                         <span className="text-xl md:text-2xl font-bold text-gray-800">FM</span>
-                    </div>
+                    </Link>
 
                     {/* Desktop Navigation */}
                     <div className="hidden lg:flex items-center space-x-8">
                         <Link href="/about" className="text-gray-700 hover:text-teal-600 hover:bg-gray-100 text-sm py-1.5 px-2.5 rounded-md transition-colors">A propos</Link>
                         <Link href="/projects" className="text-gray-700 hover:text-teal-600 hover:bg-gray-100 text-sm py-1.5 px-2.5 rounded-md transition-colors">Nos projets</Link>
-                        
-                        {/* Equipment Dropdown */}
-                        <div className="relative">
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost"
-                                        className="flex items-center gap-1 text-gray-700 hover:text-teal-600"
-                                    >
-                                        <span>Equipment</span>
-                                        <ChevronDown className="w-4 h-4" />
-                                    </Button>
-                                </DropdownMenuTrigger>
-
-                                <DropdownMenuContent align="start" className="w-48">
-                                    <DropdownMenuItem asChild>
-                                        <Link href="#">Audio Equipment</Link>
-                                    </DropdownMenuItem>
-
-                                    <DropdownMenuItem asChild>
-                                        <Link href="#">Recording Gear</Link>
-                                    </DropdownMenuItem>
-
-                                    <DropdownMenuItem asChild>
-                                        <Link href="#">Streaming Setup</Link>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </div>
 
                         {/* Resources Dropdown */}
                         <div className="relative">
@@ -80,23 +52,23 @@ export default function LandingPageHeader () {
                                     </Button>
                                 </DropdownMenuTrigger>
 
-                                <DropdownMenuContent align="start" className="w-48">
+                                <DropdownMenuContent align="start" className="w-40">
                                     <DropdownMenuItem asChild>
-                                        <Link href="#">Nos formations</Link>
+                                        <Link href="/formation">Nos formations</Link>
                                     </DropdownMenuItem>
 
                                     <DropdownMenuItem asChild>
-                                        <Link href="#">Documentation</Link>
+                                        <Link href="/evangelisation">Evangéliation</Link>
                                     </DropdownMenuItem>
 
                                     <DropdownMenuItem asChild>
-                                        <Link href="#">Support</Link>
+                                        <Link href="/support">Support social</Link>
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
 
-                        <Link href="/blog" className="text-gray-700 hover:text-teal-600 hover:bg-gray-100 text-sm py-1.5 px-2.5 rounded-md transition-colors">Nos nouvelles</Link>
+                        <Link href="/blog" className="text-gray-700 hover:text-teal-600 hover:bg-gray-100 text-sm py-1.5 px-2.5 rounded-md transition-colors">Blogs</Link>
                     </div>
 
                     {/* Right Side Navigation */}

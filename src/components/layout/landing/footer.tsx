@@ -14,7 +14,7 @@ const contactInfo = [
   {
     href: "mailto:jemfmtogo@gmail.com",
     icon: <Mail className="w-4 h-4" />,
-    label: "nature.marche@gmail.com",
+    label: "jemfmtogo@gmail.com",
   },
   {
     href: "tel:+22897126287",

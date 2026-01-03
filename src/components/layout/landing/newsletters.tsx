@@ -15,21 +15,20 @@ export default function NewsletterSection () {
               </div>
 
               {/* Title */}
-              <h2 className="text-teal-700 text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6">
+              <h2 className="text-teal-700 text-2xl md:text-3xl lg:text-4xl font-light leading-tight mb-6">
                 Restez{' '}
                 <span className="text-green-400 italic font-script" style={{fontFamily: 'cursive'}}>
                   informé
-                </span>{' '}
-                Avec JEM FM
+                </span>
               </h2>
 
               {/* Description */}
-              <p className="text-gray-600 text-lg mb-6 leading-relaxed">
-                Want to get the latest stories about what God is doing around the world?
+              <p className="text-gray-600 text-lg mb-1 leading-relaxed">
+                Vous souhaitez recevoir nos dernières nouvelles sur la mission ?
               </p>
 
               <p className="text-gray-700 font-medium mb-8">
-                Sign up below and join the community:
+                Inscrivez-vous ci-dessous et rejoignez la communauté
               </p>
 
               {/* Email Form */}

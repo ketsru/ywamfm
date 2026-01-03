@@ -1,22 +1,33 @@
-import { MoveRight } from "lucide-react"
 import Link from "next/link"
+import { MoveRight, MoveUpRight } from "lucide-react"
+import { memo } from "react"
 
-const missionCards = [
+type MissionCardProps = {
+  title: string
+  description: string
+  href: string
+  image: string
+}
+
+const missionCards: MissionCardProps[] = [
     {
-        title: "Equipment",
+        title: "Formation",
         description: "Tools to help you share the Gospel",
+        href: "/formation",
         image:
         "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=800&q=80",
     },
     {
-        title: "Projects",
+        title: "Evangélisation",
         description: "Programs and innovative initiatives",
+        href:"/evangelisation",
         image:
         "https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=800&q=80",
     },
     {
-        title: "Stories",
-        description: "Sharing what God is doing in the nations",
+        title: "Entraide",
+        description: "Sharing God dids in the nations",
+        href:"/entraide",
         image:
         "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&w=800&q=80",
     },
@@ -24,20 +35,20 @@ const missionCards = [
 
 export default function Mission() {
     return (
-        <section className="relative z-10 bg-teal-800 py-10 md:py-12 px-4">
-            <div className="max-w-7xl mx-auto">
+        <section className="relative z-10 bg-teal-800 px-4 py-10 md:py-12">
+            <div className="mx-auto max-w-7xl">
                 {/* Badge */}
-                <div className="flex justify-center mb-8">
-                    <span className="bg-teal-700 text-white text-sm font-medium px-6 py-2 rounded-full">
-                        Notre Mission
+                <div className="mb-8 flex justify-center">
+                    <span className="rounded-full bg-teal-700 px-6 py-2 text-sm font-medium text-white">
+                        Missions
                     </span>
                 </div>
 
                 {/* Title */}
-                <div className="text-center mb-6">
-                    <h2 className="text-white text-3xl md:text-4xl lg:text-5xl font-light leading-relaxed max-w-6xl mx-auto">
-                        YWAM FM aide les autres à {" "}
-                        <span className="text-green-400 italic font-script">
+                <div className="mb-10 text-center">
+                    <h2 className="mx-auto max-w-4xl text-2xl font-light leading-tight text-white md:text-4xl lg:text-4xl">
+                        YWAM FM aide les autres à{" "}
+                        <span className="font-script italic text-green-400">
                         diffuser la Parole de Dieu
                         </span>{" "}
                         aux quatre coins du globe
@@ -45,7 +56,7 @@ export default function Mission() {
                 </div>
 
                 {/* Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:gap-8">
                     {missionCards.map((card) => (
                         <MissionCard key={card.title} {...card} />
                     ))}
@@ -55,38 +66,60 @@ export default function Mission() {
     )
 }
 
-
-function MissionCard({
+const MissionCard = memo(function MissionCard({
     title,
     description,
     image,
-}: {
-    title: string
-    description: string
-    image: string
-}) {
+    href,
+}: MissionCardProps) {
     return (
-        <div className="group relative rounded-2xl overflow-hidden aspect-[4/5] cursor-pointer">
+        <div className="group relative aspect-[4/5] cursor-pointer overflow-hidden rounded-2xl transition-all">
             {/* Background */}
-            <div className=" absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out lg:group-hover:scale-110"
+            <div
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out lg:group-hover:scale-110"
                 style={{
-                    backgroundImage: `
-                    linear-gradient(rgba(0,0,0,.3), rgba(0,0,0,.6)),
-                    url(${image})
-                    `,
+                    backgroundImage: `linear-gradient(rgba(0,0,0,.3), rgba(0,0,0,.6)), url(${image})`,
                 }}
+                aria-hidden
             />
-            {/* Content */}
-            <div className="relative z-10 h-full flex flex-col justify-end p-6 text-white">
-                <h3 className="text-xl lg:text-2xl font-bold mb-2">{title}</h3>
-                <p className="text-gray-300 mb-6 text-sm">{description}</p>
 
-                <div className="flex justify-end">
-                    <Link href="#" className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center transition-colors lg:group-hover:bg-white/30">
-                        <MoveRight />
-                    </Link>
+            {/* Content */}
+            <Link href={href} className="relative z-10 mx-5 flex items-end mt-3 justify-between rounded-xl bg-black/50 p-4 text-white">
+                <div className="max-w-[85%]">
+                    <h3 className="mb-2 text-xl font-bold lg:text-2xl">
+                        {title}
+                    </h3>
+                    <p className="text-sm text-gray-300">
+                        {description}
+                    </p>
                 </div>
-            </div>
+
+                <div
+                    aria-label={`Voir ${title}`}
+                    className="
+                        relative flex h-10 w-10 items-center justify-center rounded-full
+                        bg-gradient-to-tr from-green-600 to-blue-600
+                        transition-all duration-300
+                        lg:group-hover:scale-110 lg:group-hover:to-blue-500
+                    "
+                >
+                    {/* Default icon */}
+                    <MoveRight
+                        className="
+                            absolute text-white transition-all duration-300
+                            lg:group-hover:opacity-0 lg:group-hover:scale-75
+                        "
+                    />
+
+                    {/* Hover icon */}
+                    <MoveUpRight
+                        className="
+                            absolute text-white opacity-0 scale-75 transition-all duration-300
+                            lg:group-hover:opacity-100 lg:group-hover:scale-100
+                        "
+                    />
+                </div>
+            </Link>
         </div>
     )
-}
+})

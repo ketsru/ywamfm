@@ -5,15 +5,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowUpRight, Book } from "lucide-react"
 import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
 export default function StudentBooks() {
   return (
@@ -61,41 +53,36 @@ export default function StudentBooks() {
                   <Button
                     variant="outline"
                     className="group inline-flex items-center gap-2
-                               rounded-full px-3 py-2
-                               transition-all duration-200"
+                              rounded-full px-3 py-2
+                              transition-all duration-200"
                   >
                     <ArrowUpRight size={18} />
                     <span
                       className="max-w-0 overflow-hidden whitespace-nowrap
-                                 group-hover:max-w-[100px]
-                                 transition-all duration-200"
+                                group-hover:max-w-[100px]
+                                transition-all duration-200"
                     >
                       Lire le livre
                     </span>
                   </Button>
                 </DialogTrigger>
 
-                <DialogContent className="max-w-7xl h-[80vh]">
-                  <DialogHeader className="border-b-1">
-                    <DialogTitle>{livre.titre}</DialogTitle>
+                <DialogContent
+                  className="w-[80vw] max-w-4xl h-[80vh] max-h-[90vh] sm:w-[90vw] sm:h-[70vh] lg:w-[80vw] lg:h-[80vh] p-4 flex flex-col"
+                >
+                  <DialogHeader className="border-b-1 pb-4">
+                    <DialogTitle className="text-lg sm:text-xl">{livre.titre}</DialogTitle>
                   </DialogHeader>
 
                   {/* Viewer du document */}
-                  <div className="h-full w-full border rounded-md overflow-hidden">
+                  <div className="flex-1 mt-2 border rounded-md overflow-hidden">
                     <iframe
                       src={`/assets/books/docs/${livre.content}`}
                       className="w-full h-full"
                     />
                   </div>
-
-                  <DialogFooter>
-                    <DialogClose asChild>
-                      <Button variant="outline">Fermer</Button>
-                    </DialogClose>
-                  </DialogFooter>
                 </DialogContent>
               </Dialog>
-
               {/* Auteur */}
               <div className="flex gap-2 items-center text-sm">
                 <Avatar className="h-8 w-8">

@@ -9,7 +9,7 @@ export const promotionMocks: Promotion[] = [
     specialite: "Développement Fullstack",
     description:
       "Promotion dédiée à la formation complète en développement web moderne (Frontend, Backend, DevOps).",
-
+    is_active: true,
     created_at: "2025-01-10T08:00:00Z",
     updated_at: "2025-01-10T08:00:00Z",
   },
@@ -22,7 +22,7 @@ export const promotionMocks: Promotion[] = [
     specialite: "Applications Mobiles",
     description:
       "Formation axée sur le développement d'applications mobiles Android et iOS avec des technologies modernes.",
-
+    is_active: true,
     created_at: "2025-02-05T09:30:00Z",
     updated_at: "2025-02-05T09:30:00Z",
   },
@@ -35,7 +35,7 @@ export const promotionMocks: Promotion[] = [
     specialite: "Data Science & IA",
     description:
       "Promotion spécialisée dans l'analyse de données, le machine learning et l'intelligence artificielle appliquée.",
-
+    is_active: true,
     created_at: "2025-03-01T10:00:00Z",
     updated_at: "2025-03-01T10:00:00Z",
   },
@@ -48,7 +48,7 @@ export const promotionMocks: Promotion[] = [
     specialite: "Sécurité Informatique",
     description:
       "Formation orientée vers la protection des systèmes informatiques, réseaux, données et la gestion des risques cyber.",
-
+    is_active: true,
     created_at: "2025-04-12T08:45:00Z",
     updated_at: "2025-04-12T08:45:00Z",
   },
