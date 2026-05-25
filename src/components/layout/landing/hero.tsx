@@ -1,15 +1,15 @@
 export default function Hero () {
     return (
         <>
-            <div className="relative z-10 flex items-center justify-center min-h-[40vh] px-4">
+            <div className="relative z-10 flex items-center justify-center min-h-[40vh] px-4 py-16">
                 <div className="text-center text-white max-w-4xl mx-auto">
                     {/* Main Heading */}
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight">
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-1 leading-tight">
                         Partagez l'Évangile
                     </h1>
                     
                     {/* Subheading with green italic text */}
-                    <h2 className="text-4xl md:text-6xl lg:text-7xl font-light mb-12">
+                    <h2 className="text-4xl md:text-6xl lg:text-7xl font-light mb-10">
                         <span className="text-green-400 italic font-script" style={{fontFamily: 'cursive'}}>
                             Partout
                         </span>

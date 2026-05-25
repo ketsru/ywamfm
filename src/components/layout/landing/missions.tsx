@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { MoveRight, MoveUpRight } from "lucide-react"
 import { memo } from "react"
+import { missionCards } from "@/components/data/frontoffice/mission"
 
 type MissionCardProps = {
   title: string
@@ -8,31 +9,6 @@ type MissionCardProps = {
   href: string
   image: string
 }
-
-const missionCards: MissionCardProps[] = [
-    {
-        title: "Formation",
-        description: "Tools to help you share the Gospel",
-        href: "/formation",
-        image:
-        "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=800&q=80",
-    },
-    {
-        title: "Evangélisation",
-        description: "Programs and innovative initiatives",
-        href:"/evangelisation",
-        image:
-        "https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=800&q=80",
-    },
-    {
-        title: "Entraide",
-        description: "Sharing God dids in the nations",
-        href:"/entraide",
-        image:
-        "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&w=800&q=80",
-    },
-]
-
 export default function Mission() {
     return (
         <section className="relative z-10 bg-teal-800 px-4 py-10 md:py-12">

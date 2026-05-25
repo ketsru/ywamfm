@@ -1,7 +1,9 @@
+import { MoveRight, MoveUpRight } from "lucide-react"
+
 export default function ProjectSection() {
   return (
-    <div className="relative z-10 bg-teal-800 py-16 md:py-20">
-      <div className="container mx-auto px-4 md:px-8 lg:px-12">
+    <div className="relative z-10 bg-teal-800 py-10 md:py-12">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
 
         {/* Badge */}
         <div className="mb-2 flex justify-start">
@@ -33,15 +35,15 @@ export default function ProjectSection() {
         </div>*/}
 
         {/* Grid */}
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 lg:grid-cols-2 items-center">
 
           {/* Left / Large */}
-          <div className="lg:row-span-2">
+          <div className="">
             <ProjectCard
               title="Ukraine"
               description="Spreading light in the middle of war-torn Ukraine"
-              image="https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=800&q=80"
-              aspect="aspect-[4/5] lg:aspect-[3/4]"
+              image="/assets/images/0af7741991985e2b530c8f62135c3eea.jpg"
+              aspect="aspect-[4/5] lg:aspect-[3.5/4]"
               large
             />
           </div>
@@ -87,20 +89,20 @@ function ProjectCard({
       className={`
         group relative cursor-pointer overflow-hidden rounded-2xl bg-black
         ${aspect}
-        transition-transform duration-300 hover:scale-[1.02]
+        transition-transform duration-300 p-4
       `}
     >
       {/* Background */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out lg:group-hover:scale-110"
         style={{
-          backgroundImage: `linear-gradient(rgba(0,0,0,.3), rgba(0,0,0,.6)), url(${image})`,
+            backgroundImage: `linear-gradient(rgba(0,0,0,.3), rgba(0,0,0,.6)), url(${image})`,
         }}
         aria-hidden
-      />
+    />
 
       {/* Content */}
-      <div className="relative z-10 flex justify-between items-end rounded-xl bg-black/50 h-full p-6 text-white">
+      <div className="relative z-10 flex items-center justify-between  rounded-xl bg-black/50 py-2 px-4 text-white">
         <div>
           <h3 className={`${large ? "text-2xl md:text-3xl" : "text-xl md:text-2xl"} font-bold mb-2`}>
             {title}
@@ -111,28 +113,30 @@ function ProjectCard({
           </p>
         </div>
 
-        <div className="flex justify-end">
-          <div
-            className={`
-              flex items-center justify-center rounded-full bg-white text-black
-              transition-transform group-hover:scale-110
-              ${large ? "h-12 w-12" : "h-10 w-10"}
-            `}
-          >
-            <svg
-              className={large ? "h-6 w-6" : "h-5 w-5"}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-          </div>
+        <div
+          aria-label={`Voir ${title}`}
+          className="
+              relative flex h-10 w-10 items-center justify-center rounded-full
+              bg-gradient-to-tr from-green-600 to-blue-600
+              transition-all duration-300
+              lg:group-hover:scale-110 lg:group-hover:to-blue-500
+          "
+        >
+          {/* Default icon */}
+          <MoveRight
+            className="
+              absolute text-white transition-all duration-300
+              lg:group-hover:opacity-0 lg:group-hover:scale-75
+            "
+          />
+
+          {/* Hover icon */}
+          <MoveUpRight
+            className="
+              absolute text-white opacity-0 scale-75 transition-all duration-300
+              lg:group-hover:opacity-100 lg:group-hover:scale-100
+            "
+          />
         </div>
       </div>
     </div>
