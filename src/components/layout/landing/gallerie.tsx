@@ -1,5 +1,4 @@
 
-import { departmentsData } from "@/components/data/admin/department"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import Image from "next/image"
 import Link from "next/link"
@@ -31,13 +30,13 @@ export default function LandingPageGallerie () {
                         {/* Equipment Carousel */}
                         <div className="gap-8">
                             <Carousel opts={{ align: "start" }} className="w-full mx-auto">
-                                <CarouselContent className="-ml-4">
+                                {/* <CarouselContent className="-ml-4">
                                     {departmentsData.map((item, index) => (
                                     <CarouselItem
                                         key={`${item.nom}-${index}`}
                                         className="pl-4 w-full lg:basis-1/3"
                                     >
-                                        {/* Carte IDENTIQUE à ton design */}
+                                        
                                         <Link href="" className="group">
                                             <div className="bg-gray-100 rounded-2xl p-8 mb-4 aspect-square flex items-center justify-center overflow-hidden hover:bg-gray-50 transition-colors">
                                                 <div className="relative w-full h-full flex items-center justify-center">
@@ -57,7 +56,7 @@ export default function LandingPageGallerie () {
                                         </Link>
                                     </CarouselItem>
                                     ))}
-                                </CarouselContent>
+                                </CarouselContent> */}
 
                                 {/* Navigation */}
                                 <div className="flex justify-between items-center mt-2">

@@ -13,7 +13,7 @@ export const publishSchoolMock: PublishSchool[] = [
     lieu: "Campus en ligne - Platform Dev Online",
     description:
       "Formation intensive de développement web fullstack, incluant HTML, CSS, JavaScript, React et backend Laravel.",
-    image: "/assets/images/dev-web-2025.jpg",
+    image: "/assets/images/6fa36aa2c367da06b2a4c8ae1cf9ee02.jpg",
 
     status: "En attente",
 
@@ -32,7 +32,7 @@ export const publishSchoolMock: PublishSchool[] = [
     lieu: "Campus Présentiel - Lomé, Togo",
     description:
       "Promotion présentielle pour la formation complète en développement web moderne, avec projets pratiques et mentorat personnalisé.",
-    image: "/assets/images/dev-web-2025-campus.jpg",
+    image: "/assets/images/6fa36aa2c367da06b2a4c8ae1cf9ee02.jpg",
 
     status: "En attente",
 

@@ -1,4 +1,4 @@
-import { DepartementDataTable } from "@/components/layout/admin/department";
+import { DepartmentDataTable } from "@/modules/admin/departments/departmentDataTable";
 import { ArrowUpNarrowWide } from "lucide-react";
 
 
@@ -10,7 +10,7 @@ export default function Departments () {
                 Liste des départements
             </h2>
             <div>
-                <DepartementDataTable />
+                <DepartmentDataTable />
             </div>
         </>
     )

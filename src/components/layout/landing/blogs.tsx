@@ -4,8 +4,8 @@ import Link from "next/link";
 export default function BlogSection () {
   return (
     <>
-      <div className="relative z-10 bg-teal-800 py-16 md:py-20">
-        <div className="bg-teal-900 bg-opacity-60 rounded-3xl mx-4 md:mx-8 lg:mx-12 py-12 md:py-16 backdrop-blur-sm">
+      <div className="relative z-10 bg-teal-800 py-10 md:py-12">
+        <div className="bg-teal-900 bg-opacity-60 rounded-3xl mx-4 md:mx-8 py-12 md:py-16 backdrop-blur-sm">
           <div className="container mx-auto px-4 md:px-8 lg:px-12">
             {/* Podcast & Stories Badge */}
             <div className="flex justify-center mb-4">

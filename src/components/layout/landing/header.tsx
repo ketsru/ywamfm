@@ -52,16 +52,16 @@ export default function LandingPageHeader () {
                                     </Button>
                                 </DropdownMenuTrigger>
 
-                                <DropdownMenuContent align="start" className="w-40">
-                                    <DropdownMenuItem asChild>
+                                <DropdownMenuContent align="start" className="w-fit space-y-2">
+                                    <DropdownMenuItem asChild className='cursor-pointer'>
                                         <Link href="/formation">Nos formations</Link>
                                     </DropdownMenuItem>
 
-                                    <DropdownMenuItem asChild>
+                                    <DropdownMenuItem asChild className='cursor-pointer'>
                                         <Link href="/evangelisation">Evangéliation</Link>
                                     </DropdownMenuItem>
 
-                                    <DropdownMenuItem asChild>
+                                    <DropdownMenuItem asChild className='cursor-pointer'>
                                         <Link href="/support">Support social</Link>
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
@@ -76,40 +76,34 @@ export default function LandingPageHeader () {
                         {/* Get Involved Dropdown */}
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                            <Button
-                                variant="ghost"
-                                className="flex items-center gap-1 text-gray-700 hover:text-green-600"
-                            >
-                                <span>Get Involved</span>
-                                <ChevronDown className="w-4 h-4" />
-                            </Button>
+                                <Button
+                                    variant="ghost"
+                                    className="flex items-center gap-1 text-gray-700 hover:text-green-600"
+                                >
+                                    <span>Etre impliqué</span>
+                                    <ChevronDown className="w-4 h-4" />
+                                </Button>
                             </DropdownMenuTrigger>
 
-                            <DropdownMenuContent
-                            align="end"
-                            className="w-48"
+                            <DropdownMenuContent align="end" className="w-48"
                             >
-                            <DropdownMenuItem asChild>
-                                <a href="#">Volunteer</a>
-                            </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <a href="/become-our-partner">Devenir partenaire</a>
+                                </DropdownMenuItem>
 
-                            <DropdownMenuItem asChild>
-                                <a href="/become-our-partner">Devenir partenaire</a>
-                            </DropdownMenuItem>
-
-                            <DropdownMenuItem asChild>
-                                <a href="/become-staff">Rejoindre le personel</a>
-                            </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <a href="/become-staff">Rejoindre le personel</a>
+                                </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
 
                         <button className="bg-teal-700 text-white px-6 py-2 rounded-full hover:bg-teal-800 transition-colors">
-                            Give
+                            Donner
                         </button>
                     </div>
 
                     {/* Mobile Menu Button */}
-                    <Button variant="outline"
+                    <Button variant="ghost" 
                         className="lg:hidden p-2"
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
                     >
