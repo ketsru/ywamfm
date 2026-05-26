@@ -30,7 +30,7 @@ export const promotionRequestSchema = z.object({
     .nullable()
     .optional(),
 
-  isActive: z.boolean().default(true),
+  isActive: z.boolean(),
 });
 
 export type PromotionRequestSchema = z.infer<typeof promotionRequestSchema>;

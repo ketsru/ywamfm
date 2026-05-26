@@ -41,7 +41,7 @@ export const bookRequestSchema = z.object({
     .nullable()
     .optional(),
 
-  isActive: z.boolean().default(true),
+  isActive: z.boolean(),
 });
 
 export type BookRequestSchema = z.infer<typeof bookRequestSchema>;

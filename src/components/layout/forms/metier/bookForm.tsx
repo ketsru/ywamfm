@@ -2,77 +2,114 @@
 "use client";
 
 import * as React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Field, FieldLabel, FieldDescription } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { Book, BookRequest } from "@/types/admin/book/book.types";
+import { bookRequestSchema, imageFileSchema } from "@/modules/admin/books/book.schema";
+import { Book } from "@/types/admin/book/book.types";
+
+type BookFormValues = z.output<typeof bookRequestSchema>;
 
 type BookFormProps = {
+  formId: string;
   defaultValues?: Book;
-  onChange: (data: BookRequest) => void;
-  error?: string;
+  onSubmit: (data: BookFormValues) => void;
 };
 
-export function BookForm({ defaultValues, onChange, error }: BookFormProps) {
-  const [title,    setTitle]    = React.useState(defaultValues?.title    ?? "");
-  const [author,   setAuthor]   = React.useState(defaultValues?.author   ?? "");
-  const [language, setLanguage] = React.useState(defaultValues?.language ?? "");
-  const [summary,  setSummary]  = React.useState(defaultValues?.summary  ?? "");
-  const [content,  setContent]  = React.useState(defaultValues?.content  ?? "");
-  const [image,    setImage]    = React.useState(defaultValues?.image     ?? "");
-  const [isActive, setIsActive] = React.useState(defaultValues?.isActive ?? true);
+export function BookForm({ formId, defaultValues, onSubmit }: BookFormProps) {
 
-  React.useEffect(() => {
-    onChange({ title, author, language, summary: summary || null, content: content || null, image, isActive });
-  }, [title, author, language, summary, content, image, isActive]);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<BookFormValues>({
+    resolver: zodResolver(bookRequestSchema),
+    defaultValues: {
+      title:    defaultValues?.title    ?? "",
+      author:   defaultValues?.author   ?? "",
+      language: defaultValues?.language ?? "",
+      summary:  defaultValues?.summary  ?? "",
+      content:  defaultValues?.content  ?? "",
+      image:    defaultValues?.image    ?? "",
+      isActive: defaultValues?.isActive ?? true,
+    },
+  });
+
+  const isActive   = watch("isActive");
+  const imageValue = watch("image");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    const result = imageFileSchema.safeParse(file);
+    if (!result.success) {
+      setValue("image", "", { shouldValidate: true });
+      e.target.value = "";
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = () => {
       // Retire le préfixe data-URI pour n'envoyer que le base64 brut
-      const result = (reader.result as string).split(",")[1];
-      setImage(result);
+      const base64 = (reader.result as string).split(",")[1];
+      setValue("image", base64, { shouldValidate: true });
     };
     reader.readAsDataURL(file);
   };
 
   return (
-    <div className="space-y-5">
+    <form id={formId} onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
 
       {/* Titre */}
       <Field>
-        <FieldLabel htmlFor="book-title">Titre <span className="text-destructive">*</span></FieldLabel>
+        <FieldLabel htmlFor="book-title">
+          Titre <span className="text-destructive">*</span>
+        </FieldLabel>
         <Input
           id="book-title"
           placeholder="Ex : Introduction à la théologie"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          {...register("title")}
         />
+        {errors.title && (
+          <p className="text-sm text-destructive" role="alert">{errors.title.message}</p>
+        )}
       </Field>
 
       {/* Auteur */}
       <Field>
-        <FieldLabel htmlFor="book-author">Auteur <span className="text-destructive">*</span></FieldLabel>
+        <FieldLabel htmlFor="book-author">
+          Auteur <span className="text-destructive">*</span>
+        </FieldLabel>
         <Input
           id="book-author"
           placeholder="Ex : Jean Dupont"
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
+          {...register("author")}
         />
+        {errors.author && (
+          <p className="text-sm text-destructive" role="alert">{errors.author.message}</p>
+        )}
       </Field>
 
       {/* Langue */}
       <Field>
-        <FieldLabel htmlFor="book-language">Langue <span className="text-destructive">*</span></FieldLabel>
+        <FieldLabel htmlFor="book-language">
+          Langue <span className="text-destructive">*</span>
+        </FieldLabel>
         <Input
           id="book-language"
           placeholder="Ex : Français"
-          value={language}
-          onChange={(e) => setLanguage(e.target.value)}
+          {...register("language")}
         />
+        {errors.language && (
+          <p className="text-sm text-destructive" role="alert">{errors.language.message}</p>
+        )}
       </Field>
 
       {/* Résumé */}
@@ -81,10 +118,12 @@ export function BookForm({ defaultValues, onChange, error }: BookFormProps) {
         <Textarea
           id="book-summary"
           placeholder="Brève description du livre…"
-          value={summary}
-          onChange={(e) => setSummary(e.target.value)}
           rows={3}
+          {...register("summary")}
         />
+        {errors.summary && (
+          <p className="text-sm text-destructive" role="alert">{errors.summary.message}</p>
+        )}
       </Field>
 
       {/* Contenu */}
@@ -93,18 +132,20 @@ export function BookForm({ defaultValues, onChange, error }: BookFormProps) {
         <Textarea
           id="book-content"
           placeholder="Contenu ou extrait du livre…"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
           rows={5}
+          {...register("content")}
         />
+        {errors.content && (
+          <p className="text-sm text-destructive" role="alert">{errors.content.message}</p>
+        )}
       </Field>
 
       {/* Image */}
       <Field>
         <FieldLabel htmlFor="book-image">Couverture</FieldLabel>
-        {image && (
+        {imageValue && (
           <img
-            src={`data:image/jpeg;base64,${image}`}
+            src={`data:image/jpeg;base64,${imageValue}`}
             alt="Couverture"
             className="mb-2 h-24 w-16 rounded-lg object-cover border"
           />
@@ -112,11 +153,14 @@ export function BookForm({ defaultValues, onChange, error }: BookFormProps) {
         <Input
           id="book-image"
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/webp"
           onChange={handleImageChange}
           className="cursor-pointer"
         />
-        <FieldDescription>Format JPG, PNG ou WEBP.</FieldDescription>
+        <FieldDescription>Format JPG, PNG ou WEBP · Max 5 Mo</FieldDescription>
+        {errors.image && (
+          <p className="text-sm text-destructive" role="alert">{errors.image.message}</p>
+        )}
       </Field>
 
       {/* Actif */}
@@ -129,12 +173,11 @@ export function BookForm({ defaultValues, onChange, error }: BookFormProps) {
           <Switch
             id="book-active"
             checked={isActive}
-            onCheckedChange={setIsActive}
+            onCheckedChange={(val) => setValue("isActive", val, { shouldValidate: true })}
           />
         </div>
       </Field>
 
-      {error && <p className="text-sm text-destructive" role="alert">{error}</p>}
-    </div>
+    </form>
   );
 }
