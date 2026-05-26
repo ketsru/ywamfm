@@ -1,4 +1,5 @@
-import { LivresDataTable } from "@/components/layout/admin/livre";
+
+import { BookDataTable } from "@/modules/admin/books/bookDataTable";
 import { ArrowUpNarrowWide } from "lucide-react";
 
 
@@ -10,7 +11,7 @@ export default function Livres () {
                 Liste des livres
             </h2>
             <div>
-                <LivresDataTable />
+                <BookDataTable />
             </div>
         </>
     )

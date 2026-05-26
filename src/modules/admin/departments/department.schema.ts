@@ -34,7 +34,7 @@ export const departmentRequestSchema = z.object({
     .nullable()
     .optional(),
 
-  isActive: z.boolean().default(true),
+  isActive: z.boolean(),
 });
 
 export type DepartmentRequestSchema = z.infer<typeof departmentRequestSchema>;
