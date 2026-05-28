@@ -1,15 +1,15 @@
 import Footer from "@/components/layout/landing/footer";
 import LandingPageHeader from "@/components/layout/landing/header";
-import RegisterCard from "@/modules/auth/registerCard";
+import LoginCard from "@/modules/auth/wizard/login/loginCard";
 
 
-export default function RegisterPage() {
+export default function LoginPage() {
   return (
     <>
       <LandingPageHeader />
 
       <div className="md:flex flex-col items-center justify-center py-16 gap-10">
-        <RegisterCard/>
+        <LoginCard />
       </div>
 
       <Footer />

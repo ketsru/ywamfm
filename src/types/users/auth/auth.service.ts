@@ -8,6 +8,8 @@ import {
   CreateManagedAccountRequest,
   CreateManagedAccountResponse,
   ChangePasswordRequest,
+  PasswordResetRequest,
+  PasswordResetConfirmRequest,
 } from "./auth.types";
 
 const BASE = "/api/v1/auth";
@@ -40,4 +42,11 @@ export const authService = {
   // ── Changement de mot de passe (premier login prestataire) ────────
   changePassword: (data: ChangePasswordRequest) =>
     post<ChangePasswordRequest, void>(`${BASE}/change-password`, data),
+
+  // À ajouter dans authService si pas encore présent
+  requestPasswordReset: (data: PasswordResetRequest) =>
+    post<PasswordResetRequest, void>(`${BASE}/password-reset`, data),
+
+  confirmPasswordReset: (data: PasswordResetConfirmRequest) =>
+    post<PasswordResetConfirmRequest, void>(`${BASE}/password-reset/confirm`, data),
 };

@@ -10,8 +10,6 @@ import CredentialsStep from "@/components/layout/forms/auth/register";
 import OtpStep from "@/components/layout/forms/auth/otp";
 import ProfileStep from "@/components/layout/forms/auth/profile";
 
-
-
 // ── Ce que le wizard expose au parent via render prop ──────
 
 export interface WizardRenderProps {
@@ -22,6 +20,11 @@ export interface WizardRenderProps {
   /** Label du bouton principal → AuthCard primaryLabel */
   primaryLabel: string;
   /** Label du lien secondaire → AuthCard actionLabel */
+
+  secondaryActionLabel?: string;
+  onSecondaryAction?: () => void;
+
+  
   actionLabel?: string;
   /** Déclenche l'action principale (appel API + goNext) → AuthCard onPrimary */
   onPrimary: () => void;

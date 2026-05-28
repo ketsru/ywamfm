@@ -26,6 +26,9 @@ type AuthCardProps = {
     /** Libellé du bouton principal */
     primaryLabel: string;
 
+    secondaryActionLabel?: string;
+    onSecondaryAction?: () => void;
+
     /**
      * Gestionnaire du bouton principal (souvent "submit").
      * - Si tu as une balise <form> autour de children, passe onSubmit ici.
@@ -58,6 +61,8 @@ export function AuthCard({
     onAction,
     cardClassName,
     hideFooter,
+    secondaryActionLabel,
+    onSecondaryAction,
 }: AuthCardProps) {
     return (
         <Card className={`w-full max-w-4xl mx-auto mt-10 md:mt-5 shadow-none border border-gray-200 ${cardClassName ?? ""}`}>
@@ -101,6 +106,18 @@ export function AuthCard({
                     >
                         {primaryLabel}
                     </Button>
+
+                    {/* ← nouveau : "Mot de passe oublié ?" */}
+                    {secondaryActionLabel && onSecondaryAction && (
+                        <Button
+                            type="button"
+                            variant="link"
+                            className="text-sm text-muted-foreground hover:text-foreground cursor-pointer"
+                            onClick={onSecondaryAction}
+                        >
+                            {secondaryActionLabel}
+                        </Button>
+                    )}
 
                 </CardFooter>
             )}
