@@ -11,8 +11,8 @@ import { Book } from "@/types/admin/book/book.types";
 import { deleteBook, getAllBooks, updateBook } from "@/types/admin/book/book.service";
 import { SharedDataTable } from "@/modules/shared/sharedDataTable";
 import { bookColumns } from "./columnDef";
-import { BookFormDialog } from "./createBookDialog";
 import { ConfirmDeleteDialog } from "@/modules/shared/deleteConfirmationDialog";
+import { BookFormDialog } from "./bookFormDialog";
 
 export function BookDataTable() {
   const queryClient = useQueryClient();

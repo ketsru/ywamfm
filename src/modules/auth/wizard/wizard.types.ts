@@ -2,6 +2,17 @@
 
 export type RegisterStep = "credentials" | "otp" | "profile";
 
+export type LoginStep = "credentials" | "otp";
+
+export type ForgotPasswordStep = "email" | "otp" | "newPassword";
+
+/**
+ * Props génériques pour chaque étape du wizard d'inscription, de connexion ou de réinitialisation de mot de passe.
+ * - `state` : l'état local de l'étape, typé comme `unknown` pour permettre une flexibilité maximale.
+ * - `onUpdate` : fonction pour mettre à jour l'état local de l'étape, prenant des données de type `unknown`.
+ * - `onNext` : fonction pour passer à l'étape suivante du wizard.
+ * - `formRef` : référence optionnelle au formulaire HTML de l'étape, utile pour la validation ou la soumission.
+ */
 export type StepProps = {
   state: unknown;
   onUpdate: (data: unknown) => void;
@@ -92,3 +103,91 @@ export function validateCredentials(state: WizardState): {
 
   return { emailValid, passwordMatch, passwordStrong, isComplete };
 }
+
+
+/**
+ * Types et constantes spécifiques au wizard de connexion, 
+ * qui partage certaines étapes (credentials, otp) avec le wizard 
+ * d'inscription mais a un flux plus simple.
+ */
+export interface LoginWizardState {
+  email: string;
+  password: string;
+  otpCode: string;
+}
+
+export const INITIAL_LOGIN_STATE: LoginWizardState = {
+  email: "",
+  password: "",
+  otpCode: "",
+};
+
+export interface LoginStepHeading {
+  title: string;
+  description: string;
+  primaryLabel: string;
+  actionLabel?: string;
+}
+
+export const LOGIN_STEP_HEADINGS: Record<LoginStep, LoginStepHeading> = {
+  credentials: {
+    title: "Se connecter",
+    description: "Renseignez vos identifiants.",
+    primaryLabel: "Continuer",
+    actionLabel: "Inscription",
+  },
+  otp: {
+    title: "Vérification",
+    description: "Un code a été envoyé à votre adresse e-mail.",
+    primaryLabel: "Vérifier",
+    actionLabel: "",
+  },
+};
+
+export const LOGIN_STEPS_ORDER: LoginStep[] = ["credentials", "otp"];
+
+
+/**
+ * Types et constantes spécifiques au wizard de réinitialisation de mot de passe,
+ * qui a un flux en 3 étapes : email → otp → nouveau mot de passe.
+ * Chaque étape a son propre état local et ses propres libellés d'interface.
+ */
+export interface ForgotPasswordWizardState {
+  email: string;
+  otpCode: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export const INITIAL_FORGOT_PASSWORD_STATE: ForgotPasswordWizardState = {
+  email: "",
+  otpCode: "",
+  newPassword: "",
+  confirmPassword: "",
+};
+
+export const FORGOT_PASSWORD_STEP_HEADINGS: Record<ForgotPasswordStep, StepHeading> = {
+  email: {
+    title: "Mot de passe oublié",
+    description: "Entrez votre adresse e-mail pour recevoir un code de vérification.",
+    primaryLabel: "Envoyer le code",
+    actionLabel: "Connexion",
+  },
+  otp: {
+    title: "Vérification",
+    description: "Un code a été envoyé à votre adresse e-mail.",
+    primaryLabel: "Vérifier",
+    actionLabel: "",
+  },
+  newPassword: {
+    title: "Nouveau mot de passe",
+    description: "Choisissez un nouveau mot de passe sécurisé.",
+    primaryLabel: "Réinitialiser",
+  },
+};
+
+export const FORGOT_PASSWORD_STEPS_ORDER: ForgotPasswordStep[] = [
+  "email",
+  "otp",
+  "newPassword",
+];
