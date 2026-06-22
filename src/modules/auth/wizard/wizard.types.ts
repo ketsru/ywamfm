@@ -6,19 +6,14 @@ export type LoginStep = "credentials" | "otp";
 
 export type ForgotPasswordStep = "email" | "otp" | "newPassword";
 
-/**
- * Props génériques pour chaque étape du wizard d'inscription, de connexion ou de réinitialisation de mot de passe.
- * - `state` : l'état local de l'étape, typé comme `unknown` pour permettre une flexibilité maximale.
- * - `onUpdate` : fonction pour mettre à jour l'état local de l'étape, prenant des données de type `unknown`.
- * - `onNext` : fonction pour passer à l'étape suivante du wizard.
- * - `formRef` : référence optionnelle au formulaire HTML de l'étape, utile pour la validation ou la soumission.
- */
 export type StepProps = {
   state: unknown;
   onUpdate: (data: unknown) => void;
   onNext: () => void;
   formRef?: React.RefObject<HTMLFormElement>;
 };
+
+import { MaritalStatus, Sexe } from "@/types/users/profile/profile.types";
 
 export interface WizardState {
   // Step 1 – Credentials
@@ -35,10 +30,17 @@ export interface WizardState {
   userId: string;
 
   // Step 3 – Profile
+  // ── Contact ──────────────────────────────────────────────
+  countryCode: string;
   phone: string;
   address: string;
   country: string;
   city: string;
+
+  // ── Démographie ──────────────────────────────────────────
+  sexe: Sexe | null;
+  maritalStatus: MaritalStatus | null;
+  birthDate: string; // ISO 8601 "YYYY-MM-DD"
 }
 
 export const INITIAL_WIZARD_STATE: WizardState = {
@@ -49,10 +51,14 @@ export const INITIAL_WIZARD_STATE: WizardState = {
   confirmPassword: "",
   otpCode: "",
   userId: "",
+  countryCode: "",
   phone: "",
   address: "",
   country: "",
   city: "",
+  sexe: null,
+  maritalStatus: null,
+  birthDate: "",
 };
 
 export interface StepHeading {
@@ -82,11 +88,7 @@ export const STEP_HEADINGS: Record<RegisterStep, StepHeading> = {
   },
 };
 
-export const STEPS_ORDER: RegisterStep[] = [
-  "credentials",
-  "otp",
-  "profile",
-];
+export const STEPS_ORDER: RegisterStep[] = ["credentials", "otp", "profile"];
 
 export function validateCredentials(state: WizardState): {
   emailValid: boolean;
@@ -94,22 +96,19 @@ export function validateCredentials(state: WizardState): {
   passwordStrong: boolean;
   isComplete: boolean;
 } {
-  const emailValid    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.email);
-  const passwordMatch = state.password.length > 0 &&
-                        state.password === state.confirmPassword;
+  const emailValid     = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.email);
+  const passwordMatch  = state.password.length > 0 &&
+                         state.password === state.confirmPassword;
   const passwordStrong = state.password.length >= 8;
-  const isComplete    = !!state.firstName && !!state.lastName &&
-                        emailValid && passwordMatch && passwordStrong;
+  const isComplete     = !!state.firstName && !!state.lastName &&
+                         emailValid && passwordMatch && passwordStrong;
 
   return { emailValid, passwordMatch, passwordStrong, isComplete };
 }
 
 
-/**
- * Types et constantes spécifiques au wizard de connexion, 
- * qui partage certaines étapes (credentials, otp) avec le wizard 
- * d'inscription mais a un flux plus simple.
- */
+// ── Login wizard ─────────────────────────────────────────────────────────────
+
 export interface LoginWizardState {
   email: string;
   password: string;
@@ -147,11 +146,8 @@ export const LOGIN_STEP_HEADINGS: Record<LoginStep, LoginStepHeading> = {
 export const LOGIN_STEPS_ORDER: LoginStep[] = ["credentials", "otp"];
 
 
-/**
- * Types et constantes spécifiques au wizard de réinitialisation de mot de passe,
- * qui a un flux en 3 étapes : email → otp → nouveau mot de passe.
- * Chaque étape a son propre état local et ses propres libellés d'interface.
- */
+// ── Forgot password wizard ────────────────────────────────────────────────────
+
 export interface ForgotPasswordWizardState {
   email: string;
   otpCode: string;

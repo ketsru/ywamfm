@@ -1,4 +1,4 @@
-import { OrateursDataTable } from "@/components/layout/admin/orateur";
+import { PreacherDataTable } from "@/modules/admin/preachers/preacherDataTable";
 import { ArrowUpNarrowWide } from "lucide-react";
 
 
@@ -10,7 +10,7 @@ export default function Orateurs () {
                 Liste des orateurs
             </h2>
             <div>
-                <OrateursDataTable />
+                <PreacherDataTable />
             </div>
         </>
     )   

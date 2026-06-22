@@ -8,6 +8,7 @@ import { handleApiError } from "@/lib/api/handles/handle-api-error";
 import { useLogin } from "@/hooks/auth/useLogin";
 import { authService } from "@/types/users/auth/auth.service";
 import { ProfileService } from "@/types/users/profile/profile.service";
+import { splitE164 } from "@/lib/utils/phone.utils";
 
 export function useRegisterWizardActions(onDone: () => void) {
   const { step, state, setField, setLoading, goNext, resetCountdown } = useRegisterWizard();
@@ -94,16 +95,24 @@ export function useRegisterWizardActions(onDone: () => void) {
       return;
     }
 
+    const { countryCode, phone } = splitE164(state.phone);
+
     await ProfileService.create({
-      userId:  state.userId,
-      phone:   state.phone   || null,
-      address: state.address || null,
-      country: state.country || null,
-      city:    state.city    || null,
+      userId:        state.userId,
+      // ── Contact ────────────────────────────────────────
+      countryCode,
+      phone,
+      address:       state.address       || null,
+      country:       state.country       || null,
+      city:          state.city          || null,
+      // ── Démographie ────────────────────────────────────
+      sexe:          state.sexe          || null,
+      maritalStatus: state.maritalStatus || null,
+      birthDate:     state.birthDate     || null,
     });
 
     toast.success("Profil enregistré !");
-    onDone();  // ← était goNext(), mais c'est la dernière étape
+    onDone();
   }
 
   return { handlePrimary, handleAction };

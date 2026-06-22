@@ -10,9 +10,9 @@ import { handleApiError } from "@/lib/api/handles/handle-api-error";
 import { Department } from "@/types/admin/department/department.types";
 import { deleteDepartment, getAllDepartments, updateDepartment } from "@/types/admin/department/department.service";
 import { departmentColumns } from "./columnDef";
-import { DepartmentFormDialog } from "./createDepartmentDialog";
 import { ConfirmDeleteDialog } from "@/modules/shared/deleteConfirmationDialog";
 import { SharedDataTable } from "@/modules/shared/sharedDataTable";
+import { DepartmentFormDialog } from "./departmentFormDialog";
 
 export function DepartmentDataTable() {
   const queryClient = useQueryClient();

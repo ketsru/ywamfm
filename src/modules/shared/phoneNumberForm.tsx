@@ -1,3 +1,5 @@
+// @/modules/shared/phoneNumberForm.tsx
+
 "use client";
 
 import { useState } from "react";
@@ -15,7 +17,7 @@ type PhoneNumberFieldProps = {
 export function PhoneNumberField({ id = "phone", value, onChange }: PhoneNumberFieldProps) {
   const [touched, setTouched] = useState(false);
 
-  const isValid = value ? isValidPhoneNumber(value) : null;
+  const isValid   = value ? isValidPhoneNumber(value) : null;
   const showError = touched && value && !isValid;
   const showValid = touched && value && isValid;
 
@@ -29,9 +31,7 @@ export function PhoneNumberField({ id = "phone", value, onChange }: PhoneNumberF
         className={cn(
           "flex h-11 w-full items-center rounded-xl border bg-secondary/40 px-0",
           "transition-all duration-200",
-          // Focus — jade primary, cohérent avec Input/Select/Checkbox
           "focus-within:ring-2 focus-within:ring-primary/40 focus-within:ring-offset-0 focus-within:border-primary",
-          // États de validation
           showError && "border-destructive focus-within:ring-destructive/30 focus-within:border-destructive",
           showValid && "border-primary/50 focus-within:ring-primary/20 focus-within:border-primary",
           !showError && !showValid && "border-border"
@@ -47,11 +47,8 @@ export function PhoneNumberField({ id = "phone", value, onChange }: PhoneNumberF
           placeholder="+228 90 00 00 00"
           className={cn(
             "w-full h-full",
-            // Séparateur drapeau — bordure jade pâle
             "[&_.PhoneInputCountry]:pl-3 [&_.PhoneInputCountry]:pr-2 [&_.PhoneInputCountry]:border-r [&_.PhoneInputCountry]:border-border",
-            // Select pays — transparent, cohérent avec le reste
             "[&_.PhoneInputCountrySelect]:bg-transparent [&_.PhoneInputCountrySelect]:text-sm [&_.PhoneInputCountrySelect]:text-foreground [&_.PhoneInputCountrySelect]:outline-none [&_.PhoneInputCountrySelect]:cursor-pointer",
-            // Input téléphone — reset complet, hérite du wrapper
             "[&_.PhoneInputInput]:bg-transparent [&_.PhoneInputInput]:h-full [&_.PhoneInputInput]:px-3 [&_.PhoneInputInput]:text-sm",
             "[&_.PhoneInputInput]:text-foreground [&_.PhoneInputInput]:placeholder:text-muted-foreground/50",
             "[&_.PhoneInputInput]:outline-none [&_.PhoneInputInput]:border-none [&_.PhoneInputInput]:ring-0"
@@ -59,7 +56,6 @@ export function PhoneNumberField({ id = "phone", value, onChange }: PhoneNumberF
         />
       </div>
 
-      {/* Feedback de validation */}
       {showError && (
         <p className="flex items-center gap-1.5 text-xs text-destructive animate-in fade-in slide-in-from-top-1 duration-200">
           <span className="text-[10px]">✕</span>
