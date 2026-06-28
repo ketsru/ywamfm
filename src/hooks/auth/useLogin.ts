@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { authService } from "@/types/users/auth/auth.service";
-import { setToken } from "@/types/users/auth/token";
+import { authService } from "@/lib/types/users/auth/auth.service";
+import { setToken } from "@/lib/types/users/auth/token";
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);

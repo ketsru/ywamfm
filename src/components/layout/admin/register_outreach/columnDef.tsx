@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { ArrowUpDown } from "lucide-react"
 import { getDepartmentNameById } from "@/components/data/admin/department"
-import { RegisterOutreach } from "@/types/admin/register_outreach"
+import { RegisterOutreach } from "@/lib/types/admin/register_outreach"
 import Image from "next/image"
 
 export const columns: ColumnDef<RegisterOutreach>[] = [

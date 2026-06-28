@@ -2,7 +2,7 @@
 // publish-school.schema.ts
 // ============================================================
 
-import { PublishSchoolStatus } from "@/types/admin/publish-school/publish-school.types";
+import { PublishSchoolStatus } from "@/lib/types/admin/publish-school/publish-school.types";
 import { z } from "zod";
 
 // ── Enum Zod ──────────────────────────────────────────────────

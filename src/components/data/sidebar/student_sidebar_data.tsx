@@ -1,5 +1,5 @@
 
-import { SidebarSection } from "@/types/sidebar/items"
+import { SidebarSection } from "@/lib/types/sidebar/items"
 import {
   LayoutDashboard,
   User2,

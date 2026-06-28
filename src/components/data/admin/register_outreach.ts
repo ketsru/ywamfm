@@ -1,4 +1,4 @@
-import { RegisterOutreach } from "@/types/admin/register_outreach"
+import { RegisterOutreach } from "@/lib/types/admin/register_outreach"
 
 export const registerOutreachData: RegisterOutreach[] = [
   {

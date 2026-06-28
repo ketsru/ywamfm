@@ -1,4 +1,4 @@
-import { PublishSchool } from "@/types/admin/publish_school"
+import { PublishSchool } from "@/lib/types/admin/publish_school"
 
 export const publishSchoolMock: PublishSchool[] = [
   {

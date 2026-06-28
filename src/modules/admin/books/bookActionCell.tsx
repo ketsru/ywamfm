@@ -2,7 +2,7 @@
 "use client";
 
 import { EntityActionsCell, type ActionItem } from "@/modules/shared/entityActionCell";
-import { Book } from "@/types/admin/book/book.types";
+import { Book } from "@/lib/types/admin/book/book.types";
 import { Pencil, Trash2, ToggleLeft, ToggleRight } from "lucide-react";
 
 interface Props {

@@ -1,4 +1,4 @@
-import { Journal } from "@/types/student/journal"
+import { Journal } from "@/lib/types/student/journal"
 
 export const journalMock: Journal[] = [
   {

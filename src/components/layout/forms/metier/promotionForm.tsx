@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { promotionRequestSchema } from "@/modules/admin/promotions/promotion.schema";
-import { Promotion } from "@/types/admin/promotion/promotion.types";
+import { Promotion } from "@/lib/types/admin/promotion/promotion.types";
 
 type PromotionFormValues = z.output<typeof promotionRequestSchema>;
 

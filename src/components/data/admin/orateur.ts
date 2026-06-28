@@ -1,4 +1,4 @@
-import { Orateur } from "@/types/admin/orateur"
+import { Orateur } from "@/lib/types/admin/orateur"
 
 export const orateursData: Orateur[] = [
   {

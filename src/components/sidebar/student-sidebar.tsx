@@ -6,7 +6,7 @@ import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGrou
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { studentMenu } from "@/components/data/sidebar/student_sidebar_data"
 import { WithTooltip } from "./withTooltip"
-import { SidebarItem, SidebarSection } from "@/types/sidebar/items"
+import { SidebarItem, SidebarSection } from "@/lib/types/sidebar/items"
 
 export default function StudentSidebar() {
   const { open } = useSidebar()

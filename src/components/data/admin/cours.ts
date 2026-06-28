@@ -1,4 +1,4 @@
-import { Course } from "@/types/admin/course"
+import { Course } from "@/lib/types/admin/course"
 
 export const coursMock: Course[] = [
   /* =========================
