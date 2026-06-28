@@ -5,8 +5,8 @@
 import * as React from "react";
 import { toast } from "sonner";
 import { handleApiError } from "@/lib/api/handles/handle-api-error";
-import { Department, DepartmentRequest } from "@/types/admin/department/department.types";
-import { createDepartment, updateDepartment } from "@/types/admin/department/department.service";
+import { Department, DepartmentRequest } from "@/lib/types/admin/department/department.types";
+import { createDepartment, updateDepartment } from "@/lib/types/admin/department/department.service";
 import { CrudDialog } from "@/modules/shared/crudDialog";
 import { DepartmentForm } from "@/components/layout/forms/metier/departmentForm";
 import { ValidationError } from "@/lib/api/core/http-errors";

@@ -2,7 +2,7 @@
 "use client";
 
 import { EntityActionsCell, type ActionItem } from "@/modules/shared/entityActionCell";
-import { Preacher } from "@/types/admin/preacher/preacher.types";
+import { Preacher } from "@/lib/types/admin/preacher/preacher.types";
 import { Pencil, Trash2 } from "lucide-react";
 
 interface Props {

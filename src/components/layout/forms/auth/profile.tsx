@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MaritalStatus, Sexe } from "@/types/users/profile/profile.types";
+import { MaritalStatus, Sexe } from "@/lib/types/users/profile/profile.types";
 
 export default function ProfileStep() {
   const { state, setField } = useRegisterWizard();

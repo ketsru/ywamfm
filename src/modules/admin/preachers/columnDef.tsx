@@ -2,7 +2,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Preacher } from "@/types/admin/preacher/preacher.types";
+import { Preacher } from "@/lib/types/admin/preacher/preacher.types";
 import { PreacherActionsCell } from "./preacherActionCell";
 
 interface ColumnOptions {

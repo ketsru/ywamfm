@@ -7,12 +7,12 @@ import { Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { handleApiError } from "@/lib/api/handles/handle-api-error";
-import { Preacher } from "@/types/admin/preacher/preacher.types";
-import { deletePreacher } from "@/types/admin/preacher/preacher.service";
+import { Preacher } from "@/lib/types/admin/preacher/preacher.types";
+import { deletePreacher } from "@/lib/types/admin/preacher/preacher.service";
 import { ConfirmDeleteDialog } from "@/modules/shared/deleteConfirmationDialog";
 import { SharedDataTable } from "@/modules/shared/sharedDataTable";
 import { PreacherFormDialog } from "./preacherFormDialog";
-import { preacherKeys, useDeletePreacher, usePreachersQuery } from "@/types/admin/preacher/preacher.hook";
+import { preacherKeys, useDeletePreacher, usePreachersQuery } from "@/lib/types/admin/preacher/preacher.hook";
 import { preacherColumns } from "./columnDef";
 
 export function PreacherDataTable() {

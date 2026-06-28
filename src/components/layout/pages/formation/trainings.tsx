@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { PublishSchool } from "@/types/admin/publish_school";
+import { PublishSchool } from "@/lib/types/admin/publish_school";
 import { publishSchoolMock } from "@/components/data/admin/publish_school";
 
 

@@ -1,4 +1,4 @@
-import { authService } from "@/types/users/auth/auth.service";
+import { authService } from "@/lib/types/users/auth/auth.service";
 
 export const useOtp = () => {
   const verify = (email: string, code: string) =>

@@ -1,6 +1,7 @@
 
 
 import AppSidebar from "@/components/app-sidebar"
+import ProfileDropdown from "@/components/layout/student/student-header"
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -8,8 +9,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <SidebarProvider>
       <AppSidebar />
       <main className="w-full m-4">
-        <div className="shadow rounded-sm p-4 bg-gray-100">
+        <div className="shadow-sm rounded-sm p-4 flex justify-between">
             <SidebarTrigger className="p-1 border cursor-pointer" />
+            <ProfileDropdown />
         </div>
         {children}
       </main>

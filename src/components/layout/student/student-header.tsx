@@ -10,9 +10,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { User, LogOut } from "lucide-react"
+import { User, LogOut, LayoutDashboard } from "lucide-react"
 
-export default function StudentHeader() {
+export default function ProfileDropdown () {
   const handleLogout = () => {
     // TODO: logique de déconnexion
     // ex:
@@ -38,9 +38,17 @@ export default function StudentHeader() {
 
         {/* Profil */}
         <DropdownMenuItem asChild className="cursor-pointer">
-          <Link href="/std/profile" className="flex items-center gap-2">
+          <Link href="/dashboard" className="flex items-center gap-2">
+            <LayoutDashboard className="h-4 w-4" />
+            <span>Tableau de bord</span>
+          </Link>
+        </DropdownMenuItem>
+
+        {/* Profil */}
+        <DropdownMenuItem asChild className="cursor-pointer">
+          <Link href="/profile" className="flex items-center gap-2">
             <User className="h-4 w-4" />
-            <span>Profil</span>
+            <span>Mon compte</span>
           </Link>
         </DropdownMenuItem>
 

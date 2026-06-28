@@ -7,7 +7,7 @@ import { z } from "zod";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { preacherRequestSchema } from "@/modules/admin/preachers/preacher.schema";
-import { Preacher } from "@/types/admin/preacher/preacher.types";
+import { Preacher } from "@/lib/types/admin/preacher/preacher.types";
 
 type PreacherFormValues = z.output<typeof preacherRequestSchema>;
 

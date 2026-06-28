@@ -22,7 +22,7 @@ import {
   SCHOOL_TYPE_LABELS,
   SCHOOL_CATEGORY_LABELS,
   SCHOOL_STATUS_LABELS,
-} from "@/types/admin/school/school.types";
+} from "@/lib/types/admin/school/school.types";
 
 type RegisterSchoolFormValues = z.output<typeof registerSchoolRequestSchema>;
 

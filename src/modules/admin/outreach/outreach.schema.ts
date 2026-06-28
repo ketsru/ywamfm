@@ -3,7 +3,7 @@
 // ============================================================
 
 import { z } from "zod";
-import { OutreachCategory, OutreachStatus } from "@/types/admin/outreach/outreach.types";
+import { OutreachCategory, OutreachStatus } from "@/lib/types/admin/outreach/outreach.types";
 
 // ── Enums Zod ─────────────────────────────────────────────────
 

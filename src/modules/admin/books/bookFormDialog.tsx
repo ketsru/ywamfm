@@ -6,8 +6,8 @@ import { toast } from "sonner";
 import { ValidationError } from "@/lib/api/core/http-errors";
 import { handleApiError } from "@/lib/api/handles/handle-api-error";
 import { CrudDialog } from "@/modules/shared/crudDialog";
-import { Book, BookRequest } from "@/types/admin/book/book.types";
-import { createBook, updateBook } from "@/types/admin/book/book.service";
+import { Book, BookRequest } from "@/lib/types/admin/book/book.types";
+import { createBook, updateBook } from "@/lib/types/admin/book/book.service";
 import { BookForm } from "@/components/layout/forms/metier/bookForm";
 
 interface BookFormDialogProps {

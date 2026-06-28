@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useLoginWizard } from "./loginWizardContext";
 import { handleApiError } from "@/lib/api/handles/handle-api-error";
 import { useLogin } from "@/hooks/auth/useLogin";
-import { authService } from "@/types/users/auth/auth.service";
+import { authService } from "@/lib/types/users/auth/auth.service";
 
 export function useLoginWizardActions(onDone: () => void) {
   const { step, state, setLoading, goNext, resetCountdown } = useLoginWizard();

@@ -3,7 +3,7 @@
 // ============================================================
 
 import { z } from "zod";
-import { SchoolType, SchoolCategory, SchoolStatus } from "@/types/admin/school/school.types";
+import { SchoolType, SchoolCategory, SchoolStatus } from "@/lib/types/admin/school/school.types";
 
 // ── Enums Zod (alignés sur les enums Java) ────────────────────
 

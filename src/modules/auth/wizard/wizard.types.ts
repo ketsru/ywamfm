@@ -13,7 +13,7 @@ export type StepProps = {
   formRef?: React.RefObject<HTMLFormElement>;
 };
 
-import { MaritalStatus, Sexe } from "@/types/users/profile/profile.types";
+import { MaritalStatus, Sexe } from "@/lib/types/users/profile/profile.types";
 
 export interface WizardState {
   // Step 1 – Credentials

@@ -4,8 +4,8 @@
 import * as React from "react";
 import { toast } from "sonner";
 import { handleApiError } from "@/lib/api/handles/handle-api-error";
-import { Preacher } from "@/types/admin/preacher/preacher.types";
-import { createPreacher, updatePreacher } from "@/types/admin/preacher/preacher.service";
+import { Preacher } from "@/lib/types/admin/preacher/preacher.types";
+import { createPreacher, updatePreacher } from "@/lib/types/admin/preacher/preacher.service";
 import { CrudDialog } from "@/modules/shared/crudDialog";
 import { ValidationError } from "@/lib/api/core/http-errors";
 import { z } from "zod";

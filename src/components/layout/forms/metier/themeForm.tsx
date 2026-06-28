@@ -8,13 +8,13 @@ import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { themeRequestSchema } from "@/modules/admin/themes/theme.schema";
-import { Theme } from "@/types/admin/theme/theme.types";
+import { ThemeResponseDto } from "@/lib/types/admin/theme/theme.types";
 
 type ThemeFormValues = z.output<typeof themeRequestSchema>;
 
 type ThemeFormProps = {
   formId: string;
-  defaultValues?: Theme;
+  defaultValues?: ThemeResponseDto;
   onSubmit: (data: ThemeFormValues) => void;
 };
 

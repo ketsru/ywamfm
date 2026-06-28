@@ -24,7 +24,7 @@ import {
   OutreachStatus,
   OUTREACH_CATEGORY_LABELS,
   OUTREACH_STATUS_LABELS,
-} from "@/types/admin/outreach/outreach.types";
+} from "@/lib/types/admin/outreach/outreach.types";
 
 type RegisterOutreachFormValues = z.output<typeof registerOutreachRequestSchema>;
 

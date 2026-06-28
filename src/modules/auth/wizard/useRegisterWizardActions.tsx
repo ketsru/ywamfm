@@ -6,8 +6,8 @@ import { toast } from "sonner";
 import { useRegisterWizard } from "./registerWizardContext";
 import { handleApiError } from "@/lib/api/handles/handle-api-error";
 import { useLogin } from "@/hooks/auth/useLogin";
-import { authService } from "@/types/users/auth/auth.service";
-import { ProfileService } from "@/types/users/profile/profile.service";
+import { authService } from "@/lib/types/users/auth/auth.service";
+import { ProfileService } from "@/lib/types/users/profile/profile.service";
 import { splitE164 } from "@/lib/utils/phone.utils";
 
 export function useRegisterWizardActions(onDone: () => void) {

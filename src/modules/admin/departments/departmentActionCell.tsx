@@ -2,7 +2,7 @@
 "use client";
 
 import { EntityActionsCell, type ActionItem } from "@/modules/shared/entityActionCell";
-import { Department } from "@/types/admin/department/department.types";
+import { Department } from "@/lib/types/admin/department/department.types";
 import { Pencil, Trash2, ToggleLeft, ToggleRight } from "lucide-react";
 
 interface Props {

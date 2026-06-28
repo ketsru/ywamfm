@@ -1,4 +1,4 @@
-import { ThemesDataTable } from "@/components/layout/admin/theme";
+import { ThemeDataTable } from "@/modules/admin/themes/themeDataTable";
 import { ArrowUpNarrowWide } from "lucide-react";
 
 
@@ -10,7 +10,7 @@ export default function Themes () {
                 Liste des thèmes
             </h2>
             <div>
-                <ThemesDataTable />
+                <ThemeDataTable />
             </div>
         </>
     )

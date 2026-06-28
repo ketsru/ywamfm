@@ -7,7 +7,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { adminMenu } from "@/components/data/sidebar/sidebar_data"
 import { WithTooltip } from "./sidebar/withTooltip"
-import { SidebarItem, SidebarSection } from "@/types/sidebar/items"
+import { SidebarItem, SidebarSection } from "@/lib/types/sidebar/items"
 
 export default function AdminSidebar() {
   const { open } = useSidebar()
@@ -42,7 +42,9 @@ export default function AdminSidebar() {
                             <SidebarMenuButton className="flex w-full items-center justify-between">
                               <div className="flex items-center gap-2">
                                 {item.icon && (
-                                  <item.icon className="h-5 w-5" />
+                                  <div className="border rounded-md p-1.5">
+                                    <item.icon className="h-5 w-5" />
+                                  </div>
                                 )}
                                 {!collapsed && (
                                   <span>{item.label}</span>
@@ -82,10 +84,12 @@ export default function AdminSidebar() {
                         <SidebarMenuButton asChild>
                           <Link
                             href={item.href!}
-                            className="flex items-center gap-2"
+                            className="flex items-center gap-2 my-0 h-11"
                           >
                             {item.icon && (
-                              <item.icon className="h-5 w-5" />
+                              <div className="border rounded-md p-1.5">
+                                    <item.icon className="h-5 w-5" />
+                                </div>
                             )}
                             {!collapsed && (
                               <span>{item.label}</span>

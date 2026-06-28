@@ -1,5 +1,5 @@
 
-import { SidebarSection } from "@/types/sidebar/items"
+import { SidebarSection } from "@/lib/types/sidebar/items"
 import {
   LayoutDashboard,
   User2,
@@ -17,7 +17,7 @@ export const adminMenu: SidebarSection[] = [
       {
         id: "dashboard",
         label: "Tableau de bord",
-        href: "/admin/dashboard",
+        href: "/dashboard",
         icon: LayoutDashboard,
       },
     ],
@@ -30,25 +30,25 @@ export const adminMenu: SidebarSection[] = [
       {
         id: "department",
         label: "Les départements",
-        href: "/admin/departments",
+        href: "/departments",
         icon: User2,
       },
       {
         id: "theme",
         label: "Les thèmes",
-        href: "/admin/themes",
+        href: "/themes",
         icon: CreditCard,
       },
       {
         id: "orateur",
         label: "Les orateurs",
-        href: "/admin/orateurs",
+        href: "/orateurs",
         icon: Key
       },
       {
         id: "livre",
         label: "Les livres",
-        href: "/admin/livres",
+        href: "/livres",
         icon: Key
       },
     ],

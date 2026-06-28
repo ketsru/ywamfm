@@ -3,7 +3,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
-import { Book } from "@/types/admin/book/book.types";
+import { Book } from "@/lib/types/admin/book/book.types";
 import { BookActionsCell } from "./bookActionCell";
 
 interface ColumnOptions {

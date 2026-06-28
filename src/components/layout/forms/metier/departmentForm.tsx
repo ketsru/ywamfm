@@ -14,7 +14,7 @@ import {
   DepartmentRequestSchema,
   imageFileSchema,
 } from "@/modules/admin/departments/department.schema";
-import { Department } from "@/types/admin/department/department.types";
+import { Department } from "@/lib/types/admin/department/department.types";
 
 type DepartmentFormProps = {
   formId: string;                                      // pour lier un <button type="submit" form={formId}> externe

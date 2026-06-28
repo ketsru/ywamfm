@@ -1,4 +1,4 @@
-import { Provenance } from "@/types/users/provenance"
+import { Provenance } from "@/lib/types/users/provenance"
 
 export const provenancesMock: Provenance[] = [
   {

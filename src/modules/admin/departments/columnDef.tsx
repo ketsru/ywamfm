@@ -3,7 +3,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
-import { Department } from "@/types/admin/department/department.types";
+import { Department } from "@/lib/types/admin/department/department.types";
 import { DepartmentActionsCell } from "./departmentActionCell";
 
 interface ColumnOptions {

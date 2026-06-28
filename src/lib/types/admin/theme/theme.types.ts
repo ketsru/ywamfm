@@ -2,7 +2,7 @@
 // theme.types.ts
 // ============================================================
 
-export interface Theme {
+export interface ThemeResponseDto {
   id: string; // UUID
   name: string;
   description?: string | null;
@@ -20,8 +20,8 @@ export interface ThemeFilters {
 }
 
 export interface ThemeState {
-  themes: Theme[];
-  selectedTheme: Theme | null;
+  themes: ThemeResponseDto[];
+  selectedTheme: ThemeResponseDto | null;
   isLoading: boolean;
   isSubmitting: boolean;
   error: string | null;
