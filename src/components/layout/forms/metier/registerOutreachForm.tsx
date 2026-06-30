@@ -17,7 +17,7 @@ import {
 import {
   registerOutreachRequestSchema,
   imageFileSchema,
-} from "@/modules/admin/outreach/outreach.schema";
+} from "@/modules/outreach/outreach.schema";
 import {
   RegisterOutreach,
   OutreachCategory,

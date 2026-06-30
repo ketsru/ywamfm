@@ -1,6 +1,7 @@
 // @/lib/types/iam/users/user.types.ts
 
-import { PermissionKey } from "../permissions/permisionKey";
+import { PermissionKey } from "../../access/permissions/permisionKey";
+import { ProfileResponseDto } from "../profile/profile.types";
 
 // Entity and Acces Management status for users
 export enum AccountStatus {

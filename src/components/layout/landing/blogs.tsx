@@ -1,4 +1,4 @@
-import { articles } from "@/components/data/admin/blogs";
+import { articles } from "@/components/data/admin/blogs.data";
 import Link from "next/link";
 
 export default function BlogSection () {

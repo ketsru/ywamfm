@@ -14,20 +14,6 @@ export default function ProfileHero() {
 
     return (
         <>
-            {/* Cover */}
-            <div className="lg:rounded-t-md shadow-xs h-56 bg-[url('/assets/images/0af7741991985e2b530c8f62135c3eea.jpg')] bg-cover bg-center bg-no-repeat" />
-
-            {/* Avatar */}
-            <div className="ml-6 sm:ml-12 -mt-16 sm:-mt-20">
-                <Image
-                    src="/assets/images/6fa36aa2c367da06b2a4c8ae1cf9ee02.jpg"
-                    alt="Profile"
-                    width={120}
-                    height={120}
-                    className="rounded-full border-4 border-white h-24 w-24 sm:h-32 sm:w-32"
-                />
-            </div>
-
             {/* Tabs */}
             <div className="mt-0 px-2">
                 <div className="flex gap-2 overflow-x-auto sm:overflow-visible sm:justify-center">

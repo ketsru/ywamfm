@@ -4,7 +4,7 @@
 import { toast } from "sonner";
 import { useForgotPasswordWizard } from "./forgotPasswordWizardContext";
 import { handleApiError } from "@/lib/api/handles/handle-api-error";
-import { authService } from "@/lib/types/users/auth/auth.service";
+import { authService } from "@/lib/types/access/auth/auth.service";
 
 export function useForgotPasswordWizardActions(onDone: () => void) {
   const { step, state, setLoading, goNext, resetCountdown } = useForgotPasswordWizard();

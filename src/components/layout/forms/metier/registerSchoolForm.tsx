@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { registerSchoolRequestSchema } from "@/modules/admin/school/school.schema";
+import { registerSchoolRequestSchema } from "@/modules/schools/school.schema";
 import {
   RegisterSchool,
   SchoolType,

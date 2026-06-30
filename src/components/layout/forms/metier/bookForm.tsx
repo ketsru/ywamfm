@@ -9,7 +9,7 @@ import { Field, FieldLabel, FieldDescription } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { bookRequestSchema, imageFileSchema } from "@/modules/admin/books/book.schema";
+import { bookRequestSchema, imageFileSchema } from "@/modules/books/book.schema";
 import { Book } from "@/lib/types/admin/book/book.types";
 
 type BookFormValues = z.output<typeof bookRequestSchema>;

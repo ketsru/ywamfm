@@ -5,7 +5,7 @@ import { ChevronDown, ChevronUp, User2 } from "lucide-react"
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubItem, useSidebar } from "@/components/ui/sidebar"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { adminMenu } from "@/components/data/sidebar/sidebar_data"
+import { adminMenu } from "@/components/data/sidebar/sidebar.data"
 import { WithTooltip } from "./sidebar/withTooltip"
 import { SidebarItem, SidebarSection } from "@/lib/types/sidebar/items"
 

@@ -1,4 +1,4 @@
-import { articles } from "@/components/data/admin/blogs"
+import { articles } from "@/components/data/admin/blogs.data"
 import Footer from "@/components/layout/landing/footer"
 import LandingPageHeader from "@/components/layout/landing/header"
 import Link from "next/link"

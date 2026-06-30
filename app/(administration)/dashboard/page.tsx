@@ -1,4 +1,8 @@
-"use client";
+"use client"
+
+import Image from "next/image"
+import { useEffect, useState } from "react"
+import { bibleVerses } from "@/components/data/user/bibleVerses"
 
 import { Separator } from "@/components/ui/separator";
 import { TotalCountryCard } from "@/modules/dashboard/totalCountryCard";
@@ -11,18 +15,34 @@ import { LayoutDashboard } from "lucide-react";
 
 
 export default function DashboardPage() {
+
+    const [currentVerseIndex, setCurrentVerseIndex] = useState(0)
+    
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setCurrentVerseIndex((prev) =>
+            prev === bibleVerses.length - 1 ? 0 : prev + 1
+          )
+        }, 10000) // change toutes les 5 secondes
+    
+        return () => clearInterval(interval)
+      }, [])
+    
+      const verse = bibleVerses[currentVerseIndex]
+
     return (
-        <div className="flex flex-col gap-6 p-4 md:p-6">
+        <div className="flex flex-col gap-6">
             {/* Header */}
-            <div>
-                <h2 className="flex items-center gap-2 py-4 text-xl font-bold md:text-2xl lg:text-3xl">
-                <span className="flex items-center justify-center rounded-sm bg-secondary p-1.5 text-primary">
-                    <LayoutDashboard className="size-5" />
-                </span>
-                Tableau de bord
+            <div className="w-full">
+                <h2 className="lg:text-3xl md:text-2xl text-xl font-bold pt-4 flex gap-2 items-center">
+                    <div className="lg:p-1.5 md:p-1 p.0.5 border rounded-sm">
+                        <LayoutDashboard size={20} />
+                    </div>
+                    Tableau de bord
                 </h2>
-                <Separator />
             </div>
+
+            <div className="w-full h-px bg-muted mb-3" />
 
             {/* KPI — bandeau pleine largeur */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

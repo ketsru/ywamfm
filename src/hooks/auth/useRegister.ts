@@ -1,4 +1,4 @@
-import { authService } from "@/lib/types/users/auth/auth.service";
+import { authService } from "@/lib/types/access/auth/auth.service";
 import { useState } from "react";
 
 export const useRegister = () => {
