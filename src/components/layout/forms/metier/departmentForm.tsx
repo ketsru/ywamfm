@@ -5,21 +5,21 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Field, FieldLabel, FieldDescription } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import {
-  departmentRequestSchema,
-  DepartmentRequestSchema,
-  imageFileSchema,
-} from "@/modules/admin/departments/department.schema";
+import { departmentRequestSchema } from "@/modules/admin/departments/department.schema";
 import { Department } from "@/lib/types/admin/department/department.types";
+import { imageFileSchema } from "@/lib/config/common.schema";
+
+type DepartmentFormValues = z.output<typeof departmentRequestSchema>;
 
 type DepartmentFormProps = {
   formId: string;                                      // pour lier un <button type="submit" form={formId}> externe
   defaultValues?: Department;
-  onSubmit: (data: DepartmentRequestSchema) => void;
+  onSubmit: (data: DepartmentFormValues) => void;
 };
 
 export function DepartmentForm({ formId, defaultValues, onSubmit }: DepartmentFormProps) {
@@ -30,12 +30,12 @@ export function DepartmentForm({ formId, defaultValues, onSubmit }: DepartmentFo
     setValue,
     watch,
     formState: { errors },
-  } = useForm<DepartmentRequestSchema>({
+  } = useForm<DepartmentFormValues>({
     resolver: zodResolver(departmentRequestSchema),
     defaultValues: {
       name:        defaultValues?.name        ?? "",
       description: defaultValues?.description ?? "",
-      image:       defaultValues?.image       ?? null,
+      image:       defaultValues?.image        ?? null,
       isActive:    defaultValues?.isActive    ?? true,
     },
   });
@@ -50,16 +50,30 @@ export function DepartmentForm({ formId, defaultValues, onSubmit }: DepartmentFo
 
     const result = imageFileSchema.safeParse(file);
     if (!result.success) {
-      // On reporte l'erreur via setValue + erreur manuelle
       setValue("image", null, { shouldValidate: true });
       e.target.value = "";
       return;
     }
 
     const reader = new FileReader();
-    reader.onload = () => setValue("image", reader.result as string, { shouldValidate: true });
+    reader.onload = () => {
+      // Retire le préfixe data-URI — n'envoie que le base64 brut au backend
+      const base64 = (reader.result as string).split(",")[1];
+      setValue("image", base64, { shouldValidate: true });
+    };
     reader.readAsDataURL(file);
   };
+
+  // Détermine si imageValue est déjà un data-URI complet (aperçu direct), du base64 brut ou un File
+  const previewSrc = imageValue
+    ? typeof imageValue === "string"
+      ? imageValue.startsWith("data:")
+        ? imageValue
+        : `data:image/jpeg;base64,${imageValue}`
+      : imageValue instanceof File
+        ? URL.createObjectURL(imageValue)
+        : null
+    : null;
 
   return (
     <form id={formId} onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
@@ -96,9 +110,9 @@ export function DepartmentForm({ formId, defaultValues, onSubmit }: DepartmentFo
       {/* Image */}
       <Field>
         <FieldLabel htmlFor="dept-image">Image</FieldLabel>
-        {imageValue && (
+        {previewSrc && (
           <img
-            src={imageValue}
+            src={previewSrc}
             alt="Aperçu"
             className="mb-2 h-24 w-24 rounded-lg object-cover border"
           />

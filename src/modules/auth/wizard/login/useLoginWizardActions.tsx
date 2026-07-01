@@ -4,12 +4,12 @@
 import { toast } from "sonner";
 import { useLoginWizard } from "./loginWizardContext";
 import { handleApiError } from "@/lib/api/handles/handle-api-error";
-import { useLogin } from "@/hooks/auth/useLogin";
 import { authService } from "@/lib/types/access/auth/auth.service";
+import { useLogin } from "@/hooks/auth/useLogin";
 
 export function useLoginWizardActions(onDone: () => void) {
-  const { step, state, setLoading, goNext, resetCountdown } = useLoginWizard();
-  const { login } = useLogin();
+  const { step, state, setField, setLoading, goNext, resetCountdown } = useLoginWizard();
+  const { finalizeSession } = useLogin();
 
   const handlePrimary = async () => {
     try {
@@ -24,10 +24,10 @@ export function useLoginWizardActions(onDone: () => void) {
   };
 
   const handleAction = async () => {
-    // Renvoyer l'OTP depuis l'étape otp
+    // Renvoyer l'OTP depuis l'étape otp — purpose LOGIN explicite
     if (step === "otp") {
       try {
-        await authService.resendOtp({ email: state.email });
+        await authService.resendOtp({ email: state.email, purpose: "LOGIN" });
         resetCountdown();
         toast.success("Code renvoyé !");
       } catch (err) {
@@ -42,8 +42,14 @@ export function useLoginWizardActions(onDone: () => void) {
       return;
     }
 
-    // Le login déclenche l'envoi de l'OTP côté backend
-    await authService.login({ email: state.email, password: state.password });
+    // Étape 1 : valide les credentials, déclenche l'envoi de l'OTP,
+    // récupère un challengeToken de courte durée (PAS un token de session).
+    const { challengeToken } = await authService.login({
+      email: state.email,
+      password: state.password,
+    });
+
+    setField("challengeToken", challengeToken);
     toast.success("Code envoyé à votre email.");
     goNext();
   }
@@ -54,10 +60,17 @@ export function useLoginWizardActions(onDone: () => void) {
       return;
     }
 
-    await authService.verifyOtp({ email: state.email, code: state.otpCode });
+    if (!state.challengeToken) {
+      toast.error("Session de connexion expirée. Veuillez réessayer.");
+      return;
+    }
 
-    // Login final pour récupérer le token
-    const user = await login(state.email, state.password);
+    const res = await authService.verifyLoginOtp({
+      challengeToken: state.challengeToken,
+      code: state.otpCode,
+    });
+
+    const user = finalizeSession(res);
     if (!user) {
       toast.error("Connexion échouée. Réessayez.");
       return;
@@ -68,4 +81,5 @@ export function useLoginWizardActions(onDone: () => void) {
   }
 
   return { handlePrimary, handleAction };
+
 }

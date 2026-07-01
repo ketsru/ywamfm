@@ -1,6 +1,8 @@
 import { post } from "@/lib/api/core/apifetch";
 import {
   LoginRequest,
+  LoginInitResponse,
+  VerifyLoginOtpRequest,
   LoginResponse,
   RegisterRequest,
   VerifyOtpRequest,
@@ -18,12 +20,19 @@ export const authService = {
   register: (data: RegisterRequest) =>
     post<RegisterRequest, void>(`${BASE}/register`, data),
 
+  // ── Login étape 1 : credentials → OTP envoyé + challengeToken ──────
   login: (data: LoginRequest) =>
-    post<LoginRequest, LoginResponse>(`${BASE}/login`, data),
+    post<LoginRequest, LoginInitResponse>(`${BASE}/login`, data),
 
-  verifyOtp: (data: VerifyOtpRequest) =>
-    post<VerifyOtpRequest, void>(`${BASE}/verify-otp`, data),
+  // ── Login étape 2 : challengeToken + code → JWT de session ─────────
+  verifyLoginOtp: (data: VerifyLoginOtpRequest) =>
+    post<VerifyLoginOtpRequest, LoginResponse>(`${BASE}/verify-login-otp`, data),
 
+  // ── Vérification OTP d'inscription (inchangé) ───────────────────────
+verifyOtp: (data: VerifyOtpRequest) =>
+  post<VerifyOtpRequest, LoginResponse>(`${BASE}/verify-otp`, data),
+
+  // ── Renvoi OTP : purpose optionnel (REGISTRATION par défaut côté backend) ──
   resendOtp: (data: ResendOtpRequest) =>
     post<ResendOtpRequest, void>(`${BASE}/resend-otp`, data),
 
@@ -43,9 +52,9 @@ export const authService = {
   changePassword: (data: ChangePasswordRequest) =>
     post<ChangePasswordRequest, void>(`${BASE}/change-password`, data),
 
-  // À ajouter dans authService si pas encore présent
+  // ── Corrigé : /password-reset/request (au lieu de /password-reset) ──
   requestPasswordReset: (data: PasswordResetRequest) =>
-    post<PasswordResetRequest, void>(`${BASE}/password-reset`, data),
+    post<PasswordResetRequest, void>(`${BASE}/password-reset/request`, data),
 
   confirmPasswordReset: (data: PasswordResetConfirmRequest) =>
     post<PasswordResetConfirmRequest, void>(`${BASE}/password-reset/confirm`, data),

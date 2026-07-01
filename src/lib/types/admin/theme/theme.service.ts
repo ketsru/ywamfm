@@ -5,7 +5,7 @@
 import { get, post, put, del } from "@/lib/api/core/apifetch";
 import { ThemeResponseDto, ThemeRequest, ThemeFilters } from "./theme.types";
 
-const ENDPOINT = "/api/v1/admin/themes";
+const ENDPOINT = "/api/v1/themes";
 
 // ── CREATE ────────────────────────────────────────────────────
 export const createTheme = (data: ThemeRequest): Promise<ThemeResponseDto> =>

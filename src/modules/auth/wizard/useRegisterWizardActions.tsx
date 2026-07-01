@@ -12,7 +12,7 @@ import { splitE164 } from "@/lib/utils/phone.utils";
 
 export function useRegisterWizardActions(onDone: () => void) {
   const { step, state, setField, setLoading, goNext, resetCountdown } = useRegisterWizard();
-  const { login } = useLogin();
+  const { finalizeSession } = useLogin();
 
   const handlePrimary = async () => {
     try {
@@ -59,7 +59,7 @@ export function useRegisterWizardActions(onDone: () => void) {
       email:                state.email,
       password:             state.password,
       passwordConfirmation: state.confirmPassword,
-      role: { name: "USER" },
+      //role: { name: "USER" },
     });
 
     toast.success("Compte créé ! Vérifiez votre email.");
@@ -74,9 +74,10 @@ export function useRegisterWizardActions(onDone: () => void) {
       return;
     }
 
-    await authService.verifyOtp({ email: state.email, code: state.otpCode });
+    // verifyOtp renvoie directement une session (token + user) — plus de login() séparé.
+    const res = await authService.verifyOtp({ email: state.email, code: state.otpCode });
 
-    const user = await login(state.email, state.password);
+    const user = finalizeSession(res);
     if (!user?.id) {
       toast.error("Connexion échouée après vérification. Réessayez.");
       return;

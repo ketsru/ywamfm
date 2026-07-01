@@ -10,7 +10,7 @@ import {
   PublishSchoolBySchoolFilters,
 } from "./publish-school.types";
 
-const ENDPOINT = "/api/v1/admin/publish-schools";
+const ENDPOINT = "/api/v1/schools/publications";
 
 // ── CREATE ────────────────────────────────────────────────────
 export const createPublishSchool = (data: PublishSchoolRequest): Promise<PublishSchool> =>
@@ -21,7 +21,7 @@ export const getPublishSchoolById = (id: string): Promise<PublishSchool> =>
   get<PublishSchool>(`${ENDPOINT}/${id}`);
 
 // ── READ ALL (status | active | all) ─────────────────────────
-// Priorité backend : status > active > all
+// Priorité backend : status > active > all (if/else if exclusif)
 export const getAllPublishSchools = (filters?: PublishSchoolFilters): Promise<PublishSchool[]> => {
   const params: Record<string, unknown> = {};
 

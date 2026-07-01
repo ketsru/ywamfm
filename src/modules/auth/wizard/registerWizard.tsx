@@ -24,7 +24,7 @@ export interface WizardRenderProps {
   secondaryActionLabel?: string;
   onSecondaryAction?: () => void;
 
-  
+
   actionLabel?: string;
   /** Déclenche l'action principale (appel API + goNext) → AuthCard onPrimary */
   onPrimary: () => void;
@@ -47,14 +47,23 @@ function WizardContent({
   onGoToLogin: () => void;
   children: (props: WizardRenderProps) => React.ReactNode;
 }) {
-  const { step, isLoading } = useRegisterWizard();
+  const { step, state, setField, isLoading, countdown, canResend } = useRegisterWizard();
   const { handlePrimary, handleAction } = useRegisterWizardActions(onDone);
 
   const heading = STEP_HEADINGS[step];
 
   const stepContent: Record<typeof step, React.ReactNode> = {
     credentials: <CredentialsStep />,
-    otp: <OtpStep />,
+    otp: (
+      <OtpStep
+        email={state.email}
+        otpCode={state.otpCode}
+        onChange={(value) => setField("otpCode", value)}
+        countdown={countdown}
+        canResend={canResend}
+        onResend={handleAction}
+      />
+    ),
     profile: <ProfileStep />,
   };
 

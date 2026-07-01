@@ -3,6 +3,7 @@
 // ============================================================
 
 import { get, post, put, del } from "@/lib/api/core/apifetch";
+import { PageRequest, PageResponseDto } from "@/lib/api/core/api.types";
 import {
   RegisterOutreach,
   RegisterOutreachRequest,
@@ -10,7 +11,7 @@ import {
   RegisterOutreachByDepartmentFilters,
 } from "./outreach.types";
 
-const ENDPOINT = "/api/v1/admin/outreach";
+const ENDPOINT = "/api/v1/outreaches";
 
 // ── CREATE ────────────────────────────────────────────────────
 export const createOutreach = (data: RegisterOutreachRequest): Promise<RegisterOutreach> =>
@@ -20,20 +21,28 @@ export const createOutreach = (data: RegisterOutreachRequest): Promise<RegisterO
 export const getOutreachById = (id: string): Promise<RegisterOutreach> =>
   get<RegisterOutreach>(`${ENDPOINT}/${id}`);
 
-// ── READ ALL (category + status combinés, ou all) ─────────────
-export const getAllOutreaches = (filters?: RegisterOutreachFilters): Promise<RegisterOutreach[]> =>
-  get<RegisterOutreach[]>(ENDPOINT, {
+// ── READ ALL (category + status combinés, ou all) + pagination ─
+export const getAllOutreaches = (
+  filters?: RegisterOutreachFilters,
+  pageRequest?: PageRequest
+): Promise<PageResponseDto<RegisterOutreach>> =>
+  get<PageResponseDto<RegisterOutreach>>(ENDPOINT, {
     ...(filters?.category && { category: filters.category }),
     ...(filters?.status   && { status:   filters.status }),
+    ...(pageRequest?.page !== undefined && { page: pageRequest.page }),
+    ...(pageRequest?.size !== undefined && { size: pageRequest.size }),
   });
 
-// ── READ BY DEPARTMENT ────────────────────────────────────────
+// ── READ BY DEPARTMENT + pagination ─────────────────────────────
 export const getOutreachesByDepartment = (
   departmentId: string,
-  filters?: RegisterOutreachByDepartmentFilters
-): Promise<RegisterOutreach[]> =>
-  get<RegisterOutreach[]>(`${ENDPOINT}/department/${departmentId}`, {
+  filters?: RegisterOutreachByDepartmentFilters,
+  pageRequest?: PageRequest
+): Promise<PageResponseDto<RegisterOutreach>> =>
+  get<PageResponseDto<RegisterOutreach>>(`${ENDPOINT}/department/${departmentId}`, {
     ...(filters?.status && { status: filters.status }),
+    ...(pageRequest?.page !== undefined && { page: pageRequest.page }),
+    ...(pageRequest?.size !== undefined && { size: pageRequest.size }),
   });
 
 // ── UPDATE ────────────────────────────────────────────────────

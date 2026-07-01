@@ -21,14 +21,23 @@ function LoginWizardContent({
   children: (props: WizardRenderProps) => React.ReactNode;
 }) {
   // ← hooks en premier, avant tout usage de `step`
-  const { step, isLoading } = useLoginWizard();
+  const { step, state, setField, isLoading, countdown, canResend } = useLoginWizard();
   const { handlePrimary, handleAction } = useLoginWizardActions(onDone);
 
   const heading = LOGIN_STEP_HEADINGS[step];
 
   const stepContent = {
     credentials: <LoginCredentialsStep />,
-    otp:         <OtpStep />,
+    otp: (
+      <OtpStep
+        email={state.email}
+        otpCode={state.otpCode}
+        onChange={(value) => setField("otpCode", value)}
+        countdown={countdown}
+        canResend={canResend}
+        onResend={handleAction}
+      />
+    ),
   };
 
   const content = (

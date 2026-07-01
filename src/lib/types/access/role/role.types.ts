@@ -29,14 +29,24 @@ export interface RoleRequestDto {
   permissions?: PermissionKey[];
 }
 
+export interface RoleUpdateRequestDto {
+  name: string;
+  description: string;
+}
+
+export interface PermissionsAssignRequestDto {
+  permissions: PermissionKey[];
+}
+
 export interface RoleResponseDto {
   id: string;
-  key: RoleKey;
+  key: RoleKey; 
   name: string;
   description: string | null;
   active: boolean;
   permissions: PermissionKey[];
 }
+
 
 // Ajouter uniquement ceci :
 export interface RolePage {

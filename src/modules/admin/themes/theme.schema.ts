@@ -1,45 +1,29 @@
-// ============================================================
-// theme.schema.ts
-// ============================================================
+// @/lib/schemas/school/theme/theme.schema.ts
 
-import { z } from "zod";
+import { z } from "zod"
 
-// ── Schéma création / mise à jour ─────────────────────────────
-export const themeRequestSchema = z.object({
-  name: z
+const nameSchema = z
     .string()
+    .min(1, "Le nom est requis")
+    .max(150, "Le nom ne peut pas dépasser 150 caractères")
     .trim()
-    .min(1, "Le nom est obligatoire")
-    .max(150, "Le nom ne peut pas dépasser 150 caractères"),
 
-  description: z
+const descriptionSchema = z
     .string()
-    .trim()
-    .max(500, "La description ne peut pas dépasser 500 caractères")
+    .max(1000, "La description ne peut pas dépasser 1000 caractères")
+    .optional()
+    .or(z.literal(""))
     .nullable()
-    .optional(),
-});
 
-export type ThemeRequestSchema = z.infer<typeof themeRequestSchema>;
+export const themeRequestSchema = z.object({
+    name:         nameSchema,
+    description:  descriptionSchema,
+})
 
-// ── Schéma de réponse (validation données API) ────────────────
-export const themeResponseSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string(),
-  description: z.string().nullable().optional(),
-  createdAt: z.string().datetime({ offset: true }),
-  updatedAt: z.string().datetime({ offset: true }),
-});
+export type ThemeRequestInput = z.infer<typeof themeRequestSchema>
 
-export type ThemeResponseSchema = z.infer<typeof themeResponseSchema>;
-
-// ── Schéma des filtres ────────────────────────────────────────
 export const themeFiltersSchema = z.object({
-  search: z
-    .string()
-    .trim()
-    .max(150, "La recherche ne peut pas dépasser 150 caractères")
-    .optional(),
-});
+    search: z.string().trim().max(100).optional(),
+})
 
-export type ThemeFiltersSchema = z.infer<typeof themeFiltersSchema>;
+export type ThemeFiltersInput = z.infer<typeof themeFiltersSchema>

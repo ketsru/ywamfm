@@ -113,12 +113,14 @@ export interface LoginWizardState {
   email: string;
   password: string;
   otpCode: string;
+  challengeToken: string; // ← ajouté : reçu après l'étape credentials, utilisé pour verifyLoginOtp
 }
 
 export const INITIAL_LOGIN_STATE: LoginWizardState = {
   email: "",
   password: "",
   otpCode: "",
+  challengeToken: "",
 };
 
 export interface LoginStepHeading {

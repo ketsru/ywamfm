@@ -20,14 +20,22 @@ function ForgotPasswordWizardContent({
   onGoToLogin: () => void;
   children: (props: WizardRenderProps) => React.ReactNode;
 }) {
-  const { step, isLoading } = useForgotPasswordWizard();
+  const { step, state, setField, isLoading, countdown, canResend } = useForgotPasswordWizard();
   const { handlePrimary, handleAction } = useForgotPasswordWizardActions(onDone);
 
   const heading = FORGOT_PASSWORD_STEP_HEADINGS[step];
 
   const stepContent = {
-    email:       <ForgotPasswordEmailStep />,
-    otp:         <OtpStep />,
+    email: <ForgotPasswordEmailStep />,
+    otp: (
+      <OtpStep
+        email={state.email}
+        otpCode={state.otpCode}
+        onChange={(value) => setField("otpCode", value)}
+        countdown={countdown}
+        canResend={canResend}
+      />
+    ),
     newPassword: <NewPasswordStep />,
   };
 

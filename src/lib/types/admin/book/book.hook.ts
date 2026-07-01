@@ -47,7 +47,7 @@ export function useBooksQuery(
     queryKey: bookKeys.list(filters),
     queryFn: async () => {
       const raw = await getAllBooks(filters);
-      return mapApiToBookList(raw as unknown as Record<string, unknown>[]);
+      return mapApiToBookList(raw);
     },
   });
 }
@@ -61,7 +61,7 @@ export function useBookSearch(
     queryKey: bookKeys.search(title),
     queryFn: async () => {
       const raw = await searchBooksByTitle(title);
-      return mapApiToBookList(raw as unknown as Record<string, unknown>[]);
+      return mapApiToBookList(raw);
     },
     enabled: title.trim().length > 0,
   });
@@ -75,7 +75,7 @@ export function useBookQuery(
     queryKey: bookKeys.detail(id ?? ""),
     queryFn: async () => {
       const raw = await getBookById(id!);
-      return mapApiToBook(raw as unknown as Record<string, unknown>);
+      return mapApiToBook(raw);
     },
     enabled: Boolean(id),
   });
@@ -87,29 +87,10 @@ export function useCreateBook(): UseMutationResult<Book, Error, BookRequest> {
   return useMutation({
     mutationFn: async (data: BookRequest) => {
       const raw = await createBook(data);
-      return mapApiToBook(raw as unknown as Record<string, unknown>);
+      return mapApiToBook(raw);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: bookKeys.lists() });
-    },
-  });
-}
-
-// ── UPDATE ────────────────────────────────────────────────────
-export function useUpdateBook(): UseMutationResult<
-  Book,
-  Error,
-  { id: string; data: BookRequest }
-> {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async ({ id, data }) => {
-      const raw = await updateBook(id, data);
-      return mapApiToBook(raw as unknown as Record<string, unknown>);
-    },
-    onSuccess: (_updated, { id }) => {
-      queryClient.invalidateQueries({ queryKey: bookKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: bookKeys.detail(id) });
     },
   });
 }

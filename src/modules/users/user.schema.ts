@@ -1,34 +1,22 @@
-// src/lib/schemas/user.schema.ts
+// @/lib/schemas/iam/users/user.schema.ts
 
-import * as z from "zod"
+import { z } from "zod"
+import { uuidSchema, emailSchema, imageFileSchema } from "@/lib/config/common.schema"
 
-export const userFormSchema = z.object({
-  firstName: z
-    .string()
-    .min(2, "Le prénom doit contenir au moins 2 caractères")
-    .max(50, "Le prénom ne peut pas dépasser 50 caractères"),
-  lastName: z
-    .string()
-    .min(2, "Le nom doit contenir au moins 2 caractères")
-    .max(50, "Le nom ne peut pas dépasser 50 caractères"),
-  email: z
-    .string()
-    .min(1, "L'email est requis")
-    .email("Adresse email invalide"),
-  roleId: z.string().min(1, "Veuillez sélectionner un rôle"),
-  avatar: z
-    .instanceof(File)
-    .optional()
-    .nullable()
-    .refine(
-      (file) => !file || file.size <= 5 * 1024 * 1024,
-      "L'image ne doit pas dépasser 5 Mo"
-    )
-    .refine(
-      (file) =>
-        !file || ["image/png", "image/jpeg", "image/webp"].includes(file.type),
-      "Format accepté : PNG, JPEG ou WEBP"
-    ),
+const nameSchema = (label: string) =>
+    z.string()
+        .min(1, `Le ${label} est requis`)
+        .max(100, `Le ${label} ne peut pas dépasser 100 caractères`)
+        .trim()
+
+export const userRequestSchema = z.object({
+    firstName:  nameSchema("prénom"),
+    lastName:   nameSchema("nom"),
+    email:      emailSchema,
+    // File nouveau OU null (pas d'avatar / suppression) — pas d'URL existante ici
+    // vu que UserRequestDto n'accepte que File | null
+    avatar:     imageFileSchema.nullable().optional(),
+    roleId:     uuidSchema,
 })
 
-export type UserFormValues = z.infer<typeof userFormSchema>
+export type UserRequestInput = z.infer<typeof userRequestSchema>

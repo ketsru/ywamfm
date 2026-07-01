@@ -1,18 +1,28 @@
-// ============================================================
-// book.types.ts
-// ============================================================
+
+export interface BookApiDto {
+  id: string;
+  title: string;
+  author: string;
+  summary: string | null;
+  language: string;
+  image: string | null; // base64 pur, PAS de préfixe data:...
+  content: string | null;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export interface Book {
-  id: string; // UUID
+  id: string; 
   title: string;
   author: string;
   summary?: string | null;
   language: string;
-  image: string; // base64 data-URI (converti depuis byte[] backend)
+  image: string; 
   content?: string | null;
   isActive: boolean;
-  createdAt: string; // ISO 8601
-  updatedAt: string; // ISO 8601
+  createdAt: string; 
+  updatedAt: string; 
 }
 
 export interface BookRequest {
@@ -20,7 +30,7 @@ export interface BookRequest {
   author: string;
   summary?: string | null;
   language: string;
-  image: string; // base64 brut (sans préfixe data-URI)
+  image: string; 
   content?: string | null;
   isActive?: boolean;
 }

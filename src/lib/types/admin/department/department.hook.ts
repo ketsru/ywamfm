@@ -54,7 +54,7 @@ export function useDepartments(
     queryKey: departmentKeys.list(filters),
     queryFn: async () => {
       const raw = await getAllDepartments(filters);
-      return mapApiToDepartmentList(raw as unknown as Record<string, unknown>[]);
+      return mapApiToDepartmentList(raw);
     },
   });
 }
@@ -72,58 +72,9 @@ export function useDepartment(
     queryKey: departmentKeys.detail(id ?? ""),
     queryFn: async () => {
       const raw = await getDepartmentById(id!);
-      return mapApiToDepartment(raw as unknown as Record<string, unknown>);
+      return mapApiToDepartment(raw);
     },
     enabled: Boolean(id),
-  });
-}
-
-// ── CREATE ────────────────────────────────────────────────────
-
-/**
- * Mutation pour créer un département.
- * Invalide toutes les listes après succès.
- */
-export function useCreateDepartment(): UseMutationResult<
-  Department,
-  Error,
-  DepartmentRequest
-> {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (data: DepartmentRequest) => {
-      const raw = await createDepartment(data);
-      return mapApiToDepartment(raw as unknown as Record<string, unknown>);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: departmentKeys.lists() });
-    },
-  });
-}
-
-// ── UPDATE ────────────────────────────────────────────────────
-
-/**
- * Mutation pour mettre à jour un département existant.
- * Invalide la liste et le détail correspondant.
- */
-export function useUpdateDepartment(): UseMutationResult<
-  Department,
-  Error,
-  { id: string; data: DepartmentRequest }
-> {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async ({ id, data }) => {
-      const raw = await updateDepartment(id, data);
-      return mapApiToDepartment(raw as unknown as Record<string, unknown>);
-    },
-    onSuccess: (_updated, { id }) => {
-      queryClient.invalidateQueries({ queryKey: departmentKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: departmentKeys.detail(id) });
-    },
   });
 }
 

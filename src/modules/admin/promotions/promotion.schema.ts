@@ -1,58 +1,42 @@
-// ============================================================
-// promotion.schema.ts
-// ============================================================
+// @/lib/schemas/school/promotion/promotion.schema.ts
 
-import { z } from "zod";
+import { z } from "zod"
+import { uuidSchema } from "@/lib/config/common.schema"
 
-// ── Schéma création / mise à jour ─────────────────────────────
-export const promotionRequestSchema = z.object({
-  schoolId: z
+const nameSchema = z
     .string()
-    .uuid("L'identifiant de l'école doit être un UUID valide")
-    .min(1, "L'école est obligatoire"),
-
-  name: z
-    .string()
+    .min(1, "Le nom est requis")
+    .max(150, "Le nom ne peut pas dépasser 150 caractères")
     .trim()
-    .min(1, "Le nom de la promotion est obligatoire")
-    .max(150, "Le nom ne peut pas dépasser 150 caractères"),
 
-  speciality: z
+// Provisoire : texte libre. À remplacer par un enum si liste fermée.
+const specialitySchema = z
     .string()
+    .min(1, "La spécialité est requise")
+    .max(150)
     .trim()
-    .min(1, "La spécialité est obligatoire")
-    .max(150, "La spécialité ne peut pas dépasser 150 caractères"),
 
-  description: z
+const descriptionSchema = z
     .string()
-    .trim()
-    .max(150, "La description ne peut pas dépasser 150 caractères")
+    .max(1000, "La description ne peut pas dépasser 1000 caractères")
+    .optional()
+    .or(z.literal(""))
     .nullable()
-    .optional(),
 
-  isActive: z.boolean(),
-});
+export const promotionRequestSchema = z.object({
+    schoolId:     uuidSchema,
+    name:         nameSchema,
+    speciality:   specialitySchema,
+    description:  descriptionSchema,
+    isActive:     z.boolean().optional(),
+})
 
-export type PromotionRequestSchema = z.infer<typeof promotionRequestSchema>;
+export type PromotionRequestInput = z.infer<typeof promotionRequestSchema>
 
-// ── Schéma de réponse (validation données API) ────────────────
-export const promotionResponseSchema = z.object({
-  id: z.string().uuid(),
-  schoolId: z.string().uuid(),
-  schoolName: z.string(),
-  name: z.string(),
-  speciality: z.string(),
-  description: z.string().nullable().optional(),
-  isActive: z.boolean(),
-  createdAt: z.string().datetime({ offset: true }),
-  updatedAt: z.string().datetime({ offset: true }),
-});
-
-export type PromotionResponseSchema = z.infer<typeof promotionResponseSchema>;
-
-// ── Schéma des filtres ────────────────────────────────────────
 export const promotionFiltersSchema = z.object({
-  activeOnly: z.boolean().optional(),
-});
+    activeOnly: z.boolean().optional(),
+})
 
-export type PromotionFiltersSchema = z.infer<typeof promotionFiltersSchema>;
+export const promotionBySchoolFiltersSchema = promotionFiltersSchema
+
+export type PromotionFiltersInput = z.infer<typeof promotionFiltersSchema>

@@ -3,13 +3,14 @@
 // ============================================================
 
 import { get, post, put, del } from "@/lib/api/core/apifetch";
+import { PageRequest, PageResponseDto } from "@/lib/api/core/api.types";
 import {
   RegisterSchool,
   RegisterSchoolRequest,
   RegisterSchoolFilters,
 } from "./school.types";
 
-const ENDPOINT = "/api/v1/admin/schools";
+const ENDPOINT = "/api/v1/schools";
 
 // ── CREATE ────────────────────────────────────────────────────
 export const createSchool = (data: RegisterSchoolRequest): Promise<RegisterSchool> =>
@@ -19,24 +20,32 @@ export const createSchool = (data: RegisterSchoolRequest): Promise<RegisterSchoo
 export const getSchoolById = (id: string): Promise<RegisterSchool> =>
   get<RegisterSchool>(`${ENDPOINT}/${id}`);
 
-// ── READ ALL (filtres : status | type+category | aucun) ───────
-// Priorité backend : status > type+category > all
-export const getAllSchools = (filters?: RegisterSchoolFilters): Promise<RegisterSchool[]> => {
-  const params: Record<string, unknown> = {};
+// ── READ ALL (filtres combinables + pagination) ────────────────
+export const getAllSchools = (
+  filters?: RegisterSchoolFilters,
+  pageRequest?: PageRequest
+): Promise<PageResponseDto<RegisterSchool>> => {
+  const params: Record<string, unknown> = {
+    ...(filters?.status   && { status:   filters.status }),
+    ...(filters?.type     && { type:     filters.type }),
+    ...(filters?.category && { category: filters.category }),
+    ...(pageRequest?.page  !== undefined && { page: pageRequest.page }),
+    ...(pageRequest?.size  !== undefined && { size: pageRequest.size }),
+  };
 
-  if (filters?.status) {
-    params.status = filters.status;
-  } else if (filters?.type && filters?.category) {
-    params.type     = filters.type;
-    params.category = filters.category;
-  }
-
-  return get<RegisterSchool[]>(ENDPOINT, params);
+  return get<PageResponseDto<RegisterSchool>>(ENDPOINT, params);
 };
 
 // ── READ BY DEPARTMENT ────────────────────────────────────────
-export const getSchoolsByDepartment = (departmentId: string): Promise<RegisterSchool[]> =>
-  get<RegisterSchool[]>(`${ENDPOINT}/department/${departmentId}`);
+// ⚠️ Le backend ignore actuellement departmentId dans son filtrage réel — voir remarque.
+export const getSchoolsByDepartment = (
+  departmentId: string,
+  pageRequest?: PageRequest
+): Promise<PageResponseDto<RegisterSchool>> =>
+  get<PageResponseDto<RegisterSchool>>(`${ENDPOINT}/department/${departmentId}`, {
+    ...(pageRequest?.page !== undefined && { page: pageRequest.page }),
+    ...(pageRequest?.size !== undefined && { size: pageRequest.size }),
+  });
 
 // ── UPDATE ────────────────────────────────────────────────────
 export const updateSchool = (id: string, data: RegisterSchoolRequest): Promise<RegisterSchool> =>

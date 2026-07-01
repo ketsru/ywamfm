@@ -14,17 +14,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  registerOutreachRequestSchema,
-  imageFileSchema,
-} from "@/modules/outreach/outreach.schema";
-import {
+import { imageFileSchema } from "@/lib/config/common.schema";
+
+import { registerOutreachRequestSchema } from "@/modules/outreach/outreach.schema";
+import { 
   RegisterOutreach,
   OutreachCategory,
   OutreachStatus,
   OUTREACH_CATEGORY_LABELS,
   OUTREACH_STATUS_LABELS,
-} from "@/lib/types/admin/outreach/outreach.types";
+ } from "@/lib/types/admin/outreach/outreach.types";
 
 type RegisterOutreachFormValues = z.output<typeof registerOutreachRequestSchema>;
 

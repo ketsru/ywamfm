@@ -3,7 +3,6 @@
 "use client";
 
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
-import { useRegisterWizard } from "@/modules/auth/wizard/registerWizardContext";
 
 function maskEmail(email: string): string {
   const [local, domain] = email.split("@");
@@ -11,23 +10,34 @@ function maskEmail(email: string): string {
   return `${local[0]}${"*".repeat(local.length - 2)}${local.at(-1)}@${domain}`;
 }
 
-export default function OtpStep() {
-  const { state, setField, countdown, canResend } = useRegisterWizard();
+interface OtpStepProps {
+  email: string;
+  otpCode: string;
+  onChange: (value: string) => void;
+  countdown: number;
+  canResend: boolean;
+  onResend: () => void;
+}
 
+export default function OtpStep({
+  email,
+  otpCode,
+  onChange,
+  countdown,
+  canResend,
+  onResend,
+}: OtpStepProps) {
   return (
     <div className="flex flex-col items-center gap-6 py-2">
-
-      {/* Message */}
       <p className="text-sm text-muted-foreground text-center leading-relaxed">
         Code à 6 chiffres envoyé à{" "}
-        <span className="font-medium text-foreground">{maskEmail(state.email)}</span>
+        <span className="font-medium text-foreground">{maskEmail(email)}</span>
       </p>
 
-      {/* Slots OTP */}
       <InputOTP
         maxLength={6}
-        value={state.otpCode}
-        onChange={(value) => setField("otpCode", value)}
+        value={otpCode}
+        onChange={onChange}
         className="gap-2"
       >
         <InputOTPGroup className="gap-2">
@@ -37,10 +47,18 @@ export default function OtpStep() {
         </InputOTPGroup>
       </InputOTP>
 
-      {/* Renvoi — le click est géré par onAction dans RegisterWizard */}
       <p className="text-xs text-muted-foreground">
         Pas reçu ?{" "}
         <span
+          onClick={canResend ? onResend : undefined}
+          role="button"
+          tabIndex={canResend ? 0 : -1}
+          onKeyDown={(e) => {
+            if (canResend && (e.key === "Enter" || e.key === " ")) {
+              e.preventDefault();
+              onResend();
+            }
+          }}
           className={[
             "font-medium transition-colors duration-200",
             canResend

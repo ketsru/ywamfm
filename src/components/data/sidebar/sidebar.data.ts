@@ -1,5 +1,5 @@
 
-import { SidebarSection } from "@/lib/types/sidebar/items"
+import { SidebarSection } from "@/lib/types/sidebar/menu"
 import {
   LayoutDashboard,
   User2,
@@ -15,7 +15,7 @@ import {
   History,
 } from "lucide-react"
 
-export const adminMenu: SidebarSection[] = [
+export const sidebarMenu: SidebarSection[] = [
   {
     id: "main",
     items: [

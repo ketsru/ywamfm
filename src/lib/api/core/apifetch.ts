@@ -1,4 +1,3 @@
-// src/api/core/apifetch.ts
 
 import { ENV } from "@/lib/config/env";
 import { ApiResponse } from "./api.types";

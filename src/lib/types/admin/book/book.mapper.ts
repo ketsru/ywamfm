@@ -2,26 +2,26 @@
 // book.mapper.ts
 // ============================================================
 
-import { Book, BookRequest } from "./book.types";
+import { Book, BookRequest, BookApiDto } from "./book.types";
 
 // ── Réponse API → type frontend ───────────────────────────────
 
-export function mapApiToBook(raw: Record<string, unknown>): Book {
+export function mapApiToBook(raw: BookApiDto): Book {
   return {
-    id: raw.id as string,
-    title: raw.title as string,
-    author: raw.author as string,
-    summary: (raw.summary as string | null) ?? null,
-    language: raw.language as string,
-    image: toImageDataUri(raw.image as string | null | undefined),
-    content: (raw.content as string | null) ?? null,
-    isActive: raw.isActive as boolean,
-    createdAt: raw.createdAt as string,
-    updatedAt: raw.updatedAt as string,
+    id: raw.id,
+    title: raw.title,
+    author: raw.author,
+    summary: raw.summary ?? null,
+    language: raw.language,
+    image: toImageDataUri(raw.image),
+    content: raw.content ?? null,
+    isActive: raw.isActive,
+    createdAt: raw.createdAt,
+    updatedAt: raw.updatedAt,
   };
 }
 
-export function mapApiToBookList(rawList: Record<string, unknown>[]): Book[] {
+export function mapApiToBookList(rawList: BookApiDto[]): Book[] {
   return rawList.map(mapApiToBook);
 }
 

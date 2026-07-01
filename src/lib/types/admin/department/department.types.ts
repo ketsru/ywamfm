@@ -2,6 +2,16 @@
 // department.types.ts
 // ============================================================
 
+export interface DepartmentApiDto {
+  id: string;
+  name: string;
+  description: string | null;
+  image: string | null; // base64 pur, PAS de préfixe data:...
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Department {
   id: string; // UUID
   name: string;

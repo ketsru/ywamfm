@@ -1,7 +1,31 @@
-
-// -------------------- REQUESTS --------------------
+// @/lib/types/access/auth/auth.types.ts
 
 import { UserResponseDto } from "../../users/user/user.types";
+
+
+export type OtpPurpose = "REGISTRATION" | "LOGIN" | "PASSWORD_RESET";
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface LoginInitResponse {
+  challengeToken: string;
+  message: string;
+}
+
+export interface VerifyLoginOtpRequest {
+  challengeToken: string;
+  code: string;
+}
+
+export interface LoginResponse {
+  token: string;
+  message: string;
+  user: UserResponseDto; // ← réutilise ton type existant, plus de duplication
+  mustChangePassword: boolean;
+}
 
 export interface RegisterRequest {
   firstName: string;
@@ -9,14 +33,22 @@ export interface RegisterRequest {
   email: string;
   password: string;
   passwordConfirmation: string;
-  role: { name: string };
 }
 
-export interface LoginRequest {
+export interface VerifyOtpRequest {
   email: string;
-  password: string;
-  ipAddress?: string;
-  userAgent?: string;
+  code: string;
+}
+
+export interface ResendOtpRequest {
+  email: string;
+  purpose?: OtpPurpose;
+}
+
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+  newPasswordConfirmation: string;
 }
 
 export interface PasswordResetRequest {
@@ -30,53 +62,16 @@ export interface PasswordResetConfirmRequest {
   newPasswordConfirmation: string;
 }
 
-export interface DeleteAccountRequest {
-  password: string;
-}
-
-// -------------------- OTP --------------------
-
-export interface VerifyOtpRequest {
-  email: string;
-  code: string;
-}
-
-export interface ResendOtpRequest {
-  email: string;
-}
-
-// -------------------- RESPONSES --------------------
-
-export interface LoginResponse {
-  token: string;
-  message: string;
-  user: UserResponseDto;
-}
-
-export interface LoginResult {
-  token: string;
-  user: UserResponseDto;
-}
-
-// Création d'un compte managé (par un centre)
 export interface CreateManagedAccountRequest {
   firstName: string;
-  lastName:  string;
-  email:     string;
-  roleKey:   string; // "BTP_PROVIDER"
+  lastName: string;
+  email: string;
+  roleKey: string;
 }
 
 export interface CreateManagedAccountResponse {
-  id:        string;
-  email:     string;
+  id: string;
+  email: string;
   firstName: string;
-  lastName:  string;
-  roleKey:   string;
-}
-
-// Changement de mot de passe (premier login)
-export interface ChangePasswordRequest {
-  currentPassword:         string;
-  newPassword:             string;
-  newPasswordConfirmation: string;
+  lastName: string;
 }

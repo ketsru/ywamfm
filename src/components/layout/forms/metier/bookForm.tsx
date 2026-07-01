@@ -9,8 +9,11 @@ import { Field, FieldLabel, FieldDescription } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { bookRequestSchema, imageFileSchema } from "@/modules/books/book.schema";
+import { bookRequestSchema } from "@/modules/books/book.schema";
 import { Book } from "@/lib/types/admin/book/book.types";
+import { imageFileSchema } from "@/lib/config/common.schema";
+import { ImageUploader } from "@/modules/shared/imageUploader";
+
 
 type BookFormValues = z.output<typeof bookRequestSchema>;
 
@@ -44,14 +47,13 @@ export function BookForm({ formId, defaultValues, onSubmit }: BookFormProps) {
   const isActive   = watch("isActive");
   const imageValue = watch("image");
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleImageChange = (fileOrFiles?: File | File[]) => {
+    const file = Array.isArray(fileOrFiles) ? fileOrFiles[0] : fileOrFiles;
     if (!file) return;
 
     const result = imageFileSchema.safeParse(file);
     if (!result.success) {
       setValue("image", "", { shouldValidate: true });
-      e.target.value = "";
       return;
     }
 
@@ -150,12 +152,10 @@ export function BookForm({ formId, defaultValues, onSubmit }: BookFormProps) {
             className="mb-2 h-24 w-16 rounded-lg object-cover border"
           />
         )}
-        <Input
-          id="book-image"
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
+        <ImageUploader
+          value={imageValue}
           onChange={handleImageChange}
-          className="cursor-pointer"
+          existingUrls={defaultValues?.image}
         />
         <FieldDescription>Format JPG, PNG ou WEBP · Max 5 Mo</FieldDescription>
         {errors.image && (

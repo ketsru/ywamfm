@@ -10,7 +10,7 @@ import {
   PromotionBySchoolFilters,
 } from "./promotion.types";
 
-const ENDPOINT = "/api/v1/admin/promotions";
+const ENDPOINT = "/api/v1/promotions";
 
 // ── CREATE ────────────────────────────────────────────────────
 export const createPromotion = (data: PromotionRequest): Promise<Promotion> =>

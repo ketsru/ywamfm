@@ -1,5 +1,5 @@
 import { LoginResponse } from "./auth.types";
-import { User, UserResponseDto } from "../users/user.types";
+import { User, UserResponseDto } from "../../users/user/user.types";
 
 // mapper user
 export const mapUser = (dto: UserResponseDto): User => ({

@@ -5,7 +5,7 @@
 import { get, post, put, del } from "@/lib/api/core/apifetch";
 import { Preacher, PreacherRequest, PreacherFilters } from "./preacher.types";
 
-const ENDPOINT = "/api/v1/admin/preachers";
+const ENDPOINT = "/api/v1/preachers";
 
 // ── CREATE ────────────────────────────────────────────────────
 export const createPreacher = (data: PreacherRequest): Promise<Preacher> =>

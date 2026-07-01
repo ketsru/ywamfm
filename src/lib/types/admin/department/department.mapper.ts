@@ -3,11 +3,10 @@
 // ============================================================
 //
 // Responsabilité : transformer les données brutes de l'API
-// (snake_case, byte[], dates ISO) vers les types frontend,
-// et inversement (FormData / state → DepartmentRequest).
+// vers les types frontend, et inversement (FormData / state → DepartmentRequest).
 // ============================================================
 
-import { Department, DepartmentRequest } from "./department.types";
+import { Department, DepartmentRequest, DepartmentApiDto } from "./department.types";
 
 // ── Réponse API → type frontend ───────────────────────────────
 
@@ -16,26 +15,22 @@ import { Department, DepartmentRequest } from "./department.types";
  * Le backend sérialise le champ `image` (byte[]) en base64.
  * On préfixe avec le data-URI si nécessaire pour l'affichage <img>.
  */
-export function mapApiToDepartment(raw: Record<string, unknown>): Department {
-  const imageRaw = raw.image as string | null | undefined;
-
+export function mapApiToDepartment(raw: DepartmentApiDto): Department {
   return {
-    id: raw.id as string,
-    name: raw.name as string,
-    description: (raw.description as string | null) ?? null,
-    image: toImageDataUri(imageRaw),
-    isActive: raw.isActive as boolean,
-    createdAt: raw.createdAt as string,
-    updatedAt: raw.updatedAt as string,
+    id: raw.id,
+    name: raw.name,
+    description: raw.description ?? null,
+    image: toImageDataUri(raw.image),
+    isActive: raw.isActive,
+    createdAt: raw.createdAt,
+    updatedAt: raw.updatedAt,
   };
 }
 
 /**
  * Mappe un tableau de réponses brutes.
  */
-export function mapApiToDepartmentList(
-  rawList: Record<string, unknown>[]
-): Department[] {
+export function mapApiToDepartmentList(rawList: DepartmentApiDto[]): Department[] {
   return rawList.map(mapApiToDepartment);
 }
 
