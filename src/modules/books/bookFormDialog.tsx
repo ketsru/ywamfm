@@ -1,37 +1,54 @@
 // @/modules/books/components/BookFormDialog.tsx
+
 "use client";
 
 import * as React from "react";
 import { toast } from "sonner";
-import { ValidationError } from "@/lib/api/core/http-errors";
 import { handleApiError } from "@/lib/api/handles/handle-api-error";
-import { CrudDialog } from "@/modules/shared/crudDialog";
-import { Book, BookRequest } from "@/lib/types/admin/book/book.types";
+import { Book, BookApiDto, BookRequest } from "@/lib/types/admin/book/book.types";
 import { createBook, updateBook } from "@/lib/types/admin/book/book.service";
+import { CrudDialog } from "@/modules/shared/crudDialog";
+import { ValidationError } from "@/lib/api/core/http-errors";
 import { BookForm } from "@/components/layout/forms/metier/bookForm";
 
 interface BookFormDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   book?: Book;
-  onSuccess?: (book: Book) => void;
+  onSuccess?: (book: BookApiDto) => void;
 }
 
-export function BookFormDialog({ open, onOpenChange, book, onSuccess }: BookFormDialogProps) {
+export function BookFormDialog({
+  open,
+  onOpenChange,
+  book,
+  onSuccess,
+}: BookFormDialogProps) {
   const isEdit = !!book;
 
-  const [formData,     setFormData]     = React.useState<BookRequest | null>(null);
+  const [formData, setFormData]         = React.useState<BookRequest | null>(null);
+  const [formIsValid, setFormIsValid]   = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [error,        setError]        = React.useState<string | undefined>();
+  const [error, setError]               = React.useState<string | undefined>();
 
   React.useEffect(() => {
-    if (open) { setFormData(null); setError(undefined); }
+    if (open) {
+      setFormData(null);
+      setFormIsValid(false);
+      setError(undefined);
+    }
   }, [open]);
 
+  const handleFormChange = React.useCallback((data: BookRequest, isValid: boolean) => {
+    setFormData(data);
+    setFormIsValid(isValid);
+  }, []);
+
   const handleConfirm = async () => {
-    if (!formData?.title?.trim())  { setError("Le titre est obligatoire.");  return; }
-    if (!formData?.author?.trim()) { setError("L'auteur est obligatoire."); return; }
-    if (!formData?.language?.trim()) { setError("La langue est obligatoire."); return; }
+    if (!formData || !formIsValid) {
+      setError("Veuillez corriger les champs invalides avant de continuer.");
+      return;
+    }
 
     try {
       setIsSubmitting(true);
@@ -71,7 +88,11 @@ export function BookFormDialog({ open, onOpenChange, book, onSuccess }: BookForm
       onConfirm={handleConfirm}
       preventOutsideClose={isSubmitting}
     >
-      <BookForm defaultValues={book} onChange={setFormData} error={error} />
+      <BookForm
+        defaultValues={book}
+        onChange={handleFormChange}
+        error={error}
+      />
     </CrudDialog>
   );
 }

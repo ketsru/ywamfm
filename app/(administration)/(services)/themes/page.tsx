@@ -1,5 +1,5 @@
 
-import { ThemeDataTable } from "@/modules/admin/themes/themeDataTable";
+import { ThemeDataTable } from "@/modules/themes/themeDataTable";
 import { CreditCard } from "lucide-react";
 
 

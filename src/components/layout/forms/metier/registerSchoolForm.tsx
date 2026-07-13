@@ -1,6 +1,7 @@
 // @/modules/schools/components/RegisterSchoolForm.tsx
 "use client";
 
+import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -16,6 +17,7 @@ import {
 import { registerSchoolRequestSchema } from "@/modules/schools/school.schema";
 import {
   RegisterSchool,
+  RegisterSchoolRequest,
   SchoolType,
   SchoolCategory,
   SchoolStatus,
@@ -23,46 +25,66 @@ import {
   SCHOOL_CATEGORY_LABELS,
   SCHOOL_STATUS_LABELS,
 } from "@/lib/types/admin/school/school.types";
+import { ImageUploader } from "@/modules/shared/imageUploader";
 
 type RegisterSchoolFormValues = z.output<typeof registerSchoolRequestSchema>;
 
 type RegisterSchoolFormProps = {
-  formId: string;
   defaultValues?: RegisterSchool;
   departments: { id: string; name: string }[];
-  onSubmit: (data: RegisterSchoolFormValues) => void;
+  onChange: (data: RegisterSchoolRequest, isValid: boolean) => void;
+  error?: string;
 };
 
 export function RegisterSchoolForm({
-  formId,
   defaultValues,
   departments,
-  onSubmit,
+  onChange,
+  error,
 }: RegisterSchoolFormProps) {
 
   const {
     register,
-    handleSubmit,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<RegisterSchoolFormValues>({
     resolver: zodResolver(registerSchoolRequestSchema),
+    mode: "onChange",
     defaultValues: {
       departmentId: defaultValues?.departmentId ?? "",
       name:         defaultValues?.name         ?? "",
       type:         defaultValues?.type         ?? SchoolType.EN_PRESENTIELLE,
       category:     defaultValues?.category     ?? SchoolCategory.GRATUITE,
+      image:        defaultValues?.image        ?? null,
       price:        defaultValues?.price        ?? null,
       status:       defaultValues?.status       ?? SchoolStatus.EN_ATTENTE,
       duration:     defaultValues?.duration     ?? undefined,
     },
   });
 
-  const category = watch("category");
+  React.useEffect(() => {
+    const subscription = watch((values) => {
+      onChange(values as RegisterSchoolRequest, isValid);
+    });
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watch, isValid]);
+
+  const category   = watch("category");
+  const imageValue = watch("image");
+
+  const currentFile = imageValue instanceof File ? imageValue : undefined;
+  const existingUrl = typeof imageValue === "string" ? imageValue : undefined;
 
   return (
-    <form id={formId} onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+    <div className="space-y-5">
+
+      {error && (
+        <p className="text-sm text-destructive rounded-md bg-destructive/10 px-3 py-2" role="alert">
+          {error}
+        </p>
+      )}
 
       {/* Département */}
       <Field>
@@ -154,6 +176,21 @@ export function RegisterSchoolForm({
         )}
       </Field>
 
+      {/* Image */}
+      <Field>
+        <FieldLabel htmlFor="school-image">Image</FieldLabel>
+        <ImageUploader
+          value={currentFile}
+          existingUrls={existingUrl}
+          onChange={(file) => setValue("image", (file as File) ?? null, { shouldValidate: true })}
+          multiple={false}
+        />
+        <FieldDescription>Format JPG, PNG ou WEBP · Max 5 Mo</FieldDescription>
+        {errors.image && (
+          <p className="text-sm text-destructive" role="alert">{errors.image.message as string}</p>
+        )}
+      </Field>
+
       {/* Prix — visible uniquement si PAYANTE */}
       {category === SchoolCategory.PAYANTE && (
         <Field>
@@ -218,6 +255,6 @@ export function RegisterSchoolForm({
         )}
       </Field>
 
-    </form>
+    </div>
   );
 }

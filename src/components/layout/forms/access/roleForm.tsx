@@ -1,13 +1,10 @@
 // src/modules/roles/roleForm.tsx
-
 "use client"
 
 import * as React from "react"
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Loader2 } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
@@ -29,19 +26,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Role, RoleKey, RoleRequestDto } from "@/lib/types/access/role/role.types"
 import { PermissionKey } from "@/lib/types/access/permissions/permisionKey"
 import { roleFormSchema, RoleFormValues } from "@/modules/roleAndPermissions/role.schema"
 
-
 const ROLE_KEY_LABELS: Record<RoleKey, string> = {
   [RoleKey.ADMIN]: "Administrateur",
-  [RoleKey.BTP_PROVIDER]: "Prestataire BTP",
-  [RoleKey.SERVICE_SEEKER]: "Demandeur de service",
-  [RoleKey.MATERIAL_SUPPLIER]: "Fournisseur de matériel",
-  [RoleKey.TRAINING_CENTER]: "Centre de formation",
+  [RoleKey.STUDENT]: "Étudiant",
+  [RoleKey.STAFF]: "Personnel",
+  [RoleKey.MANAGER]: "Responsable",
+  [RoleKey.SECRETARY]: "Secrétaire",
   [RoleKey.USER]: "Utilisateur",
 }
 
@@ -59,37 +54,49 @@ function groupPermissions(): Record<string, PermissionKey[]> {
 const PERMISSION_GROUPS = groupPermissions()
 
 interface RoleFormProps {
-  role?: Role
-  onSubmit: (data: RoleRequestDto) => Promise<void> | void
-  onCancel?: () => void
-  isSubmitting?: boolean
+  defaultValues?: Role;
+  onChange: (data: RoleRequestDto, isValid: boolean) => void;
+  error?: string;
 }
 
-export function RoleForm({
-  role,
-  onSubmit,
-  onCancel,
-  isSubmitting = false,
-}: RoleFormProps) {
+export function RoleForm({ defaultValues, onChange, error }: RoleFormProps) {
+  const isEditMode = Boolean(defaultValues)
+
   const {
     register,
-    handleSubmit,
     control,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<RoleFormValues>({
     resolver: zodResolver(roleFormSchema),
+    mode: "onChange", // nécessaire pour que isValid reflète l'état en temps réel
     defaultValues: {
-      key: role?.key ?? undefined,
-      name: role?.name ?? "",
-      description: role?.description ?? "",
-      active: role?.active ?? true,
-      permissions: role?.permissions ?? [],
+      key:         defaultValues?.key ?? undefined,
+      name:        defaultValues?.name ?? "",
+      description: defaultValues?.description ?? "",
+      active:      defaultValues?.active ?? true,
+      permissions: defaultValues?.permissions ?? [],
     },
   })
 
-  const isEditMode = Boolean(role)
+  // Remonte chaque changement de champ au parent (pas de bouton submit interne :
+  // c'est CrudDialog qui déclenche la création/mise à jour via handleConfirm).
+  React.useEffect(() => {
+    const subscription = watch((values) => {
+      const dto: RoleRequestDto = {
+        key:         values.key as string,
+        name:        values.name ?? "",
+        description: values.description ?? "",
+        active:      values.active,
+        permissions: values.permissions as PermissionKey[] | undefined,
+      }
+      onChange(dto, isValid)
+    })
+    return () => subscription.unsubscribe()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watch, isValid])
+
   const selectedPermissions = watch("permissions")
 
   function togglePermission(permission: PermissionKey, checked: boolean) {
@@ -110,191 +117,158 @@ export function RoleForm({
     setValue("permissions", Array.from(current), { shouldValidate: true })
   }
 
-  async function handleFormSubmit(values: RoleFormValues) {
-    const dto: RoleRequestDto = {
-      key: values.key,
-      name: values.name,
-      description: values.description ?? "",
-      active: values.active,
-      permissions: values.permissions,
-    }
-    await onSubmit(dto)
-  }
-
   return (
-    <Card className="w-full max-w-2xl">
-      <CardHeader>
-        <CardTitle>{isEditMode ? "Modifier le rôle" : "Créer un rôle"}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit(handleFormSubmit)}>
-          <FieldGroup>
-            {/* Clé de rôle */}
-            <Field data-invalid={!!errors.key}>
-              <FieldLabel htmlFor="key">Clé du rôle</FieldLabel>
-              <Controller
-                control={control}
-                name="key"
-                render={({ field }) => (
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger id="key" aria-invalid={!!errors.key}>
-                      <SelectValue placeholder="Sélectionner une clé" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.values(RoleKey).map((key) => (
-                        <SelectItem key={key} value={key}>
-                          {ROLE_KEY_LABELS[key]}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              {errors.key && <FieldError errors={[errors.key]} />}
-            </Field>
+    <FieldGroup>
 
-            {/* Nom */}
-            <Field data-invalid={!!errors.name}>
-              <FieldLabel htmlFor="name">Nom</FieldLabel>
-              <Input
-                id="name"
-                placeholder="Administrateur"
-                aria-invalid={!!errors.name}
-                {...register("name")}
-              />
-              {errors.name && <FieldError errors={[errors.name]} />}
-            </Field>
+      {/* Erreur globale remontée par le dialog (ex: échec API) */}
+      {error && (
+        <p className="text-sm text-destructive rounded-md bg-destructive/10 px-3 py-2" role="alert">
+          {error}
+        </p>
+      )}
 
-            {/* Description */}
-            <Field data-invalid={!!errors.description}>
-              <FieldLabel htmlFor="description">Description</FieldLabel>
-              <Textarea
-                id="description"
-                placeholder="Décrivez le périmètre de ce rôle..."
-                rows={3}
-                {...register("description")}
-              />
-              {errors.description && (
-                <FieldError errors={[errors.description]} />
-              )}
-            </Field>
+      {/* Clé de rôle */}
+      <Field data-invalid={!!errors.key}>
+        <FieldLabel htmlFor="key">Clé du rôle</FieldLabel>
+        <Controller
+          control={control}
+          name="key"
+          render={({ field }) => (
+            <Select value={field.value} onValueChange={field.onChange} disabled={isEditMode}>
+              <SelectTrigger id="key" aria-invalid={!!errors.key}>
+                <SelectValue placeholder="Sélectionner une clé" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(RoleKey)
+                  .filter((key) => key !== RoleKey.ADMIN || isEditMode)
+                  .map((key) => (
+                    <SelectItem key={key} value={key}>
+                      {ROLE_KEY_LABELS[key]}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+          )}
+        />
+        {errors.key && <FieldError errors={[errors.key]} />}
+        {isEditMode && (
+          <FieldDescription>La clé d'un rôle ne peut pas être modifiée après création.</FieldDescription>
+        )}
+      </Field>
 
-            {/* Actif */}
-            <Field orientation="horizontal">
-              <FieldLabel htmlFor="active">Rôle actif</FieldLabel>
-              <Controller
-                control={control}
-                name="active"
-                render={({ field }) => (
-                  <Switch
-                    id="active"
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                )}
-              />
-              <FieldDescription>
-                Un rôle inactif ne peut plus être assigné aux utilisateurs.
-              </FieldDescription>
-            </Field>
+      {/* Nom */}
+      <Field data-invalid={!!errors.name}>
+        <FieldLabel htmlFor="name">Nom</FieldLabel>
+        <Input
+          id="name"
+          placeholder="Administrateur"
+          aria-invalid={!!errors.name}
+          {...register("name")}
+        />
+        {errors.name && <FieldError errors={[errors.name]} />}
+      </Field>
 
-            <FieldSeparator />
+      {/* Description */}
+      <Field data-invalid={!!errors.description}>
+        <FieldLabel htmlFor="description">Description</FieldLabel>
+        <Textarea
+          id="description"
+          placeholder="Décrivez le périmètre de ce rôle..."
+          rows={3}
+          {...register("description")}
+        />
+        {errors.description && <FieldError errors={[errors.description]} />}
+      </Field>
 
-            {/* Permissions */}
-            <FieldSet>
-              <FieldLegend>Permissions</FieldLegend>
-              <FieldDescription>
-                Sélectionnez les permissions accordées à ce rôle.
-              </FieldDescription>
+      {/* Actif */}
+      <Field orientation="horizontal">
+        <FieldLabel htmlFor="active">Rôle actif</FieldLabel>
+        <Controller
+          control={control}
+          name="active"
+          render={({ field }) => (
+            <Switch
+              id="active"
+              checked={field.value}
+              onCheckedChange={field.onChange}
+            />
+          )}
+        />
+        <FieldDescription>
+          Un rôle inactif ne peut plus être assigné aux utilisateurs.
+        </FieldDescription>
+      </Field>
 
-              <ScrollArea className="h-80 rounded-md border p-4">
-                <div className="space-y-5">
-                  {Object.entries(PERMISSION_GROUPS).map(([group, perms]) => {
-                    const allChecked = perms.every((p) =>
-                      selectedPermissions?.includes(p)
-                    )
-                    const someChecked = perms.some((p) =>
-                      selectedPermissions?.includes(p)
-                    )
+      <FieldSeparator />
 
-                    return (
-                      <div key={group} className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <Checkbox
-                            id={`group-${group}`}
-                            checked={
-                              allChecked
-                                ? true
-                                : someChecked
-                                ? "indeterminate"
-                                : false
-                            }
-                            onCheckedChange={(checked) =>
-                              toggleGroup(perms, checked === true)
-                            }
-                          />
-                          <label
-                            htmlFor={`group-${group}`}
-                            className="text-sm font-semibold"
-                          >
-                            {group}
-                          </label>
-                        </div>
-                        <div className="ml-6 grid grid-cols-2 gap-2">
-                          {perms.map((perm) => (
-                            <div
-                              key={perm}
-                              className="flex items-center gap-2"
-                            >
-                              <Checkbox
-                                id={perm}
-                                checked={selectedPermissions?.includes(perm)}
-                                onCheckedChange={(checked) =>
-                                  togglePermission(perm, checked === true)
-                                }
-                              />
-                              <label
-                                htmlFor={perm}
-                                className="text-xs text-muted-foreground"
-                              >
-                                {perm}
-                              </label>
-                            </div>
-                          ))}
-                        </div>
+      {/* Permissions */}
+      <FieldSet>
+        <FieldLegend>Permissions</FieldLegend>
+        <FieldDescription>
+          Sélectionnez les permissions accordées à ce rôle.
+        </FieldDescription>
+
+        <ScrollArea className="h-80 rounded-md border p-4">
+          <div className="space-y-5">
+            {Object.entries(PERMISSION_GROUPS).map(([group, perms]) => {
+              const allChecked = perms.every((p) =>
+                selectedPermissions?.includes(p)
+              )
+              const someChecked = perms.some((p) =>
+                selectedPermissions?.includes(p)
+              )
+
+              return (
+                <div key={group} className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id={`group-${group}`}
+                      checked={
+                        allChecked
+                          ? true
+                          : someChecked
+                          ? "indeterminate"
+                          : false
+                      }
+                      onCheckedChange={(checked) =>
+                        toggleGroup(perms, checked === true)
+                      }
+                    />
+                    <label
+                      htmlFor={`group-${group}`}
+                      className="text-sm font-semibold"
+                    >
+                      {group}
+                    </label>
+                  </div>
+                  <div className="ml-6 grid grid-cols-2 gap-2">
+                    {perms.map((perm) => (
+                      <div key={perm} className="flex items-center gap-2">
+                        <Checkbox
+                          id={perm}
+                          checked={selectedPermissions?.includes(perm)}
+                          onCheckedChange={(checked) =>
+                            togglePermission(perm, checked === true)
+                          }
+                        />
+                        <label
+                          htmlFor={perm}
+                          className="text-xs text-muted-foreground"
+                        >
+                          {perm}
+                        </label>
                       </div>
-                    )
-                  })}
+                    ))}
+                  </div>
                 </div>
-              </ScrollArea>
+              )
+            })}
+          </div>
+        </ScrollArea>
 
-              {errors.permissions && (
-                <FieldError errors={[errors.permissions]} />
-              )}
-            </FieldSet>
+        {errors.permissions && <FieldError errors={[errors.permissions]} />}
+      </FieldSet>
 
-            {/* Actions */}
-            <div className="flex justify-end gap-3 pt-2">
-              {onCancel && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={onCancel}
-                  disabled={isSubmitting}
-                >
-                  Annuler
-                </Button>
-              )}
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting && (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                )}
-                {isEditMode ? "Enregistrer" : "Créer le rôle"}
-              </Button>
-            </div>
-          </FieldGroup>
-        </form>
-      </CardContent>
-    </Card>
+    </FieldGroup>
   )
 }

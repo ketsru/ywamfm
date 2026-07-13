@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, useEffect }          from "react";
-import { useRouter }                      from "next/navigation";
+import { useRouter, usePathname }        from "next/navigation";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar                          from "@/components/app-sidebar";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -10,11 +10,14 @@ import ProfileDropdown from "@/components/layout/student/student-header";
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const { user, loading } = useCurrentUser();
   const router            = useRouter();
+  const pathname          = usePathname();
 
   useEffect(() => {
     if (loading) return;
-    if (!user) router.replace("/");
-  }, [user, loading, router]);
+    if (!user) {
+      router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
+    }
+  }, [user, loading, router, pathname]);
 
   if (loading) {
     return (

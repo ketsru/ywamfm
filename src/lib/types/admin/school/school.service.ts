@@ -2,7 +2,8 @@
 // register-school.service.ts
 // ============================================================
 
-import { get, post, put, del } from "@/lib/api/core/apifetch";
+import { get, del, postFormData, putFormData, patchFormData } from "@/lib/api/core/apifetch";
+import { buildMultipartFormData } from "@/lib/api/core/form-data.util";
 import { PageRequest, PageResponseDto } from "@/lib/api/core/api.types";
 import {
   RegisterSchool,
@@ -13,8 +14,9 @@ import {
 const ENDPOINT = "/api/v1/schools";
 
 // ── CREATE ────────────────────────────────────────────────────
+// multipart obligatoire côté back (@RequestPart "data" + "image" optionnelle)
 export const createSchool = (data: RegisterSchoolRequest): Promise<RegisterSchool> =>
-  post<RegisterSchoolRequest, RegisterSchool>(ENDPOINT, data);
+  postFormData<RegisterSchool>(ENDPOINT, buildMultipartFormData(data));
 
 // ── READ ONE ──────────────────────────────────────────────────
 export const getSchoolById = (id: string): Promise<RegisterSchool> =>
@@ -37,7 +39,7 @@ export const getAllSchools = (
 };
 
 // ── READ BY DEPARTMENT ────────────────────────────────────────
-// ⚠️ Le backend ignore actuellement departmentId dans son filtrage réel — voir remarque.
+// Le backend ignore actuellement departmentId dans son filtrage réel — voir remarque.
 export const getSchoolsByDepartment = (
   departmentId: string,
   pageRequest?: PageRequest
@@ -47,9 +49,17 @@ export const getSchoolsByDepartment = (
     ...(pageRequest?.size !== undefined && { size: pageRequest.size }),
   });
 
-// ── UPDATE ────────────────────────────────────────────────────
+// ── UPDATE (données + image en un seul appel) ──────────────────
 export const updateSchool = (id: string, data: RegisterSchoolRequest): Promise<RegisterSchool> =>
-  put<RegisterSchoolRequest, RegisterSchool>(`${ENDPOINT}/${id}`, data);
+  putFormData<RegisterSchool>(`${ENDPOINT}/${id}`, buildMultipartFormData(data));
+
+// ── UPDATE IMAGE SEULE ───────────────────────────────────────────
+// endpoint dédié : PATCH /{id}/image, image obligatoire (pas de "data")
+export const updateSchoolImage = (id: string, image: File): Promise<RegisterSchool> => {
+  const formData = new FormData();
+  formData.append("image", image);
+  return patchFormData<RegisterSchool>(`${ENDPOINT}/${id}/image`, formData);
+};
 
 // ── DELETE ────────────────────────────────────────────────────
 export const deleteSchool = (id: string): Promise<void> =>

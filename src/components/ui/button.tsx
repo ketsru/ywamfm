@@ -19,6 +19,9 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
+        // Variante charte : bordeaux Togo — CTA à forte visibilité (dons, mise en avant pays)
+        accent:
+          "bg-brand-bordeaux text-white hover:bg-brand-bordeaux/90 focus-visible:ring-brand-bordeaux/30",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

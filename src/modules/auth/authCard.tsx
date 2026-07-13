@@ -65,7 +65,7 @@ export function AuthCard({
     onSecondaryAction,
 }: AuthCardProps) {
     return (
-        <Card className={`w-full max-w-4xl mx-auto mt-10 md:mt-5 shadow-none border border-gray-200 ${cardClassName ?? ""}`}>
+        <Card className={`min-w-xl mx-auto mt-10 md:mt-5 shadow-none border border-gray-200 ${cardClassName ?? ""}`}>
             <CardHeader>
                 <CardTitle className="text-lg">{title}</CardTitle>
                 {description ? (

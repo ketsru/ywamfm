@@ -1,84 +1,87 @@
-import { ColumnDef } from "@tanstack/react-table"
-import { Button } from "@/components/ui/button"
-import { ArrowUpDown } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
-import { Article } from "@/lib/types/communications/newsletter/blog.types"
+// @/modules/blog/components/articleColumns.tsx
+"use client";
 
-export const columns: ColumnDef<Article>[] = [
-    {
-        accessorKey: "image",
-        header: "Image",
-        cell: ({ row }) => {
-            const image = row.getValue<Article["image"]>("image")
-            return (
-                <Image
-                src={image.src}
-                alt={image.alt}
-                width={80}
-                height={80}
-                className="h-16 w-16 rounded-md object-cover"
-                />
-            )
-        },
+import { ColumnDef } from "@tanstack/react-table";
+import { Badge } from "@/components/ui/badge";
+import { Article, ARTICLE_TYPE_LABELS } from "@/lib/types/communications/newsletter/blog.types";
+import { ArticleActionsCell } from "./blogActionCell";
+
+interface ColumnOptions {
+  onEdit?:          (a: Article) => void;
+  onTogglePublish?: (id: string) => void;
+  onDelete?:        (id: string) => void;
+}
+
+export const articleColumns = (opts: ColumnOptions): ColumnDef<Article>[] => [
+  {
+    id: "image",
+    header: "",
+    cell: ({ row }) => {
+      const { imageUrl, imageAlt, title } = row.original;
+      return imageUrl ? (
+        <img
+          src={imageUrl}
+          alt={imageAlt ?? title}
+          className="h-9 w-9 rounded-lg object-cover border shrink-0"
+        />
+      ) : (
+        <div className="h-9 w-9 rounded-lg bg-muted flex items-center justify-center text-xs text-muted-foreground shrink-0">
+          —
+        </div>
+      );
     },
-    {
-        accessorKey: "title",
-        header: ({ column }) => (
-            <Button
-                variant="ghost"
-                onClick={() =>
-                column.toggleSorting(column.getIsSorted() === "asc")
-                }
-                className="font-extrabold"
-            >
-                Titre
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        ),
-        cell: ({ row }) => (
-            <div className="font-medium">{row.getValue("title")}</div>
-        ),
-    },
-    {
-        accessorKey: "excerpt",
-        header: "Résumé",
-        cell: ({ row }) => (
-            <div className="max-w-[300px] truncate text-muted-foreground">
-                {row.getValue("excerpt")}
-            </div>
-        ),
-    },
-    {
-        accessorKey: "type",
-        header: "Type",
-        cell: ({ row }) => (
-            <div className="font-medium">{row.getValue("type")}</div>
-        ),
-    },
-    {
-        accessorKey: "episode",
-        header: "Épisode",
-        cell: ({ row }) => {
-            const episode = row.getValue<string>("episode")
-            return episode ? (
-                <div className="font-medium">{episode}</div>
-            ) : (
-                <span className="text-muted-foreground">—</span>
-            )
-        },
-    },
-    {
-        accessorKey: "actionLabel",
-        header: "Action",
-        cell: ({ row }) => {
-            const slug = row.getValue<string>("slug")
-            const label = row.getValue<string>("actionLabel")
-            return (
-                <Link href={`/articles/${slug}`} className="text-blue-600 underline">
-                {label}
-                </Link>
-            )
-        },
-    },
-]
+  },
+  {
+    accessorKey: "type",
+    header: "Type",
+    cell: ({ row }) => (
+      <Badge variant="outline">
+        {ARTICLE_TYPE_LABELS[row.original.type]}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: "title",
+    header: "Titre",
+    cell: ({ row }) => (
+      <span className="text-sm font-medium">{row.original.title}</span>
+    ),
+  },
+  /*{
+    accessorKey: "slug",
+    header: "Slug",
+    cell: ({ row }) => (
+      <span className="text-sm text-muted-foreground">/{row.original.slug}</span>
+    ),
+  },*/
+  {
+    accessorKey: "isPublish",
+    header: "Statut",
+    cell: ({ row }) => (
+      <Badge variant={row.original.isPublish ? "default" : "secondary"}>
+        {row.original.isPublish ? "Publié" : "Brouillon"}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Créé le",
+    cell: ({ row }) => (
+      <span className="text-sm text-muted-foreground">
+        {new Date(row.original.createdAt).toLocaleDateString("fr-FR")}
+      </span>
+    ),
+  },
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => (
+      <ArticleActionsCell
+        article={row.original}
+        onEdit={opts.onEdit}
+        onTogglePublish={opts.onTogglePublish}
+        onDelete={opts.onDelete}
+      />
+    ),
+  },
+];

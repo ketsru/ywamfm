@@ -1,7 +1,7 @@
 // @/lib/schemas/school/register-school/register-school.schema.ts
 
 import { z } from "zod"
-import { uuidSchema, enumSchema } from "@/lib/config/common.schema"
+import { uuidSchema, enumSchema, optionalImageValueSchema } from "@/lib/config/common.schema"
 import { 
     SchoolType,
     SchoolCategory,
@@ -32,6 +32,7 @@ export const registerSchoolRequestSchema = z
         name:          nameSchema,
         type:          enumSchema(SchoolType, "Veuillez sélectionner un type"),
         category:      enumSchema(SchoolCategory, "Veuillez sélectionner une catégorie"),
+        image:         optionalImageValueSchema,
         price:         priceSchema,
         status:        enumSchema(SchoolStatus, "Veuillez sélectionner un statut"),
         duration:      durationSchema,

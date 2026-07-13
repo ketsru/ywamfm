@@ -17,15 +17,15 @@ export const bookColumns = (opts: ColumnOptions): ColumnDef<Book>[] => [
     id: "cover",
     header: "",
     cell: ({ row }) => {
-      const { image, title } = row.original;
-      return image ? (
+      const { imageUrl, title } = row.original;
+      return imageUrl ? (
         <img
-          src={`data:image/jpeg;base64,${image}`}
+          src={imageUrl}
           alt={title}
-          className="h-12 w-9 rounded object-cover border shrink-0"
+          className="h-9 w-9 rounded object-cover border shrink-0"
         />
       ) : (
-        <div className="h-12 w-9 rounded bg-muted flex items-center justify-center text-xs text-muted-foreground shrink-0">
+        <div className="h-9 w-9 rounded-lg bg-muted flex items-center justify-center text-xs text-muted-foreground shrink-0">
           —
         </div>
       );

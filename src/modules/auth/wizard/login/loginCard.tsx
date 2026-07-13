@@ -1,18 +1,27 @@
 // @/modules/auth/loginCard.tsx
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AuthPageShell } from "../../authPageShell";
 import { AuthCard } from "../../authCard";
 import LoginWizard from "./loginWizard";
 
 export default function LoginCard() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const handleDone = () => {
+    const redirect = searchParams.get("redirect");
+    // Sécurité : n'accepter qu'un chemin interne, jamais une URL absolue externe
+    // (évite un open redirect si quelqu'un forge ?redirect=https://evil.com)
+    const target = redirect && redirect.startsWith("/") ? redirect : "/";
+    router.push(target);
+  };
 
   return (
     <AuthPageShell>
       <LoginWizard
-        onDone={() => router.push("/")}
+        onDone={handleDone}
         onGoToRegister={() => router.push("/register")}
         onGoToForgotPassword={() => router.push("/forgot-password")} 
       >

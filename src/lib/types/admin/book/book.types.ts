@@ -5,7 +5,7 @@ export interface BookApiDto {
   author: string;
   summary: string | null;
   language: string;
-  image: string | null; // base64 pur, PAS de préfixe data:...
+  image?: File | string | null;
   content: string | null;
   isActive: boolean;
   createdAt: string;
@@ -18,7 +18,7 @@ export interface Book {
   author: string;
   summary?: string | null;
   language: string;
-  image: string; 
+  imageUrl: string; 
   content?: string | null;
   isActive: boolean;
   createdAt: string; 
@@ -30,7 +30,7 @@ export interface BookRequest {
   author: string;
   summary?: string | null;
   language: string;
-  image: string; 
+  image?: File | string | null;
   content?: string | null;
   isActive?: boolean;
 }

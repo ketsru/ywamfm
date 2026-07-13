@@ -1,5 +1,5 @@
 
-import { BlogsDataTable } from "@/modules/communications/blogs/blogDataTable";
+import { ArticleDataTable } from "@/modules/communications/blogs/blogDataTable";
 import { Cable } from "lucide-react";
 
 
@@ -17,7 +17,7 @@ export default function NewsletterPage () {
 
             <div className="w-full h-px bg-muted mb-3" />
 
-            <BlogsDataTable />
+            <ArticleDataTable />
         </>
     ) 
 }

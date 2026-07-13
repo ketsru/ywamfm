@@ -31,10 +31,12 @@ import {
   PublishSchoolBySchoolFilters,
   PublishSchoolRequest,
 } from "./publish-school.types";
+import { getActivePublicSchoolById, listActivePublicSchools } from "./public-school.service";
 
 // ── Clés de cache ─────────────────────────────────────────────
 export const publishSchoolKeys = {
   all: ["publish-schools"] as const,
+  active: () => [...publishSchoolKeys.all, "active"] as const,
   lists: () => [...publishSchoolKeys.all, "list"] as const,
   list: (filters?: PublishSchoolFilters) =>
     [...publishSchoolKeys.lists(), filters ?? {}] as const,
@@ -172,5 +174,23 @@ export function useDeletePublishSchool(): UseMutationResult<void, Error, string>
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: publishSchoolKeys.lists() });
     },
+  });
+}
+
+/** Liste des écoles actuellement publiées / actives. */
+export function useActivePublicSchools() {
+  return useQuery<PublishSchool[]>({
+    queryKey: publishSchoolKeys.active(),
+    queryFn: listActivePublicSchools,
+    staleTime: 5 * 60 * 1000,
+  });
+}
+ 
+/** Détail d'une école publiée (désactivé tant que l'id n'est pas fourni). */
+export function useActivePublicSchoolById(id?: string | null) {
+  return useQuery<PublishSchool>({
+    queryKey: publishSchoolKeys.detail(id ?? ""),
+    queryFn: () => getActivePublicSchoolById(id as string),
+    enabled: Boolean(id),
   });
 }

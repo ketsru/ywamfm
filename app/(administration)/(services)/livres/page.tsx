@@ -1,15 +1,22 @@
 
 import { BookDataTable } from "@/modules/books/bookDataTable";
-import { ArrowUpNarrowWide } from "lucide-react";
+import { BookCheck } from "lucide-react";
 
 
 export default function Livres () {
     return (
         <>
-            <h2 className="md:text-3xl text-xl font-extrabold mt-4 flex gap-2 items-center">
-                <ArrowUpNarrowWide size={20} />
-                Liste des livres
-            </h2>
+            <div className="w-full">
+                <h2 className="lg:text-3xl md:text-2xl text-xl font-bold py-4 flex gap-2 items-center">
+                    <div className="lg:p-1.5 md:p-1 p.0.5 border rounded-sm">
+                        <BookCheck size={20} />
+                    </div>
+                    Gestion des livres
+                </h2>
+            </div>
+
+            <div className="w-full h-px bg-muted mb-3" />
+
             <div>
                 <BookDataTable />
             </div>

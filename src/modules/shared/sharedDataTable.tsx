@@ -87,7 +87,13 @@ export function SharedDataTable<TData>({
 
     /* ======================= RENDER ========================== */
 
-    if (isLoading) return <div>Chargement...</div>;
+    if (isLoading) {
+        return (
+            <div className="p-6 text-center text-sm text-muted-foreground">
+                Chargement...
+            </div>
+        )
+    }
 
     return (
         <div className="w-full space-y-4">
@@ -109,13 +115,15 @@ export function SharedDataTable<TData>({
             <div className="overflow-hidden rounded-xl border shadow-md">
                 <Table className="">
                     {/* ================= HEADER ================= */}
-                    <TableHeader className="h-14 bg-neutral-200">
+                    {/* bg-muted + font-heading : reprend le traitement H6 de la charte
+                        (Poppins, majuscules, letter-spacing, texte discret) */}
+                    <TableHeader className="h-14 bg-muted">
                         {table.getHeaderGroups().map((headerGroup) => (
                         <TableRow key={headerGroup.id}>
                             {headerGroup.headers.map((header) => (
                             <TableHead
                                 key={header.id}
-                                className="font-semibold uppercase text-xs"
+                                className="font-heading font-medium uppercase text-xs tracking-wide text-muted-foreground"
                             >
                                 {header.isPlaceholder
                                 ? null
@@ -154,7 +162,7 @@ export function SharedDataTable<TData>({
                                 colSpan={columns.length}
                                 className="h-24 text-center text-muted-foreground"
                             >
-                                No data available.
+                                Aucune donnée disponible.
                             </TableCell>
                         </TableRow>
                         )}

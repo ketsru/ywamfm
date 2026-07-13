@@ -1,33 +1,47 @@
 // @/lib/types/school/rapport/rapport.types.ts
-// CONSTRUIT PAR DÉDUCTION — RapportRequestDto/ResponseDto/DetailResponseDto/GradeRequest
-// n'ont pas été fournis. Champs à vérifier/compléter avant utilisation réelle.
 
+// ── Réponse liste (RapportResponseDto) ─────────────────────────────
 export interface RapportResponseDto {
   id: string;
-  studentId: string;
-  studentFullName?: string;
+
+  // Livre
+  nomLivre: string;
+  auteur: string;
+  hasContenu: boolean;
+
+  // Références
   schoolId: string;
-  schoolName?: string;
-  title?: string;
-  status?: string; // ex: "SUBMITTED" | "GRADED" | ... — enum réel inconnu
-  grade?: number | null;
+  schoolName: string;
+
+  studentId: string;
+  studentFullName: string;
+  studentEmail: string;
+
+  // Audit
   createdAt: string;
   updatedAt: string;
 }
 
+// ── Réponse détail (RapportDetailResponseDto) ─────────────────────
 export interface RapportDetailResponseDto extends RapportResponseDto {
-  content?: string; // contenu complet du rapport, probablement absent de la liste
-  feedback?: string | null; // commentaire du superviseur après notation
+  contenuRapport: string;        // contenu complet
+  feedback?: string | null;      // commentaire du superviseur
+  grade?: number | null;         // note attribuée
+  gradedByUserId?: string | null;
+  gradedAt?: string | null;
 }
 
+// ── Payload création/mise à jour (RapportRequestDto) ──────────────
 export interface RapportRequest {
-  studentId?: string | null; // forcé à null côté self-service (voir controller: dto.setStudentId(null))
+  nomLivre: string;
+  auteur: string;
+  contenuRapport: string;
   schoolId: string;
-  title?: string;
-  content?: string;
+  studentId?: string | null; // optionnel — admin peut soumettre au nom d’un étudiant
 }
 
+// ── Payload notation (RapportGradeRequest) ───────────────────────
 export interface RapportGradeRequest {
-  grade: number;
+  grade: number; // 0 à 20
   feedback?: string;
 }

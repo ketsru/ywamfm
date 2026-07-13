@@ -13,7 +13,8 @@ import { Preacher, PreacherRequest } from "./preacher.types";
 export function mapApiToPreacher(raw: Record<string, unknown>): Preacher {
   return {
     id: raw.id as string,
-    name: raw.name as string,
+    firstName: raw.firstName as string,
+    lastName: raw.lastName as string,
     email: raw.email as string,
     origin: raw.origin as string,
     telephone: raw.telephone as string,
@@ -33,7 +34,8 @@ export function mapApiToPreacherList(
 
 export function mapToPreacherApiRequest(
   data: Partial<Preacher> & {
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     origin: string;
     telephone: string;
@@ -41,7 +43,8 @@ export function mapToPreacherApiRequest(
   }
 ): PreacherRequest {
   return {
-    name: data.name.trim(),
+    firstName: data.firstName.trim(),
+    lastName: data.lastName.trim(),
     email: data.email.trim().toLowerCase(),
     origin: data.origin.trim(),
     telephone: data.telephone.trim(),

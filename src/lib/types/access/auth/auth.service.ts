@@ -36,10 +36,8 @@ verifyOtp: (data: VerifyOtpRequest) =>
   resendOtp: (data: ResendOtpRequest) =>
     post<ResendOtpRequest, void>(`${BASE}/resend-otp`, data),
 
-  logout: (userId: string) =>
-    post<void, void>(`${BASE}/logout`, undefined as unknown as void, {
-      headers: { "X-User-Id": userId },
-    }),
+  logout: () =>
+    post<void, void>(`${BASE}/logout`, undefined as unknown as void),
 
   // ── Compte managé (créé par un centre de formation) ───────────────
   createManagedAccount: (data: CreateManagedAccountRequest) =>

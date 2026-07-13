@@ -1,14 +1,15 @@
 // @/lib/schemas/school/register-outreach/register-outreach.schema.ts
 
 import { z } from "zod"
-import { uuidSchema, imageValueSchema, enumSchema } from "@/lib/config/common.schema"
+import { uuidSchema, imageValueSchema, enumSchema, optionalImageValueSchema } from "@/lib/config/common.schema"
 import { OutreachCategory, OutreachStatus } from "@/lib/types/admin/outreach/outreach.types"
 
 export const registerOutreachRequestSchema = z.object({
-    departmentId:  uuidSchema,
-    category:      enumSchema(OutreachCategory, "Veuillez sélectionner une catégorie"),
-    image:         imageValueSchema,
-    status:        enumSchema(OutreachStatus, "Veuillez sélectionner un statut"),
+    name:         z.string().min(1, "Le nom est requis").max(200),
+    departmentId: uuidSchema,
+    category:     enumSchema(OutreachCategory, "Veuillez sélectionner une catégorie"),
+    image:        optionalImageValueSchema,
+    status:       enumSchema(OutreachStatus, "Veuillez sélectionner un statut"),
 })
 
 export type RegisterOutreachRequestInput = z.infer<typeof registerOutreachRequestSchema>

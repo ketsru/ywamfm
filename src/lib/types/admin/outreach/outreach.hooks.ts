@@ -26,10 +26,12 @@ import {
   RegisterOutreachByDepartmentFilters,
   RegisterOutreachRequest,
 } from "./outreach.types";
+import { getActivePublicOutreachById, listActivePublicOutreaches } from "./public-outreach.service";
 
 // ── Clés de cache ─────────────────────────────────────────────
 export const outreachKeys = {
   all: ["outreaches"] as const,
+  active: () => [...outreachKeys.all, "active"] as const,
   lists: () => [...outreachKeys.all, "list"] as const,
   list: (filters?: RegisterOutreachFilters) =>
     [...outreachKeys.lists(), filters ?? {}] as const,
@@ -147,5 +149,23 @@ export function useDeleteOutreach(): UseMutationResult<void, Error, string> {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: outreachKeys.lists() });
     },
+  });
+}
+
+/** Liste des missions terrain actuellement actives. */
+export function useActivePublicOutreaches() {
+  return useQuery<RegisterOutreach[]>({
+    queryKey: outreachKeys.active(),
+    queryFn: listActivePublicOutreaches,
+    staleTime: 5 * 60 * 1000,
+  });
+}
+ 
+/** Détail d'une mission active (désactivé tant que l'id n'est pas fourni). */
+export function useActivePublicOutreachById(id?: string | null) {
+  return useQuery<RegisterOutreach>({
+    queryKey: outreachKeys.detail(id ?? ""),
+    queryFn: () => getActivePublicOutreachById(id as string),
+    enabled: Boolean(id),
   });
 }

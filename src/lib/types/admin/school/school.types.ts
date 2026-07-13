@@ -52,6 +52,7 @@ export interface RegisterSchool {
   name: string;
   type: SchoolType;
   category: SchoolCategory;
+  image: string;
   price?: number | null;
   status: SchoolStatus;
   duration: number; // en jours
@@ -64,6 +65,7 @@ export interface RegisterSchoolRequest {
   name: string;
   type: SchoolType;
   category: SchoolCategory;
+  image?: File | string | null;
   price?: number | null;
   status: SchoolStatus;
   duration: number;

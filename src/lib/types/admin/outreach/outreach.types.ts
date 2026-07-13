@@ -35,20 +35,22 @@ export const OUTREACH_STATUS_LABELS: Record<OutreachStatus, string> = {
 // ── Interfaces ────────────────────────────────────────────────
 
 export interface RegisterOutreach {
-  id: string; // UUID
-  departmentId: string; // UUID
-  departmentName: string; // issu de la projection
+  id: string; 
+  name: string;
+  departmentId: string; 
+  departmentName: string; 
   category: OutreachCategory;
-  image: string; // base64 data-URI (converti depuis byte[] backend)
+  imageUrl?: string | null;
   status: OutreachStatus;
-  createdAt: string; // ISO 8601
-  updatedAt: string; // ISO 8601
+  createdAt: string; 
+  updatedAt: string; 
 }
 
 export interface RegisterOutreachRequest {
+  name: string;
   departmentId: string;
   category: OutreachCategory;
-  image: string; // base64 brut (sans préfixe data-URI)
+  image?: File | null; 
   status: OutreachStatus;
 }
 

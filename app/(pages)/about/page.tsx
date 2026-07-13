@@ -29,11 +29,6 @@ export default function About () {
                 <div className="min-h-screen text-center mt-22">
                     La page d'apropos
                 </div>
-
-                {/* Section du footer */}
-                <div className="relative">
-                    <Footer />
-                </div>
             </div>
         </>
     )

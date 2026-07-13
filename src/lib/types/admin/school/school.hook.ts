@@ -52,8 +52,8 @@ export function useSchoolsQuery(
   return useQuery({
     queryKey: schoolKeys.list(filters),
     queryFn: async () => {
-      const raw = await getAllSchools(filters);
-      return mapApiToSchoolList(raw as unknown as Record<string, unknown>[]);
+      const page = await getAllSchools(filters); // PageResponseDto<RegisterSchool>
+      return mapApiToSchoolList(page.content as unknown as Record<string, unknown>[]);
     },
   });
 }

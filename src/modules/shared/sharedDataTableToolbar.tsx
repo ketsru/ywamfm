@@ -101,7 +101,7 @@ export function SharedDataTableToolbar<TData>({
       <div className="flex items-center gap-2 w-full max-w-md">
 
         <Input
-          placeholder="Search..."
+          placeholder="Rechercher..."
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           className="h-10 max-w-sm"
@@ -119,13 +119,13 @@ export function SharedDataTableToolbar<TData>({
           </span>
         </Button>
 
-        {/* Reset Button */}
+        {/* Reset Button — utilise le token "warning" de la charte au lieu d'un hex arbitraire */}
         {(currentFilter || searchInput) && (
           <Button
             variant="ghost"
             size="icon"
             onClick={resetFilters}
-            className="border border-primary hover:border-[#fbbf24] hover:text-[#fbbf24] rounded-full hover:shadow-2xl text-primary"
+            className="border border-primary text-primary rounded-full hover:border-warning hover:text-warning hover:shadow-2xl"
           >
             <X className="h-4 w-4" />
           </Button>
@@ -158,7 +158,7 @@ export function SharedDataTableToolbar<TData>({
               size="sm"
               onClick={() => onViewModeChange("grid")}
             >
-              Grid
+              Grille
             </Button>
           </div>
         )}
@@ -169,11 +169,9 @@ export function SharedDataTableToolbar<TData>({
           - Add icon-based toggle instead of text buttons
         */}
 
-        {/* Export Button */}
-        <Button size="lg" onClick={exportExcel}
-          className="bg-gray-50 border border-primary cursor-pointer"
-        >
-          <FileDown className="h-6 w-6 text-foreground" />
+        {/* Export Button — variant="outline" au lieu de bg-gray-50 codé en dur */}
+        <Button variant="outline" size="lg" onClick={exportExcel}>
+          <FileDown className="h-6 w-6" />
         </Button>
 
         {/* 
@@ -186,10 +184,8 @@ export function SharedDataTableToolbar<TData>({
         {/* Column Visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button size="lg"
-              className="bg-gray-50 border border-primary cursor-pointer"
-            >
-              <LayoutDashboard className="h-6 w-6 text-foreground" />
+            <Button variant="outline" size="lg">
+              <LayoutDashboard className="h-6 w-6" />
             </Button>
           </DropdownMenuTrigger>
 
@@ -238,9 +234,9 @@ export function SharedDataTableToolbar<TData>({
 
         {/* Create Button */}
         {onCreate && (
-          <Button size="default" onClick={onCreate} className="cursor-pointer">
+          <Button size="default" onClick={onCreate}>
             <PlusCircle className="h-4 w-4 mr-2" />
-            Create
+            Créer
           </Button>
         )}
 

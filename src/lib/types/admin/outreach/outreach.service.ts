@@ -2,7 +2,8 @@
 // register-outreach.service.ts
 // ============================================================
 
-import { get, post, put, del } from "@/lib/api/core/apifetch";
+import { get, del, postFormData, putFormData, patchFormData } from "@/lib/api/core/apifetch";
+import { buildMultipartFormData } from "@/lib/api/core/form-data.util";
 import { PageRequest, PageResponseDto } from "@/lib/api/core/api.types";
 import {
   RegisterOutreach,
@@ -14,8 +15,9 @@ import {
 const ENDPOINT = "/api/v1/outreaches";
 
 // ── CREATE ────────────────────────────────────────────────────
+// multipart obligatoire côté back (@RequestPart "data" + "image" optionnelle)
 export const createOutreach = (data: RegisterOutreachRequest): Promise<RegisterOutreach> =>
-  post<RegisterOutreachRequest, RegisterOutreach>(ENDPOINT, data);
+  postFormData<RegisterOutreach>(ENDPOINT, buildMultipartFormData(data));
 
 // ── READ ONE ──────────────────────────────────────────────────
 export const getOutreachById = (id: string): Promise<RegisterOutreach> =>
@@ -45,9 +47,17 @@ export const getOutreachesByDepartment = (
     ...(pageRequest?.size !== undefined && { size: pageRequest.size }),
   });
 
-// ── UPDATE ────────────────────────────────────────────────────
+// ── UPDATE (données + image en un seul appel) ──────────────────
 export const updateOutreach = (id: string, data: RegisterOutreachRequest): Promise<RegisterOutreach> =>
-  put<RegisterOutreachRequest, RegisterOutreach>(`${ENDPOINT}/${id}`, data);
+  putFormData<RegisterOutreach>(`${ENDPOINT}/${id}`, buildMultipartFormData(data));
+
+// ── UPDATE IMAGE SEULE ───────────────────────────────────────────
+// endpoint dédié : PATCH /{id}/image, image obligatoire (pas de "data")
+export const updateOutreachImage = (id: string, image: File): Promise<RegisterOutreach> => {
+  const formData = new FormData();
+  formData.append("image", image);
+  return patchFormData<RegisterOutreach>(`${ENDPOINT}/${id}/image`, formData);
+};
 
 // ── DELETE ────────────────────────────────────────────────────
 export const deleteOutreach = (id: string): Promise<void> =>

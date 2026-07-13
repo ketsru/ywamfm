@@ -1,7 +1,6 @@
 import Footer from "@/components/layout/landing/footer";
 import LandingPageHeader from "@/components/layout/landing/header";
 import BecomeOurPartnerHero from "@/components/layout/pages/become-our-partner/hero";
-import TrainingsPage from "@/components/layout/pages/formation/trainings";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -29,11 +28,6 @@ export default function BecomeOurPartner () {
                 {/* Hero Section */}
                 <div className=''> 
                     <BecomeOurPartnerHero />
-                </div>
-
-                {/* Traning section  */}
-                <div>
-                    <TrainingsPage />
                 </div>
 
                 {/* Section du footer */}

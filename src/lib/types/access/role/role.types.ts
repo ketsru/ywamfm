@@ -2,13 +2,12 @@
 
 import { PermissionKey } from "../permissions/permisionKey";
 
-
 export enum RoleKey {
   ADMIN = "ADMIN",
-  BTP_PROVIDER = "BTP_PROVIDER",
-  SERVICE_SEEKER = "SERVICE_SEEKER",
-  MATERIAL_SUPPLIER = "MATERIAL_SUPPLIER",
-  TRAINING_CENTER = "TRAINING_CENTER",
+  STUDENT = "STUDENT",
+  STAFF = "STAFF",
+  MANAGER = "MANAGER",
+  SECRETARY = "SECRETARY",
   USER = "USER",
 }
 
@@ -40,15 +39,13 @@ export interface PermissionsAssignRequestDto {
 
 export interface RoleResponseDto {
   id: string;
-  key: RoleKey; 
+  key: RoleKey;
   name: string;
   description: string | null;
   active: boolean;
   permissions: PermissionKey[];
 }
 
-
-// Ajouter uniquement ceci :
 export interface RolePage {
   content: RoleResponseDto[];
   page: number;

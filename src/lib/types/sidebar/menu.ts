@@ -1,35 +1,31 @@
 // @/lib/types/sidebar/menu.ts
 
 import { LucideIcon } from "lucide-react";
-import { RoleKey } from "../access/role/role.types";
-import { PermissionKey } from "../access/permissions/permisionKey";
+import { PermissionKey } from "@/lib/types/access/permissions/permisionKey";
 
-export type SidebarItem = {
+export interface SidebarMenuItem {
   id: string;
   label: string;
-  href?: string;
-  icon?: LucideIcon;
-  children?: SidebarItem[];
-
-  /** UX */
-  badge?: string;
-  disabled?: boolean;
-  external?: boolean;
-
-  /** STATE */
-  isActive?: boolean;
-
-  /** ACCESS CONTROL */
-  requiredRoles?: RoleKey[];
+  href: string;
+  icon: LucideIcon;
+  /**
+   * Permissions requises pour voir cet item.
+   * Absent/undefined = visible à tout utilisateur authentifié.
+   * Si plusieurs clés sont fournies, l'item est visible si l'utilisateur
+   * possède AU MOINS UNE d'entre elles (logique OR).
+   */
   requiredPermissions?: PermissionKey[];
-};
+}
 
-export type SidebarSection = {
+export interface SidebarSection {
   id: string;
   label?: string;
-  items: SidebarItem[];
-
-  /** ACCESS CONTROL */
-  requiredRoles?: RoleKey[];
+  items: SidebarMenuItem[];
+  /**
+   * Permissions requises pour voir la section entière, en plus du filtrage
+   * par item. Utile si la section ne doit apparaître que si au moins un
+   * item est visible — géré automatiquement par le hook de filtrage,
+   * ce champ reste optionnel pour un gate explicite au niveau section.
+   */
   requiredPermissions?: PermissionKey[];
-};
+}

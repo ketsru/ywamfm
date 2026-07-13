@@ -3,9 +3,12 @@ import { ArrowUpRight } from "lucide-react";
 export default function PartnersSection () {
   return (
     <>
-      <div className="relative z-10 bg-teal-800 py-10">
+      {/* bg-brand-vert-fonce : cohérent avec les autres sections sombres (Blog, Mission, Newsletter) */}
+      <div className="relative z-10 bg-brand-vert-fonce py-10">
         <div className="container mx-auto px-4 md:px-8 lg:px-12">
           {/* Partners Grid */}
+          {/* Les couleurs des logos partenaires (rouge, bleu, jaune...) sont volontairement conservées :
+              elles représentent l'identité visuelle réelle de chaque organisation partenaire, pas la nôtre. */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-8">
             {/* Row 1 */}
             <div className="bg-white rounded-2xl p-8 flex items-center justify-center h-24 hover:shadow-lg transition-shadow">
@@ -56,21 +59,22 @@ export default function PartnersSection () {
               </div>
             </div>
 
-            {/* Row 3 - Placeholder cards with teal background (partially visible) */}
-            <div className="bg-teal-700 bg-opacity-50 rounded-2xl p-8 flex items-center justify-center h-24">
-              <div className="w-full h-full bg-teal-600 bg-opacity-30 rounded-lg"></div>
+            {/* Row 3 - Placeholder cards : voile blanc translucide au lieu de teal, cohérent avec les
+                badges "glass" déjà utilisés ailleurs (BlogSection) */}
+            <div className="bg-white/10 rounded-2xl p-8 flex items-center justify-center h-24">
+              <div className="w-full h-full bg-white/10 rounded-lg"></div>
             </div>
-            <div className="bg-teal-700 bg-opacity-50 rounded-2xl p-8 flex items-center justify-center h-24">
-              <div className="w-full h-full bg-teal-600 bg-opacity-30 rounded-lg"></div>
+            <div className="bg-white/10 rounded-2xl p-8 flex items-center justify-center h-24">
+              <div className="w-full h-full bg-white/10 rounded-lg"></div>
             </div>
-            <div className="bg-teal-700 bg-opacity-50 rounded-2xl p-8 flex items-center justify-center h-24">
-              <div className="w-full h-full bg-teal-600 bg-opacity-30 rounded-lg"></div>
+            <div className="bg-white/10 rounded-2xl p-8 flex items-center justify-center h-24">
+              <div className="w-full h-full bg-white/10 rounded-lg"></div>
             </div>
           </div>
 
           {/* Show More Button */}
           <div className="relative flex justify-center">
-            <button className="flex gap-2 bg-teal-900 bg-opacity-80 text-white px-6 py-3 rounded-full font-medium hover:bg-opacity-100 transition-all cursor-pointer">
+            <button className="flex gap-2 bg-black/30 text-white px-6 py-3 rounded-full font-medium hover:bg-black/45 transition-all cursor-pointer">
               Voir plus 
               <ArrowUpRight />
             </button>

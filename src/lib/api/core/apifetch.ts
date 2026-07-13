@@ -207,3 +207,49 @@ export async function putFormData<TRes>(path: string, formData: FormData): Promi
 
     return json.data as TRes;
 }
+
+export async function patchFormData<TRes>(path: string, formData: FormData): Promise<TRes> {
+    const token = ENV.TOKEN_GETTER();
+    const url   = buildUrl(path);
+
+    const res = await fetch(url, {
+        method: "PATCH",
+        headers: {
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: formData,
+    });
+
+    let json: ApiResponse<TRes> | undefined;
+    try { json = await res.json(); } catch { /* corps vide */ }
+
+    if (!res.ok) {
+        const msg = json?.message ?? res.statusText;
+        switch (res.status) {
+            case 400: throw new ValidationError(msg || "Erreur de validation", json?.errors ?? []);
+            case 401: throw new UnauthorizedError(msg || "Non authentifié");
+            case 403: throw new ForbiddenError(msg || "Accès interdit");
+            case 404: throw new NotFoundError(msg || "Ressource inexistante");
+            case 409: throw new ConflictError(msg || "Conflit métier");
+            case 500: throw new ServerError(msg || "Erreur serveur");
+            default:  throw new HttpError(msg || "Erreur HTTP", res.status, json);
+        }
+    }
+
+    if (isNoContentStatus(res.status) || !json) {
+        return undefined as unknown as TRes;
+    }
+
+    if (json.success === true && json.data === null) {
+        return undefined as unknown as TRes;
+    }
+
+    if (!json.success) {
+        if (res.status === 400 && json.errors) {
+            throw new ValidationError(json.message || "Erreur de validation", json.errors);
+        }
+        throw new HttpError(json.message || "Erreur API", res.status, json);
+    }
+
+    return json.data as TRes;
+}

@@ -4,7 +4,8 @@
 
 export interface Preacher {
   id: string; // UUID
-  name: string;
+  lastName: string;
+  firstName: string;
   email: string;
   origin: string;
   telephone: string;
@@ -14,7 +15,8 @@ export interface Preacher {
 }
 
 export interface PreacherRequest {
-  name: string;
+  lastName: string;
+  firstName: string;
   email: string;
   origin: string;
   telephone: string;

@@ -18,6 +18,9 @@ const badgeVariants = cva(
           "border-border text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         ghost: "[a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         link: "text-primary underline-offset-4 [a&]:hover:underline",
+        // Variante charte : bordeaux Togo — badge pays / mise en avant (ex. "Togo")
+        accent:
+          "bg-brand-bordeaux-clair text-brand-bordeaux [a&]:hover:bg-brand-bordeaux-clair/80",
       },
     },
     defaultVariants: {

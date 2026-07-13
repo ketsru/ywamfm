@@ -12,7 +12,24 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "images.unsplash.com",
-        pathname: "/**", // autorise toutes les images Unsplash
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "randomuser.me",
+        pathname: "/api/portraits/**",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "8084",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+        port: "8084",
+        pathname: "/uploads/**",
       },
     ],
   },

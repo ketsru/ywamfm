@@ -6,10 +6,10 @@ import { Book } from "@/lib/types/admin/book/book.types";
 import { Pencil, Trash2, ToggleLeft, ToggleRight } from "lucide-react";
 
 interface Props {
-  book:           Book;
-  onEdit?:        (b: Book) => void;
+  book:            Book;
+  onEdit?:         (b: Book) => void;
   onToggleActive?(id: string, value: boolean): void;
-  onDelete?:      (id: string) => void;
+  onDelete?:       (id: string) => void;
 }
 
 export function BookActionsCell({ book, onEdit, onToggleActive, onDelete }: Props) {

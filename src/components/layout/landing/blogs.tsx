@@ -1,72 +1,83 @@
-import { articles } from "@/components/data/admin/blogs.data";
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
+import { getPublishedArticles } from "@/lib/types/communications/newsletter/blog.service";
+import { ArticleType } from "@/lib/types/communications/newsletter/blog.types";
+import ArticleCard from "../pages/blogs/articleCard";
 
-export default function BlogSection () {
+export default function BlogSection() {
+  const [selectedType] = useState<ArticleType | null>(null);
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["blog", "public", "articles", selectedType],
+    queryFn: () =>
+      getPublishedArticles(
+        selectedType ? { type: selectedType } : undefined,
+        { page: 0, size: 50 }
+      ),
+  });
+
+  const latestArticles = (data?.content ?? []).slice(0, 3);
+
   return (
-    <>
-      <div className="relative z-10 bg-teal-800 py-10 md:py-12">
-        <div className="bg-teal-900 bg-opacity-60 rounded-3xl mx-4 md:mx-8 py-12 md:py-16 backdrop-blur-sm">
-          <div className="container mx-auto px-4 md:px-8 lg:px-12">
-            {/* Podcast & Stories Badge */}
-            <div className="flex justify-center mb-4">
-              <div className="bg-teal-700 px-6 py-2 rounded-full">
-                <span className="text-white text-sm font-medium">Nos nouvelles</span>
-              </div>
+    <div className="relative z-10 bg-brand-vert-fonce py-10 md:py-12">
+      <div className="mx-4 rounded-3xl bg-black/25 py-12 backdrop-blur-sm md:mx-8 md:py-16">
+        <div className="container mx-auto px-4 md:px-8 lg:px-12">
+          <div className="mb-4 flex justify-center">
+            <div className="rounded-full border border-white/20 bg-white/15 px-6 py-2">
+              <span className="text-sm font-medium text-white">
+                Nos nouvelles
+              </span>
             </div>
+          </div>
 
-            {/* Section Title */}
-            <div className="text-center mb-6">
-              <h2 className="text-white text-2xl md:text-3xl lg:text-5xl font-light leading-tight max-w-4xl mx-auto">
-                Derniers{' '}
-                <span className="text-green-400 italic font-script" style={{ fontFamily: 'cursive' }}>
-                  podcasts
-                </span>{' '}
-                et{' '}
-                <span className="text-green-400 italic font-script" style={{ fontFamily: 'cursive' }}>
-                  récits
-                </span>
-              </h2>
-            </div>
+          <div className="mb-6 text-center">
+            <h2 className="mx-auto max-w-4xl text-2xl font-light leading-tight text-white md:text-3xl lg:text-5xl">
+              Derniers{" "}
+              <span className="font-accent italic text-brand-vert-clair">
+                podcasts
+              </span>{" "}
+              et{" "}
+              <span className="font-accent italic text-brand-vert-clair">
+                récits
+              </span>
+            </h2>
+          </div>
 
-            {/* Content Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-12">
-              {articles.map(article => (
-                <div key={article.id} className="group cursor-pointer">
-                  {/* Story 1 - A Nation Transformed */}
-                  <div className="relative rounded-2xl overflow-hidden mb-4 aspect-video">
-                    <img 
-                      src={article.image.src}
-                      alt={article.image.alt}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute top-4 left-4">
-                      <span className={`bg-purple-500 text-white px-3 py-1 rounded-full text-xs font-medium`}>badge</span>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-white text-xl font-bold mb-2 group-hover:text-green-400 transition-colors">
-                      {article.title}
-                    </h3>
-                    <p className="text-gray-300 text-sm mb-4 leading-relaxed">
-                      {article.excerpt}
-                    </p>
-                    <Link href="#" className="text-teal-300 hover:text-white text-sm font-medium underline decoration-1 underline-offset-2 hover:no-underline transition-all">
-                      Lire plus 
-                    </Link>
-                  </div>
+          <div className="py-8 md:py-16">
+            <div className="mx-auto max-w-7xl px-4">
+              {isLoading ? (
+                <div className="flex items-center justify-center gap-2 py-20 text-white/80">
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Chargement des articles…
                 </div>
-              ))}
+              ) : isError ? (
+                <div className="py-20 text-center text-red-300">
+                  Erreur lors du chargement des articles.
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+                  {latestArticles.map((article) => (
+                    <ArticleCard key={article.id} article={article} />
+                  ))}
+                </div>
+              )}
             </div>
+          </div>
 
-            {/* See More Button */}
-            <div className="text-center">
-              <button className="bg-white text-teal-800 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors">
-                Voir plus
-              </button>
-            </div>
+          <div className="text-center">
+            <Link
+              href="/blogs"
+              className="inline-block rounded-full bg-white px-8 py-3 font-semibold text-brand-vert-fonce transition-colors hover:bg-brand-vert-clair"
+            >
+              Voir plus
+            </Link>
           </div>
         </div>
       </div>
-    </>
-  )
+    </div>
+  );
 }

@@ -19,7 +19,7 @@ import {
 } from "./theme.service";
 
 import { mapApiToTheme, mapApiToThemeList } from "./theme.mapper";
-import { Theme, ThemeFilters, ThemeRequest } from "./theme.types";
+import { ThemeFilters, ThemeRequest, ThemeResponseDto } from "./theme.types";
 
 // ── Clés de cache ─────────────────────────────────────────────
 export const themeKeys = {
@@ -40,7 +40,7 @@ export const themeKeys = {
  */
 export function useThemesQuery(
   filters?: ThemeFilters
-): UseQueryResult<Theme[], Error> {
+): UseQueryResult<ThemeResponseDto[], Error> {
   return useQuery({
     queryKey: themeKeys.list(filters),
     queryFn: async () => {
@@ -53,7 +53,7 @@ export function useThemesQuery(
 // ── READ ONE ──────────────────────────────────────────────────
 export function useThemeQuery(
   id: string | undefined
-): UseQueryResult<Theme, Error> {
+): UseQueryResult<ThemeResponseDto, Error> {
   return useQuery({
     queryKey: themeKeys.detail(id ?? ""),
     queryFn: async () => {
@@ -66,7 +66,7 @@ export function useThemeQuery(
 
 // ── CREATE ────────────────────────────────────────────────────
 export function useCreateTheme(): UseMutationResult<
-  Theme,
+  ThemeResponseDto,
   Error,
   ThemeRequest
 > {
@@ -84,7 +84,7 @@ export function useCreateTheme(): UseMutationResult<
 
 // ── UPDATE ────────────────────────────────────────────────────
 export function useUpdateTheme(): UseMutationResult<
-  Theme,
+  ThemeResponseDto,
   Error,
   { id: string; data: ThemeRequest }
 > {

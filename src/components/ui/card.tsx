@@ -32,7 +32,8 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-title"
-      className={cn("leading-none font-semibold", className)}
+      // font-heading : les titres de carte suivent Poppins comme H1–H6 (charte)
+      className={cn("font-heading leading-none font-semibold", className)}
       {...props}
     />
   )

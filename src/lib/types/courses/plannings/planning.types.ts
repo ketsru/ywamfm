@@ -1,3 +1,4 @@
+
 // @/lib/types/school/planning/planning.types.ts
 
 // ── Réponse (GET liste / GET by id / POST / PUT) ────────────────

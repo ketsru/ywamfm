@@ -3,7 +3,6 @@
 import { PermissionKey } from "../../access/permissions/permisionKey";
 import { ProfileResponseDto } from "../profile/profile.types";
 
-// Entity and Acces Management status for users
 export enum AccountStatus {
   ACTIVE = "ACTIVE",
   SUSPENDED = "SUSPENDED",
@@ -13,73 +12,60 @@ export enum AccountStatus {
 export interface User {
   id: string;
   email: string;
-
   firstName: string;
   lastName: string;
-
   avatarUrl?: string | null;
-
   status: AccountStatus;
   verified: boolean;
-
   emailConfirmedAt?: string | null;
   lastLoginAt?: string | null;
-
   deletionRequested: boolean;
   scheduledDeletionDate?: string | null;
-
   roleId: string;
   roleName: string;
   roleKey?: string;
-
   createdAt: string;
   updatedAt: string;
-
   profile?: ProfileResponseDto | null;
-
   permissions?: PermissionKey[];
-
   profileCompleted?: boolean | null;
 }
 
-// DTO for creating/updating a user, aligned with backend UserRequestDto
+// Création/édition par un admin — pas d'avatar : createManagedAccount/updateManagedAccount
+// sont consumes=JSON côté back, aucun champ multipart possible ici.
 export interface UserRequestDto {
   firstName: string;
   lastName: string;
   email: string;
-  avatar?: File | null;
-  roleId: string;
+  roleKey: string;
 }
 
-// DTO for receiving user data from the backend
+// Placeholder — à aligner sur le vrai UserUpdateSelfRequest.java
+// (probablement pas de roleId ici, un utilisateur ne peut pas changer son propre rôle)
+export interface UserUpdateSelfRequest {
+  firstName: string;
+  lastName: string;
+}
+
 export interface UserResponseDto {
   id: string;
-
   firstName: string;
   lastName: string;
   email: string;
-
   avatarUrl: string | null;
-
   status: AccountStatus;
   verified: boolean;
-
   emailConfirmedAt?: string | null;
   lastLoginAt?: string | null;
-
   deletionRequested: boolean;
   scheduledDeletionDate?: string | null;
-
   roleId: string;
   roleName: string;
   roleKey?: string;
-  permissions?: PermissionKey[]; // ← ajout
-
+  permissions?: PermissionKey[];
   createdAt: string;
   updatedAt: string;
-
   profile?: ProfileResponseDto | null;
-
   profileCompleted?: boolean | null;
 }
 

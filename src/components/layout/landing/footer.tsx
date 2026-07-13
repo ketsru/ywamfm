@@ -24,7 +24,8 @@ const contactInfo = [
 ];
 export default function Footer() {
   return (
-    <footer className="w-full bg-teal-900 p-2 lg:px-0 lg:py-10">
+    // brand-noir : île volontairement sombre, indépendante du light/dark (comme BlogSection)
+    <footer className="w-full bg-brand-noir p-2 lg:px-0 lg:py-10">
       <div className="max-w-11/12 mx-auto rounded-4xl bg-black/20 lg:p-8 md:p-4 p-2">
         {/* Top Section */}
         <div className="lg:flex items-start justify-between gap-6">
@@ -38,15 +39,15 @@ export default function Footer() {
                 height={50}
                 className="rounded-full object-cover"
               />
-              <span className="tracking-tighter text-2xl font-extrabold text-white">
+              <span className="font-heading tracking-tighter text-2xl font-extrabold text-white">
                 JEM Mission Pionnière
               </span>
             </Link>
 
-            <ul className="text-gray-50 text-sm space-y-2 font-semibold">
+            <ul className="text-white/90 text-sm space-y-2 font-semibold">
               {contactInfo.map(({ href, icon, label }, i) => (
                 <li key={i}>
-                  <Link href={href} className="flex items-center gap-2">
+                  <Link href={href} className="flex items-center gap-2 hover:text-brand-vert-clair transition-colors">
                     {icon}
                     <span>{label}</span>
                   </Link>
@@ -59,7 +60,7 @@ export default function Footer() {
           <div className="lg:flex items-start justify-between lg:w-8/12 w-full p-4 gap-6">
             {usefullLinkItems.map(({ title, menuItems }, index) => (
               <div key={index}>
-                <h4 className="text-white text-base uppercase font-bold lg:mb-4 mb-1 lg:mt-0 mt-5">
+                <h4 className="font-heading text-white text-base uppercase font-bold lg:mb-4 mb-1 lg:mt-0 mt-5">
                   {title}
                 </h4>
                 <ul className="space-y-2">
@@ -67,7 +68,7 @@ export default function Footer() {
                     <li key={item}>
                       <Link
                         href={href}
-                        className="text-sm text-gray-50 hover:text-green-500 transition-colors"
+                        className="text-sm text-white/90 hover:text-brand-vert-clair transition-colors"
                       >
                         {label}
                       </Link>
@@ -79,14 +80,14 @@ export default function Footer() {
           </div>
         </div>
 
-        <hr className="w-full my-5 border-gray-500" />
+        <hr className="w-full my-5 border-white/15" />
 
         {/* Bottom Section */}
-        <div className="flex flex-col md:flex-row justify-between items-center text-gray-200 text-sm mb-3 lg:mb-0">
+        <div className="flex flex-col md:flex-row justify-between items-center text-white/70 text-sm mb-3 lg:mb-0">
           <Link href="#" aria-label="JEM FM Togo">
-            <Facebook className="hover:text-green-500 transition-colors" />
+            <Facebook className="hover:text-brand-vert-clair transition-colors" />
           </Link>
-          <p className="lg:mt-0 mt-4">© 2026 jem fm Togo. Tous droits réservés.</p>
+          <p className="lg:mt-0 mt-4">© 2026 JEM FM Togo. Tous droits réservés.</p>
         </div>
       </div>
     </footer>

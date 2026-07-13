@@ -3,13 +3,14 @@
 import { UnauthorizedError } from "@/lib/api/core/http-errors";
 import { CurrentUser } from "@/lib/types/users/user/currentUser";
 import { UserService } from "@/lib/types/users/user/user.service";
+import { ENV } from "@/lib/config/env";
 import { useEffect, useState, useCallback } from "react";
 
 interface UseCurrentUserResult {
     user:    CurrentUser | null;
     loading: boolean;
     error:   unknown;
-    refresh: () => Promise<void>;  // ← pour forcer un rechargement après login/update
+    refresh: () => Promise<void>;
 }
 
 export function useCurrentUser(): UseCurrentUserResult {
@@ -25,7 +26,8 @@ export function useCurrentUser(): UseCurrentUserResult {
             setUser(currentUser);
         } catch (err) {
             if (err instanceof UnauthorizedError) {
-                setUser(null); // session expirée — pas une erreur à afficher
+                ENV.TOKEN_CLEARER(); // token expiré/invalide — on l'efface pour éviter une boucle de 401
+                setUser(null);
             } else {
                 setError(err);
                 setUser(null);

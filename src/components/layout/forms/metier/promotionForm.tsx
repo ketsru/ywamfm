@@ -1,6 +1,7 @@
 // @/modules/promotions/components/PromotionForm.tsx
 "use client";
 
+import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -15,33 +16,33 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { promotionRequestSchema } from "@/modules/admin/promotions/promotion.schema";
+import { promotionRequestSchema } from "@/modules/promotions/promotion.schema";
 import { Promotion } from "@/lib/types/admin/promotion/promotion.types";
 
 type PromotionFormValues = z.output<typeof promotionRequestSchema>;
 
 type PromotionFormProps = {
-  formId: string;
   defaultValues?: Promotion;
   schools: { id: string; name: string }[];
-  onSubmit: (data: PromotionFormValues) => void;
+  onChange: (data: PromotionFormValues, isValid: boolean) => void;
+  error?: string;
 };
 
 export function PromotionForm({
-  formId,
   defaultValues,
   schools,
-  onSubmit,
+  onChange,
+  error,
 }: PromotionFormProps) {
 
   const {
     register,
-    handleSubmit,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<PromotionFormValues>({
     resolver: zodResolver(promotionRequestSchema),
+    mode: "onChange",
     defaultValues: {
       schoolId:    defaultValues?.schoolId    ?? "",
       name:        defaultValues?.name        ?? "",
@@ -51,10 +52,24 @@ export function PromotionForm({
     },
   });
 
+  React.useEffect(() => {
+    const subscription = watch((values) => {
+      onChange(values as PromotionFormValues, isValid);
+    });
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watch, isValid]);
+
   const isActive = watch("isActive");
 
   return (
-    <form id={formId} onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+    <div className="space-y-5">
+
+      {error && (
+        <p className="text-sm text-destructive rounded-md bg-destructive/10 px-3 py-2" role="alert">
+          {error}
+        </p>
+      )}
 
       {/* École */}
       <Field>
@@ -140,6 +155,6 @@ export function PromotionForm({
         </div>
       </Field>
 
-    </form>
+    </div>
   );
 }

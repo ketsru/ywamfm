@@ -1,19 +1,42 @@
 
-export type ArticleType = 'story' | 'podcast'
+export const ArticleType = {
+  STORY:   "story",
+  PODCAST: "podcast",
+} as const;
+export type ArticleType = (typeof ArticleType)[keyof typeof ArticleType];
+
+export const ARTICLE_TYPE_LABELS: Record<ArticleType, string> = {
+  story:   "Histoire",
+  podcast: "Podcast",
+};
 
 export interface Article {
-  id: string
-  type: ArticleType
+  id: string;
+  type: ArticleType;
+  title: string;
+  excerpt: string;
+  imageUrl?: string | null;
+  imageAlt?: string | null;
+  actionLabel: string;
+  slug: string;
+  isPublish: boolean;
+  episode?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
 
-  title: string
-  excerpt: string
+export interface ArticleRequest {
+  type: ArticleType;
+  title: string;
+  excerpt: string;
+  imageAlt?: string | null;
+  actionLabel: string;
+  slug: string;
+  isPublish: boolean;
+  episode?: string | null;
+  image?: File | null;
+}
 
-  image: {
-    src: string
-    alt: string
-  }
-
-  episode?: string        // uniquement pour les podcasts
-  actionLabel: string     // Read more / Watch now
-  slug: string        
+export interface ArticleFilters {
+  type?: ArticleType;
 }

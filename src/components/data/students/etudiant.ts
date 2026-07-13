@@ -1,6 +1,6 @@
-import { Etudiant } from "@/lib/types/student/etudiant"
+import { Student } from "@/lib/types/student/student.types"
 
-export const etudiantMock: Etudiant[] = [
+export const etudiantMock: Student[] = [
   {
     id: "etudiant-001",
 

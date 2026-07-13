@@ -69,14 +69,14 @@ function PreviewCard({
   disabled?: boolean;
 }) {
   return (
-    <div className="relative group rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 aspect-square">
+    <div className="relative group rounded-lg overflow-hidden border border-border bg-muted aspect-square">
       <img
         src={src}
         alt={name ?? "Aperçu"}
         className="w-full h-full object-cover"
       />
 
-      {/* Overlay on hover */}
+      {/* Overlay on hover — noir semi-transparent, neutre par nature, pas de couleur de marque */}
       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1">
         {name && (
           <p className="text-white text-[10px] font-medium px-2 text-center truncate w-full">
@@ -88,12 +88,12 @@ function PreviewCard({
         )}
       </div>
 
-      {/* Remove button */}
+      {/* Remove button — hover en "destructive" (token charte) au lieu de red-* en dur */}
       {!disabled && (
         <button
           type="button"
           onClick={onRemove}
-          className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-50 hover:border-red-200 hover:text-red-500 dark:hover:bg-red-950"
+          className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-background border border-border flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive/10 hover:border-destructive/30 hover:text-destructive"
           aria-label="Supprimer l'image"
         >
           <X className="w-3 h-3" />
@@ -182,9 +182,10 @@ export function ImageUploader({
           className={cn(
             "relative flex flex-col items-center justify-center gap-3",
             "border border-dashed rounded-xl px-6 py-8 cursor-pointer transition-colors",
+            // État actif au drag : vert de marque (primary/accent) au lieu d'émeraude générique
             isDragActive
-              ? "border-emerald-400 bg-emerald-50 dark:bg-emerald-950/30"
-              : "border-neutral-200 dark:border-neutral-700 bg-neutral-50/50 dark:bg-neutral-800/30 hover:border-neutral-300 dark:hover:border-neutral-600 hover:bg-neutral-50 dark:hover:bg-neutral-800/50",
+              ? "border-primary bg-accent"
+              : "border-border bg-muted/50 hover:border-primary/40 hover:bg-muted",
             disabled && "pointer-events-none opacity-50"
           )}
         >
@@ -195,8 +196,8 @@ export function ImageUploader({
             className={cn(
               "w-10 h-10 rounded-full flex items-center justify-center transition-colors",
               isDragActive
-                ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40"
-                : "bg-neutral-100 dark:bg-neutral-700 text-neutral-400"
+                ? "bg-primary/15 text-primary"
+                : "bg-muted text-muted-foreground"
             )}
           >
             {isDragActive ? (
@@ -208,14 +209,14 @@ export function ImageUploader({
 
           {/* Text */}
           <div className="text-center">
-            <p className="text-sm text-neutral-700 dark:text-neutral-300">
+            <p className="text-sm text-foreground">
               {isDragActive ? (
                 "Déposez ici…"
               ) : (
                 <>
                   {label ?? (
                     <>
-                      <span className="font-medium text-emerald-600 dark:text-emerald-400">
+                      <span className="font-medium text-primary">
                         Choisir {multiple ? "des images" : "une image"}
                       </span>{" "}
                       ou glisser-déposer
@@ -225,7 +226,7 @@ export function ImageUploader({
               )}
             </p>
             {/* Hint généré dynamiquement depuis la config .env */}
-            <p className="text-xs text-neutral-400 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               {acceptedExtensions} — max {maxSizeMb} Mo
               {multiple && ` · ${files.length}/${maxFiles} fichier${maxFiles > 1 ? "s" : ""}`}
             </p>
@@ -237,7 +238,7 @@ export function ImageUploader({
       {errors.length > 0 && (
         <ul className="space-y-1">
           {errors.map((err, i) => (
-            <li key={i} className="text-xs text-red-500 flex items-start gap-1.5">
+            <li key={i} className="text-xs text-destructive flex items-start gap-1.5">
               <X className="w-3 h-3 mt-0.5 flex-shrink-0" />
               {err}
             </li>

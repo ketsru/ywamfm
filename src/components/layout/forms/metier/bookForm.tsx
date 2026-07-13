@@ -2,72 +2,90 @@
 "use client";
 
 import * as React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Field, FieldLabel, FieldDescription } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { bookRequestSchema } from "@/modules/books/book.schema";
 import { Book } from "@/lib/types/admin/book/book.types";
-import { imageFileSchema } from "@/lib/config/common.schema";
 import { ImageUploader } from "@/modules/shared/imageUploader";
-
 
 type BookFormValues = z.output<typeof bookRequestSchema>;
 
 type BookFormProps = {
-  formId: string;
   defaultValues?: Book;
-  onSubmit: (data: BookFormValues) => void;
+  onChange: (data: BookFormValues, isValid: boolean) => void;
+  error?: string;
 };
 
-export function BookForm({ formId, defaultValues, onSubmit }: BookFormProps) {
+// Liste des langues proposées — à ajuster selon les besoins réels de la plateforme.
+const LANGUAGES = [
+  { value: "fr", label: "Français" },
+  { value: "en", label: "Anglais" },
+  { value: "es", label: "Espagnol" },
+  { value: "de", label: "Allemand" },
+  { value: "pt", label: "Portugais" },
+] as const;
+
+export function BookForm({ defaultValues, onChange, error }: BookFormProps) {
 
   const {
     register,
-    handleSubmit,
+    control,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<BookFormValues>({
     resolver: zodResolver(bookRequestSchema),
+    mode: "onChange", // nécessaire pour que isValid reflète l'état en temps réel, sans passer par handleSubmit
     defaultValues: {
       title:    defaultValues?.title    ?? "",
       author:   defaultValues?.author   ?? "",
       language: defaultValues?.language ?? "",
       summary:  defaultValues?.summary  ?? "",
       content:  defaultValues?.content  ?? "",
-      image:    defaultValues?.image    ?? "",
+      image:    defaultValues?.image    ?? null, // File (nouveau) | string base64 (existant, édition) | null
       isActive: defaultValues?.isActive ?? true,
     },
   });
 
+  // Remonte chaque changement de champ au parent (pas de bouton submit interne :
+  // c'est CrudDialog qui déclenche la création/mise à jour via handleConfirm).
+  React.useEffect(() => {
+    const subscription = watch((values) => {
+      onChange(values as BookFormValues, isValid);
+    });
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watch, isValid]);
+
   const isActive   = watch("isActive");
   const imageValue = watch("image");
 
-  const handleImageChange = (fileOrFiles?: File | File[]) => {
-    const file = Array.isArray(fileOrFiles) ? fileOrFiles[0] : fileOrFiles;
-    if (!file) return;
-
-    const result = imageFileSchema.safeParse(file);
-    if (!result.success) {
-      setValue("image", "", { shouldValidate: true });
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      // Retire le préfixe data-URI pour n'envoyer que le base64 brut
-      const base64 = (reader.result as string).split(",")[1];
-      setValue("image", base64, { shouldValidate: true });
-    };
-    reader.readAsDataURL(file);
-  };
+  const currentFile = imageValue instanceof File ? imageValue : undefined;
+  const existingUrl = typeof imageValue === "string" && imageValue
+    ? `data:image/jpeg;base64,${imageValue}`
+    : undefined;
 
   return (
-    <form id={formId} onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+    <div className="space-y-5">
+
+      {/* Erreur globale remontée par le dialog (ex: échec API) */}
+      {error && (
+        <p className="text-sm text-destructive rounded-md bg-destructive/10 px-3 py-2" role="alert">
+          {error}
+        </p>
+      )}
 
       {/* Titre */}
       <Field>
@@ -104,10 +122,23 @@ export function BookForm({ formId, defaultValues, onSubmit }: BookFormProps) {
         <FieldLabel htmlFor="book-language">
           Langue <span className="text-destructive">*</span>
         </FieldLabel>
-        <Input
-          id="book-language"
-          placeholder="Ex : Français"
-          {...register("language")}
+        <Controller
+          name="language"
+          control={control}
+          render={({ field }) => (
+            <Select value={field.value} onValueChange={field.onChange}>
+              <SelectTrigger id="book-language" className="w-full">
+                <SelectValue placeholder="Sélectionner une langue" />
+              </SelectTrigger>
+              <SelectContent>
+                {LANGUAGES.map((lang) => (
+                  <SelectItem key={lang.value} value={lang.value}>
+                    {lang.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
         />
         {errors.language && (
           <p className="text-sm text-destructive" role="alert">{errors.language.message}</p>
@@ -144,22 +175,18 @@ export function BookForm({ formId, defaultValues, onSubmit }: BookFormProps) {
 
       {/* Image */}
       <Field>
-        <FieldLabel htmlFor="book-image">Couverture</FieldLabel>
-        {imageValue && (
-          <img
-            src={`data:image/jpeg;base64,${imageValue}`}
-            alt="Couverture"
-            className="mb-2 h-24 w-16 rounded-lg object-cover border"
-          />
-        )}
+        <FieldLabel htmlFor="book-image">
+          Couverture <span className="text-destructive">*</span>
+        </FieldLabel>
         <ImageUploader
-          value={imageValue}
-          onChange={handleImageChange}
-          existingUrls={defaultValues?.image}
+          value={currentFile}
+          existingUrls={existingUrl}
+          onChange={(file) => setValue("image", (file as File) ?? null, { shouldValidate: true })}
+          multiple={false}
         />
         <FieldDescription>Format JPG, PNG ou WEBP · Max 5 Mo</FieldDescription>
         {errors.image && (
-          <p className="text-sm text-destructive" role="alert">{errors.image.message}</p>
+          <p className="text-sm text-destructive" role="alert">{errors.image.message as string}</p>
         )}
       </Field>
 
@@ -178,6 +205,6 @@ export function BookForm({ formId, defaultValues, onSubmit }: BookFormProps) {
         </div>
       </Field>
 
-    </form>
+    </div>
   );
 }

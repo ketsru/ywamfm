@@ -1,4 +1,4 @@
-// @/modules/departments/components/DepartmentForm.tsx
+// @/components/layout/forms/metier/departmentForm.tsx
 
 "use client";
 
@@ -10,28 +10,28 @@ import { Field, FieldLabel, FieldDescription } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { departmentRequestSchema } from "@/modules/admin/departments/department.schema";
-import { Department } from "@/lib/types/admin/department/department.types";
-import { imageFileSchema } from "@/lib/config/common.schema";
+import { departmentRequestSchema } from "@/modules/departments/department.schema";
+import { Department, DepartmentRequest } from "@/lib/types/admin/department/department.types";
+import { ImageUploader } from "@/modules/shared/imageUploader";
 
 type DepartmentFormValues = z.output<typeof departmentRequestSchema>;
 
 type DepartmentFormProps = {
-  formId: string;                                      // pour lier un <button type="submit" form={formId}> externe
   defaultValues?: Department;
-  onSubmit: (data: DepartmentFormValues) => void;
+  onChange: (data: DepartmentRequest, isValid: boolean) => void;
+  error?: string;
 };
 
-export function DepartmentForm({ formId, defaultValues, onSubmit }: DepartmentFormProps) {
+export function DepartmentForm({ defaultValues, onChange, error }: DepartmentFormProps) {
 
   const {
     register,
-    handleSubmit,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<DepartmentFormValues>({
     resolver: zodResolver(departmentRequestSchema),
+    mode: "onChange", // nécessaire pour que isValid reflète l'état en temps réel, sans passer par handleSubmit
     defaultValues: {
       name:        defaultValues?.name        ?? "",
       description: defaultValues?.description ?? "",
@@ -40,43 +40,31 @@ export function DepartmentForm({ formId, defaultValues, onSubmit }: DepartmentFo
     },
   });
 
+  // Remonte chaque changement de champ au parent (pas de bouton submit interne :
+  // c'est CrudDialog qui déclenche la création/mise à jour via handleConfirm).
+  React.useEffect(() => {
+    const subscription = watch((values) => {
+      onChange(values as DepartmentRequest, isValid);
+    });
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watch, isValid]);
+
   const isActive   = watch("isActive");
   const imageValue = watch("image");
 
-  // ── Gestion de l'upload image ────────────────────────────────
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const result = imageFileSchema.safeParse(file);
-    if (!result.success) {
-      setValue("image", null, { shouldValidate: true });
-      e.target.value = "";
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      // Retire le préfixe data-URI — n'envoie que le base64 brut au backend
-      const base64 = (reader.result as string).split(",")[1];
-      setValue("image", base64, { shouldValidate: true });
-    };
-    reader.readAsDataURL(file);
-  };
-
-  // Détermine si imageValue est déjà un data-URI complet (aperçu direct), du base64 brut ou un File
-  const previewSrc = imageValue
-    ? typeof imageValue === "string"
-      ? imageValue.startsWith("data:")
-        ? imageValue
-        : `data:image/jpeg;base64,${imageValue}`
-      : imageValue instanceof File
-        ? URL.createObjectURL(imageValue)
-        : null
-    : null;
+  const currentFile = imageValue instanceof File ? imageValue : undefined;
+  const existingUrl = typeof imageValue === "string" ? imageValue : undefined;
 
   return (
-    <form id={formId} onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+    <div className="space-y-5">
+
+      {/* Erreur globale remontée par le dialog (ex: échec API) */}
+      {error && (
+        <p className="text-sm text-destructive rounded-md bg-destructive/10 px-3 py-2" role="alert">
+          {error}
+        </p>
+      )}
 
       {/* Nom */}
       <Field>
@@ -110,23 +98,15 @@ export function DepartmentForm({ formId, defaultValues, onSubmit }: DepartmentFo
       {/* Image */}
       <Field>
         <FieldLabel htmlFor="dept-image">Image</FieldLabel>
-        {previewSrc && (
-          <img
-            src={previewSrc}
-            alt="Aperçu"
-            className="mb-2 h-24 w-24 rounded-lg object-cover border"
-          />
-        )}
-        <Input
-          id="dept-image"
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          onChange={handleImageChange}
-          className="cursor-pointer"
+        <ImageUploader
+          value={currentFile}
+          existingUrls={existingUrl}
+          onChange={(file) => setValue("image", (file as File) ?? null, { shouldValidate: true })}
+          multiple={false}
         />
         <FieldDescription>Format JPG, PNG ou WEBP · Max 5 Mo</FieldDescription>
         {errors.image && (
-          <p className="text-sm text-destructive" role="alert">{errors.image.message}</p>
+          <p className="text-sm text-destructive" role="alert">{errors.image.message as string}</p>
         )}
       </Field>
 
@@ -145,6 +125,6 @@ export function DepartmentForm({ formId, defaultValues, onSubmit }: DepartmentFo
         </div>
       </Field>
 
-    </form>
+    </div>
   );
 }

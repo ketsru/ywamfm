@@ -30,7 +30,7 @@ export interface PublishSchool {
   endDate: string; // ISO 8601
   location: string;
   description?: string | null;
-  image: string; // base64 data-URI (converti depuis byte[] backend)
+  imageUrl?: string | null; 
   status: PublishSchoolStatus;
   createdAt: string; // ISO 8601
   updatedAt: string; // ISO 8601
@@ -43,7 +43,7 @@ export interface PublishSchoolRequest {
   endDate: string; // ISO 8601
   location: string;
   description?: string | null;
-  image?: string | null; // base64 brut (sans préfixe data-URI)
+  image?: File | null; 
   status: PublishSchoolStatus;
 }
 

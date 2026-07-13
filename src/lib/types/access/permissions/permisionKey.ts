@@ -60,12 +60,36 @@ export enum PermissionKey {
     DEPARTMENT_DELETE = "DEPARTMENT_DELETE",
 
     // =========================================
+    // Écoles
+    // =========================================
+    SCHOOL_VIEW = "SCHOOL_VIEW",
+    SCHOOL_CREATE = "SCHOOL_CREATE",
+    SCHOOL_UPDATE = "SCHOOL_UPDATE",
+    SCHOOL_DELETE = "SCHOOL_DELETE",
+
+    // =========================================
+    // Publications d'école
+    // =========================================
+    SCHOOL_PUBLISH_VIEW = "SCHOOL_PUBLISH_VIEW",
+    SCHOOL_PUBLISH_CREATE = "SCHOOL_PUBLISH_CREATE",
+    SCHOOL_PUBLISH_UPDATE = "SCHOOL_PUBLISH_UPDATE",
+    SCHOOL_PUBLISH_DELETE = "SCHOOL_PUBLISH_DELETE",
+
+    // =========================================
     // Promotions
     // =========================================
     PROMOTION_VIEW = "PROMOTION_VIEW",
     PROMOTION_CREATE = "PROMOTION_CREATE",
     PROMOTION_UPDATE = "PROMOTION_UPDATE",
     PROMOTION_DELETE = "PROMOTION_DELETE",
+
+    // =========================================
+    // Phases pratiques (Outreach)
+    // =========================================
+    OUTREACH_VIEW = "OUTREACH_VIEW",
+    OUTREACH_CREATE = "OUTREACH_CREATE",
+    OUTREACH_UPDATE = "OUTREACH_UPDATE",
+    OUTREACH_DELETE = "OUTREACH_DELETE",
 
     // =========================================
     // Étudiants
@@ -126,6 +150,30 @@ export enum PermissionKey {
     GRADE_DELETE = "GRADE_DELETE",
 
     // =========================================
+    // Livres
+    // =========================================
+    BOOK_VIEW = "BOOK_VIEW",
+    BOOK_CREATE = "BOOK_CREATE",
+    BOOK_UPDATE = "BOOK_UPDATE",
+    BOOK_DELETE = "BOOK_DELETE",
+
+    // =========================================
+    // Orateurs (Preachers)
+    // =========================================
+    PREACHER_VIEW = "PREACHER_VIEW",
+    PREACHER_CREATE = "PREACHER_CREATE",
+    PREACHER_UPDATE = "PREACHER_UPDATE",
+    PREACHER_DELETE = "PREACHER_DELETE",
+
+    // =========================================
+    // Thèmes
+    // =========================================
+    THEME_VIEW = "THEME_VIEW",
+    THEME_CREATE = "THEME_CREATE",
+    THEME_UPDATE = "THEME_UPDATE",
+    THEME_DELETE = "THEME_DELETE",
+
+    // =========================================
     // Documents
     // =========================================
     DOCUMENT_VIEW = "DOCUMENT_VIEW",
@@ -152,4 +200,5 @@ export enum PermissionKey {
     // =========================================
     REPORT_VIEW = "REPORT_VIEW",
     REPORT_EXPORT = "REPORT_EXPORT",
+    REPORT_DELETE = "REPORT_DELETE",
 }

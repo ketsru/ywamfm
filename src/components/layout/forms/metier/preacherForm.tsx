@@ -1,32 +1,34 @@
 // @/modules/preachers/components/PreacherForm.tsx
 "use client";
 
+import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { preacherRequestSchema } from "@/modules/admin/preachers/preacher.schema";
 import { Preacher } from "@/lib/types/admin/preacher/preacher.types";
+import { preacherRequestSchema } from "@/modules/preachers/preacher.schema";
 
 type PreacherFormValues = z.output<typeof preacherRequestSchema>;
 
 type PreacherFormProps = {
-  formId: string;
   defaultValues?: Preacher;
-  onSubmit: (data: PreacherFormValues) => void;
+  onChange: (data: PreacherFormValues, isValid: boolean) => void;
+  error?: string;
 };
 
-export function PreacherForm({ formId, defaultValues, onSubmit }: PreacherFormProps) {
-
+export function PreacherForm({ defaultValues, onChange, error }: PreacherFormProps) {
   const {
     register,
-    handleSubmit,
-    formState: { errors },
+    watch,
+    formState: { errors, isValid },
   } = useForm<PreacherFormValues>({
     resolver: zodResolver(preacherRequestSchema),
+    mode: "onChange",
     defaultValues: {
-      name:       defaultValues?.name       ?? "",
+      firstName:  defaultValues?.firstName  ?? "",
+      lastName:   defaultValues?.lastName   ?? "",
       email:      defaultValues?.email      ?? "",
       origin:     defaultValues?.origin     ?? "",
       telephone:  defaultValues?.telephone  ?? "",
@@ -34,21 +36,56 @@ export function PreacherForm({ formId, defaultValues, onSubmit }: PreacherFormPr
     },
   });
 
+  React.useEffect(() => {
+    const subscription = watch((values) => {
+      onChange(values as PreacherFormValues, isValid);
+    });
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watch, isValid]);
+
   return (
-    <form id={formId} onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+    <div className="space-y-5">
+      {error && (
+        <p
+          className="text-sm text-destructive rounded-md bg-destructive/10 px-3 py-2"
+          role="alert"
+        >
+          {error}
+        </p>
+      )}
+
+      {/* Prénom */}
+      <Field>
+        <FieldLabel htmlFor="preacher-firstName">
+          Prénom <span className="text-destructive">*</span>
+        </FieldLabel>
+        <Input
+          id="preacher-firstName"
+          placeholder="Ex : Jean"
+          {...register("firstName")}
+        />
+        {errors.firstName && (
+          <p className="text-sm text-destructive" role="alert">
+            {errors.firstName.message}
+          </p>
+        )}
+      </Field>
 
       {/* Nom */}
       <Field>
-        <FieldLabel htmlFor="preacher-name">
+        <FieldLabel htmlFor="preacher-lastName">
           Nom <span className="text-destructive">*</span>
         </FieldLabel>
         <Input
-          id="preacher-name"
-          placeholder="Ex : Jean Dupont"
-          {...register("name")}
+          id="preacher-lastName"
+          placeholder="Ex : Dupont"
+          {...register("lastName")}
         />
-        {errors.name && (
-          <p className="text-sm text-destructive" role="alert">{errors.name.message}</p>
+        {errors.lastName && (
+          <p className="text-sm text-destructive" role="alert">
+            {errors.lastName.message}
+          </p>
         )}
       </Field>
 
@@ -64,7 +101,9 @@ export function PreacherForm({ formId, defaultValues, onSubmit }: PreacherFormPr
           {...register("email")}
         />
         {errors.email && (
-          <p className="text-sm text-destructive" role="alert">{errors.email.message}</p>
+          <p className="text-sm text-destructive" role="alert">
+            {errors.email.message}
+          </p>
         )}
       </Field>
 
@@ -79,7 +118,9 @@ export function PreacherForm({ formId, defaultValues, onSubmit }: PreacherFormPr
           {...register("origin")}
         />
         {errors.origin && (
-          <p className="text-sm text-destructive" role="alert">{errors.origin.message}</p>
+          <p className="text-sm text-destructive" role="alert">
+            {errors.origin.message}
+          </p>
         )}
       </Field>
 
@@ -95,7 +136,9 @@ export function PreacherForm({ formId, defaultValues, onSubmit }: PreacherFormPr
           {...register("telephone")}
         />
         {errors.telephone && (
-          <p className="text-sm text-destructive" role="alert">{errors.telephone.message}</p>
+          <p className="text-sm text-destructive" role="alert">
+            {errors.telephone.message}
+          </p>
         )}
       </Field>
 
@@ -110,10 +153,11 @@ export function PreacherForm({ formId, defaultValues, onSubmit }: PreacherFormPr
           {...register("speciality")}
         />
         {errors.speciality && (
-          <p className="text-sm text-destructive" role="alert">{errors.speciality.message}</p>
+          <p className="text-sm text-destructive" role="alert">
+            {errors.speciality.message}
+          </p>
         )}
       </Field>
-
-    </form>
+    </div>
   );
 }
